@@ -1,0 +1,23 @@
+/* CSS declarations go here */
+.equal, .plus {
+  font-size: 50px;
+}
+ul, li {
+    list-style-type: none;
+}
+
+.answers {
+  float:right;
+}
+.answer {
+  font-size: 50px;
+
+}
+.right{
+  color: white;
+  background-color: green;
+}
+.wrong{
+  color: white;
+  background-color: red;
+}

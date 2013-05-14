@@ -1,0 +1,39 @@
+<head>
+  <title>Try Bliss Language</title>
+</head>
+<body>
+  {{> game}}
+</body>
+<template name="game">
+  {{#each levels}}
+  <h1>{{ title }}:</h1>
+    {{#each help }}
+      {{> do_combination }}
+    {{/each}}
+    <h1>Question:</h1>
+    {{#with question}}
+      {{> do_question }}
+    {{/with}}
+  {{/each}}
+</template>
+<template name="do_combination">
+<div class="combination">
+<img src="/images/{{example}}.jpg"><span class="plus">+</span>
+<img src="/images/{{plus}}.jpg"><span class="equal">=</span>
+<span class="answer-example">{{equal}}</span>
+</div>
+</template>
+<template name="do_question">
+<div class="question">
+  <img src="/images/{{example}}.jpg"><span class="plus">+</span>
+  <img src="/images/{{plus}}.jpg"><span class="equal">=</span>
+  <span class="answer"></span>
+  <div class="answers">
+    <ul>
+      {{#each alternatives}}
+      <li class="alternative"><img src="/images/{{alternative}}.jpg"/></img></li>
+      {{/each}}
+    </ul>
+  </div>
+</div>
+</template>

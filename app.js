@@ -12,11 +12,24 @@ if (Meteor.isClient) {
       }
    ];
   };
-
-
-  Template.do_question.alternatives = function() {
+  Template.learn.symbols = function() {
     if (!Session.get('currentLevel'))
       Session.set('currentLevel',0);
+
+    level = Template.game.levels()[Session.get("currentLevel")];
+    symbols = [];
+    
+    for(i=0;i< level.wrong_alternatives.length;i+=1)
+      symbols.push(level.wrong_alternatives[0]);
+    for(i=0;i< level.help.length;i+=1){
+      help = level.help[0];
+      symbols.push(help.example);
+      symbols.push(help.plus);
+      symbols.push(help.equal);
+    }
+    return _.map(_.uniq(symbols), function(symbol){ return {symbol: symbol}; });
+  }
+  Template.do_question.alternatives = function() {
     level = Template.game.levels()[Session.get("currentLevel")];
     array = [{alternative: level.question.equal}];
     for(i=0;i< level.wrong_alternatives.length;i+=1)

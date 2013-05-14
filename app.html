@@ -2,6 +2,7 @@
   <title>Try Bliss Language</title>
 </head>
 <body>
+  {{> learn}}
   {{> game}}
 </body>
 <template name="game">
@@ -22,6 +23,13 @@
 <img src="/images/{{plus}}.jpg"><span class="equal">=</span>
 <span class="answer-example">{{equal}}</span>
 </div>
+</template>
+<template name="learn">
+<h1>Learn:</h1>
+<div class="symbol">
+  {{#each symbols}}
+  <div class="learn"><img src="/images/{{symbol}}.jpg"><span class="equal"> = {{symbol}}</span></div>
+  {{/each}}
 </template>
 <template name="do_question">
 <div class="question">

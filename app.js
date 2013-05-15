@@ -3,11 +3,15 @@ if (Meteor.isClient) {
   if (!Session.get('currentLevel'))
     Session.set('currentLevel',0);
   });
+
+  function notify(type,message){
+   return $("body").append("<div class=\"alert alert-"+type+"\">"+message+"</div>");
+  }
   Template.game.levels = function() {
     return [
       {
         title: "Places",
-        learn: { symbols: [ 'house', 'money', 'god', 'feeling'] },
+        learn: { symbols: [ 'house', 'money', 'god', 'feeling','medical'] },
         help: [
          { example: 'house', plus: 'money', equal:'bank'},
          { example: 'house', plus: 'god', equal:'church'},
@@ -44,14 +48,16 @@ if (Meteor.isClient) {
          { example: 'knowledge', plus: 'learn', equal:'explain-v'}
         ],
         question: { example: 'house',  plus: 'learn', equal: 'school'},
-        wrong_alternatives: ['bank', 'god', 'restaurant']
+        wrong_alternatives: ['known', 'hospital', 'restaurant']
       }
    ];
   };
   Template.game.level = function() {
     return Template.game.levels()[Session.get("currentLevel")];
   }
-
+  Template.game.currentLevel = function(){
+    return Session.get("currentLevel")+1;
+  }
   Template.learn.symbols = function() {
     level = Template.game.level();
     return _.map(level.learn.symbols, function(symbol){ return {symbol: symbol}; });
@@ -70,18 +76,20 @@ if (Meteor.isClient) {
      $(".answer").removeClass("btn-success");
      $(".answer").removeClass("btn-danger");
      right = (this.alternative == level.question.equal);
-     
-     $(".answer").text(right ? ":)" : ":(" );
+     if (!right)
+       $(".answer").text(":(" );
+
      $(e.target.parentElement).find("img").attr("src", "/images/"+this.alternative+".jpg");
-     $(e.target).removeClass("btn btn-action").addClass(right ? "label-success" : "label-important");
+     $(e.target).removeClass("btn btn-action").addClass(right ? "btn-success" : "btn-danger");
+     $(".alert").remove();
 
      if (right){
-       alert("you win!")
-       if (Session.get("currentLevel") < Template.game.levels().length-1)
+       if (Session.get("currentLevel") < Template.game.levels().length-1) {
+         notify("success","You got it");
          Session.set("currentLevel", Session.get("currentLevel")+1);
-       else
-         alert("congrats! you finished up!");
-     }
+       } else
+         notify("success", "congrats! you finished up!");
+     }else notify("danger", "Try again!")
      
     }
   });

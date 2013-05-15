@@ -5,6 +5,7 @@
   {{> game }}
 </body>
 <template name="game">
+ Level <div class="badge badge-info">{{currentLevel}}</div>
 {{#with level}}
   <div class="row-fluid">
     <div class="span3">
@@ -20,24 +21,27 @@
 {{/with}}
 </template>
 <template name="answer">
-  <h1>Answer:</h1>
+  <h1>Answer</h1>
   {{#with question}}
     {{> do_question }}
   {{/with}}
 </template>
 <template name="combine">
-<h1>Combine: {{ title }}</h1>
-{{#each help }}
+<h1>Combine {{ title }}</h1>
 <div class="combination">
   <div class="row-fluid">
-    <div class="span3 thumbnail"><img src="/images/{{example}}.jpg"><div class="caption">{{example}}</div></div>
-    <div class="plus span1"> + </div>
-    <div class="span3 thumbnail"><img src="/images/{{plus}}.jpg"><div class="caption">{{plus}}</div></div>
-    <div class="equal span1"> = </div>
-    <div class="span3 thumbnail"><img src="/images/{{equal}}.jpg"><div class="caption">{{equal}}</div></div>
+{{#each help }}
+    <div class="row ">
+      <div class="span3 thumbnail"><img src="/images/{{example}}.jpg"><div class="caption">{{example}}</div></div>
+      <div class="plus span1"> + </div>
+      <div class="span3 thumbnail"><img src="/images/{{plus}}.jpg"><div class="caption">{{plus}}</div></div>
+      <div class="equal span1"> = </div>
+      <div class="span3 thumbnail"><img src="/images/{{equal}}.jpg"><div class="caption">{{equal}}</div></div>
+    </div>
+    <div class="divider">
+{{/each}}
   </div>
 </div>
-{{/each}}
 </template>
 <template name="learn">
 <h1>Learn:</h1>
@@ -56,7 +60,7 @@
       <div class="row-fluid">
         <ul class="thumbnails">
           {{#each alternatives}}
-          <li class="span10">
+          <li class="span12">
             <div class="thumbnail">
               <img src=""/>
               <div class="caption alternative">{{alternative}}</div>

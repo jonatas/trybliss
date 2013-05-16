@@ -12,7 +12,6 @@ if (Meteor.isClient) {
        });
     }
   });
-
   function notify(type,message){
    return $("body").append("<div class=\"alert alert-"+type+"\">"+message+"</div>");
   }
@@ -106,8 +105,8 @@ if (Meteor.isClient) {
     return Template.game.levels()[Session.get("currentLevel")];
   }
   Template.combine.combinations = function() {
-    level = Template.game.level()
-    return _.map(level.learn.combinations, function(combination){return {combination: _.map(combination.split(" "),function(symbol){return {symbol:symbol};})};});
+    if (level = Template.game.level())
+      return _.map(level.learn.combinations, function(combination){return {combination: _.map(combination.split(" "),function(symbol){return {symbol:symbol};})};});
   }
   Template.game.symbols = function(){
     return Template.game.level().learn.symbols;
@@ -116,8 +115,8 @@ if (Meteor.isClient) {
     return Session.get("currentLevel")+1;
   }
   Template.learn.symbols = function() {
-    level = Template.game.level();
-    return _.map(level.learn.symbols, function(symbol){ return {symbol: symbol} });
+    if (level = Template.game.level())
+      return _.map(level.learn.symbols, function(symbol){ return {symbol: symbol} });
   }
   Template.answer.question_fragments = function() {
     return _.map(Template.game.level().answer.question.split(" "),function(symbol){return {symbol:symbol}});

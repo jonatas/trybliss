@@ -18,39 +18,53 @@ if (Meteor.isClient) {
   }
   Template.game.levels = function() {
     return [
-      /*
       {
         title: "Places",
-        learn: { symbols: [ 'house', 'money', 'god', 'feeling','medical'] },
-        help: [
-         { example: 'house', plus: 'money', equal:'bank'},
-         { example: 'house', plus: 'god', equal:'church'},
-         { example: 'house', plus: 'feeling', equal:'home'}
-        ],
-        question: { example: 'house',  plus: 'medical', equal: 'hospital'},
-        wrong_alternatives: ['home', 'church', 'restaurant']
+        learn: {
+          symbols: [ 'house', 'money', 'god', 'feeling','medical'],
+          combinations : [
+           'house and money equal bank',
+           'house and god equal church',
+           'house and feeling equal home'
+          ]
+        },
+        answer: {
+          question: 'house and medical equal question',
+          answer: 'hospital',
+          alternatives: ['home', 'church', 'hospital', 'restaurant']
+        }
       },
       {
         title: "More about places",
-        learn: { symbols: [ 'place', 'food', 'medical'] },
-        help: [
-         { example: 'house', plus: 'medical', equal:'hospital'},
-         { example: 'house', plus: 'money', equal:'bank'},
-         { example: 'house', plus: 'god', equal:'church'}
-        ],
-        question: { example: 'place',  plus: 'food', equal: 'restaurant'},
-        wrong_alternatives: ['home', 'church', 'hotel']
+        learn: {
+          symbols: [ 'place', 'food', 'medical'],
+          combinations: [
+            'house and medical equal hospital',
+            'house and money equal bank',
+            'house and god equal church'
+          ]
+        },
+        answer: {
+            question: 'place and food equal question',
+            answer: 'restaurant',
+            alternatives: ['restaurant','home', 'church', 'hotel']
+        }
       },
       {
         title: "More places and things",
-        learn: { symbols: [ 'house', 'machine', 'car', 'person'] },
-        help: [
-         { example: 'house', plus: 'medical', equal:'hospital'},
-         { example: 'house', plus: 'god', equal:'church'}
-        ],
-        question: { example: 'house',  plus: 'car', equal: 'garage'},
-        wrong_alternatives: ['bank', 'god', 'restaurant']
-      },*/
+        learn: {
+          symbols: [ 'house', 'machine', 'car', 'person'],
+          combinations: [
+           'house and medical equal hospital',
+           'house and god equal church'
+          ]
+        },
+        answer: {
+          question: 'house and car equal question',
+          answer: 'garage',
+          alternatives: ['bank', 'garage', 'restaurant']
+        }
+      },
       {
         title: "Knowledge",
         learn: {

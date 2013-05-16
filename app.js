@@ -119,15 +119,16 @@ if (Meteor.isClient) {
       return _.map(level.learn.symbols, function(symbol){ return {symbol: symbol} });
   }
   Template.answer.question_fragments = function() {
-    return _.map(Template.game.level().answer.question.split(" "),function(symbol){return {symbol:symbol}});
+    if (level=Template.game.level())
+      return _.map(level.answer.question.split(" "),function(symbol){return {symbol:symbol}});
   }
   Template.answer.alternatives = function() {
-    alternatives = Template.game.level().answer.alternatives;
-    return _.map(alternatives,function(alternative){return {alternative: alternative};});
+    if (level=Template.game.level())
+      return _.map(level.answer.alternatives,function(alternative){return {alternative: alternative};});
   }
   Template.game.events({
     'click .alternative' : function (e) {
-    level = Template.game.levels()[Session.get('currentLevel')];
+    level = Template.game.level();
      $(".answer").removeClass("btn-success");
      $(".answer").removeClass("btn-danger");
      right = (this.alternative == level.answer.answer);
@@ -147,7 +148,6 @@ if (Meteor.isClient) {
      }else notify("danger", "Try again!")
     }
   });
-
 }
 
 if (Meteor.isServer) {

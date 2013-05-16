@@ -21,25 +21,40 @@
 {{/with}}
 </template>
 <template name="answer">
-  <h1>Answer</h1>
-  {{#with question}}
-    {{> do_question }}
-  {{/with}}
+<h1>Answer</h1>
+<div class="question row">
+{{#each question_fragments }}
+  {{> show_symbol}}
+{{/each}}
+  <span class="answer"></span>
+  <div class="alternatives well btn-group btn-group-vertical" data-toggle="buttons-radio">
+    <div class="row-fluid">
+      <ul class="thumbnails">
+        {{#each alternatives}}
+        <li class="span12">
+          <div class="thumbnail">
+            <img src=""/>
+            <div class="caption alternative">{{alternative}}</div>
+          </div>
+        </li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
 </template>
 <template name="combine">
 <h1>Combine {{ title }}</h1>
 <div class="combination">
   <div class="row-fluid">
-{{#each help }}
-    <div class="row ">
-      <div class="span3 thumbnail"><img src="/images/{{example}}.jpg"><div class="caption">{{example}}</div></div>
-      <div class="plus span1"> + </div>
-      <div class="span3 thumbnail"><img src="/images/{{plus}}.jpg"><div class="caption">{{plus}}</div></div>
-      <div class="equal span1"> = </div>
-      <div class="span3 thumbnail"><img src="/images/{{equal}}.jpg"><div class="caption">{{equal}}</div></div>
-    </div>
-    <div class="divider">
-{{/each}}
+    {{#each combinations }}
+      <div class="row ">
+        {{#each combination }}
+        <div class="span2 thumbnail">{{>show_symbol}}<div class="caption">{{symbol}}</div></div>
+        {{/each}}
+      </div>
+     {{/each}}
   </div>
 </div>
 </template>
@@ -47,29 +62,9 @@
 <h1>Learn:</h1>
 <div class="symbol">
   {{#each symbols}}
-  <div class="span4 thumbnail"><img src="/images/{{symbol}}.jpg"><div class="caption">{{symbol}}</div></div>
+  <div class="span4 thumbnail">{{> show_symbol}}<div class="caption">{{symbol}}</div></div>
   {{/each}}
 </template>
-<template name="do_question">
-<div class="question">
-  <img src="/images/{{example}}.jpg"><span class="plus">+</span>
-  <img src="/images/{{plus}}.jpg"><span class="equal">=</span>
-  <span class="answer"></span>
-  <div class="answers">
-    <div class="well btn-group btn-group-vertical" data-toggle="buttons-radio">
-      <div class="row-fluid">
-        <ul class="thumbnails">
-          {{#each alternatives}}
-          <li class="span12">
-            <div class="thumbnail">
-              <img src=""/>
-              <div class="caption alternative">{{alternative}}</div>
-            </div>
-          </li>
-          {{/each}}
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
+<template name="show_symbol">
+<img src="{{src}}">
 </template>

@@ -3602,6 +3602,7 @@ dissemination dispersion,dissemination,scattering,spread,spreading
 scattering dispersion,dissemination,scattering,spread,spreading
 spread dispersion,dissemination,scattering,spread,spreading
 spreading dispersion,dissemination,scattering,spread,spreading
+duck duck,bird_(water),waterbird,waterfowl,seabird,seafowl
 bird_(water) duck,bird_(water),waterbird,waterfowl,seabird,seafowl
 waterbird duck,bird_(water),waterbird,waterfowl,seabird,seafowl
 waterfowl duck,bird_(water),waterbird,waterfowl,seabird,seafowl

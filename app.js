@@ -12,9 +12,12 @@ if (Meteor.isClient) {
        });
     }
   });
-  function notify(type,message){
-   return $("body").append("<div class=\"alert alert-"+type+"\">"+message+"</div>");
-  }
+  Template.game.rendered = function() {
+  $('#learning-steps a').click(function (e) {
+    e.preventDefault();
+    $(this).tab('show');
+  });
+  };
   Template.game.levels = function() {
     return [
       {
@@ -129,23 +132,22 @@ if (Meteor.isClient) {
   Template.game.events({
     'click .alternative' : function (e) {
     level = Template.game.level();
-     $(".answer").removeClass("btn-success");
-     $(".answer").removeClass("btn-danger");
+    console.log(e,this);
+     $("#answer").removeClass("alert-success");
+     $("#answer").removeClass("alert-error");
      right = (this.alternative == level.answer.answer);
-     if (!right)
-       $(".answer").text(":(" );
 
      $(e.target.parentElement).find("img").attr("src", symbolPath(this.alternative));
      $(e.target).removeClass("btn btn-action").addClass(right ? "btn-success" : "btn-danger");
-     $(".alert").remove();
 
      if (right){
        if (Session.get("currentLevel") < Template.game.levels().length-1) {
-         notify("success","You got it");
-         Session.set("currentLevel", Session.get("currentLevel")+1);
-       } else
-         notify("success", "congrats! you finished up!");
-     }else notify("danger", "Try again!")
+         $("#answer").addClass("alert-info");
+         _.delay(function(level) { Session.set("currentLevel",level); }, 3000, Session.get("currentLevel")+1);
+       } else {
+         $("#answer").addClass("alert-success");
+       }
+     }else $("#answer").addClass("alert-error");
     }
   });
 }

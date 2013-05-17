@@ -5,47 +5,40 @@
   {{> game }}
 </body>
 <template name="game">
- Level <div class="badge badge-info">{{currentLevel}}</div>
+<div class="container">
 {{#with level}}
-  <div class="row-fluid">
-    <div class="span3">
-      {{> learn}}
-    </div>
-    <div class="span6">
-    {{> combine}}
-    </div>
-    <div class="span3">
-    {{> answer}}
-    </div>
+  <ul id="learning-steps" class="nav nav-tabs">
+    <li data-toggle="tab" class="active badge badge-info"><a href="#learn"><img src="/images/seesaw,teeter-totter,teeter_board.png" alt=""/>Learn</a></li>
+    <li data-toggle="tab" class="badge badge-success"><a href="#combine"><img src="/images/combine,connect,link-(to).png" alt=""/>Combine</a></li>
+    <li data-toggle="tab" class="badge badge-warning"><a href="#answer" ><img src="/images/answer,reply.png" alt=""/>Answer</a></li>
+    <div class="badge badge-info">{{currentLevel}}</div>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane fade active in alert-info" id="learn">{{> learn}}</div>
+    <div class="tab-pane fade alert-success" id="combine">{{> combine}}</div>
+    <div class="tab-pane fade alert alert-warning" id="answer">{{> answer}}</div>
+  </div>
 </div>
 {{/with}}
+</div>
 </template>
 <template name="answer">
-<h1>Answer</h1>
-<div class="question row">
+<h2>Answer</h2>
 {{#each question_fragments }}
   {{> show_symbol}}
 {{/each}}
-  <span class="answer"></span>
-  <div class="alternatives well btn-group btn-group-vertical" data-toggle="buttons-radio">
-    <div class="row-fluid">
-      <ul class="thumbnails">
-        {{#each alternatives}}
-        <li class="span12">
-          <div class="thumbnail">
-            <img src=""/>
-            <div class="caption alternative">{{alternative}}</div>
-          </div>
-        </li>
-        {{/each}}
-      </ul>
-    </div>
-  </div>
-</div>
-</div>
+<ul class="thumbnails">
+  {{#each alternatives}}
+    <li class="span12">
+      <div class="thumbnail">
+        <img src=""/><div class="caption alternative">{{alternative}}</div>
+      </div>
+   </li>
+  {{/each}}
+</ul>
 </template>
 <template name="combine">
-<h1>Combine {{ title }}</h1>
+<h2>Combine</h2><small>{{title}}</small>
 <div class="combination">
   <div class="row-fluid">
     {{#each combinations }}
@@ -59,11 +52,10 @@
 </div>
 </template>
 <template name="learn">
-<h1>Learn:</h1>
-<div class="symbol">
-  {{#each symbols}}
-  <div class="span4 thumbnail">{{> show_symbol}}<div class="caption">{{symbol}}</div></div>
-  {{/each}}
+<h2>Learn</h2>
+{{#each symbols}}
+<div class="thumbnail">{{> show_symbol}}<div class="caption">{{symbol}}</div></div>
+{{/each}}
 </template>
 <template name="show_symbol">
 <img src="{{src}}">

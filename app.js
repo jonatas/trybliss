@@ -23,10 +23,10 @@ if (Meteor.isClient) {
       {
         title: "Places",
         learn: {
-          symbols: [ 'house', 'money', 'god', 'feeling','medical'],
+          symbols: [ 'house', 'money', 'God', 'feeling','medical'],
           combinations : [
            'house and money equal bank',
-           'house and god equal church',
+           'house and God equal church',
            'house and feeling equal home'
           ]
         },
@@ -43,7 +43,7 @@ if (Meteor.isClient) {
           combinations: [
             'house and medical equal hospital',
             'house and money equal bank',
-            'house and god equal church'
+            'house and God equal church'
           ]
         },
         answer: {
@@ -58,7 +58,7 @@ if (Meteor.isClient) {
           symbols: [ 'house', 'machine', 'car', 'person'],
           combinations: [
            'house and medical equal hospital',
-           'house and god equal church'
+           'house and God equal church'
           ]
         },
         answer: {
@@ -80,18 +80,32 @@ if (Meteor.isClient) {
         }
       },
       {
-        title: "Animals",
+        title: "Fly",
         learn: {
-          symbols: [ 'animal', 'sea', 'container'],
-          combinations: ['animal and water and container equal pelican',
-                         'animal and water equal duck_']
+          symbols: [ 'wing(s)', 'man', 'bird', 'wheel'],
+          combinations: ['wing(s) and man equal angel_(1)',
+                         'wing(s) and bird equal duck']
         },
         answer: {
-          question: 'animal and water equal question',
-          answer: 'duck',
-          alternatives: ['pig','duck','melon','snake']
+          question: 'wing(s) and wheel',
+          answer: 'airplane',
+          alternatives: ['duck','airplane','airport']
+        }
+      },
+      {
+        title: "Time",
+        learn: {
+          symbols: [ 'past', 'today', 'yesterday'],
+          combinations: ['day and indicator_(past_action) equal yesterday',
+                         'day and indicator_(future_action) equal tomorrow']
+        },
+        answer: {
+          question: 'indicator_(past_action) and indicator_(future_action) equal question',
+          answer: 'indicator_(present_action)',
+          alternatives: ['none','indicator_(present_action)','future']
         }
       }
+
    ];
   };
 
@@ -151,6 +165,5 @@ if (Meteor.isClient) {
     }
   });
 }
-
 if (Meteor.isServer) {
 }

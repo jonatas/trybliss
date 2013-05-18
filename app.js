@@ -135,7 +135,7 @@ if (Meteor.isServer) {
       {
         title: "Knowledge",
         learn: {
-          symbols: [ 'knowledge', 'mind', "up"],
+          symbols: [ 'knowledge', 'mind', "gift"],
           combinations: [ 'knowledge and learn-(to) equal teach']
         },
         answer: {
@@ -171,6 +171,7 @@ if (Meteor.isServer) {
         }
       }
    ];
+   Levels.find().forEach(function(e){Levels.remove(e._id)})
    _.each(levels, function(level){
      Levels.insert(level);
    });

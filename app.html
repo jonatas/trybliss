@@ -1,5 +1,5 @@
 <head>
-  <title>Try Bliss Language</title>
+  <title>Try Bliss Symbolics</title>
 </head>
 <body>
   {{> game }}
@@ -14,16 +14,16 @@
     <div class="badge badge-info">{{currentLevel}}</div>
   </ul>
   <div class="tab-content">
-    <div class="tab-pane fade active in alert-info" id="learn">{{> learn}}</div>
-    <div class="tab-pane fade alert-success" id="combine">{{> combine}}</div>
-    <div class="tab-pane fade alert alert-warning" id="answer">{{> answer}}</div>
+    <div class="tab-pane fade active in" id="learn">{{> learn}}</div>
+    <div class="tab-pane fade" id="combine">{{> combine}}</div>
+    <div class="tab-pane fade" id="answer">{{> answer}}</div>
   </div>
 </div>
 {{/with}}
 </div>
 </template>
 <template name="answer">
-<h2>Answer</h2>
+<h2 class="alert">Answer</h2>
 {{#each question_fragments }}
   {{> show_symbol}}
 {{/each}}
@@ -38,23 +38,20 @@
 </ul>
 </template>
 <template name="combine">
-<h2>Combine</h2><small>{{title}}</small>
-<div class="combination">
-  <div class="row-fluid">
-    {{#each combinations }}
-      <div class="row ">
-        {{#each combination }}
-        <div class="span2 thumbnail">{{>show_symbol}}<div class="caption">{{symbol}}</div></div>
-        {{/each}}
-      </div>
+<h2 class="alert-success">Combine {{title}}</h2>
+ {{#each combinations }}
+   <div class="row-fluid">
+     {{#each combination }}
+      <div class="span2 thumbnail">{{>show_symbol}}<div class="caption">{{symbol}}</div></div>
      {{/each}}
-  </div>
-</div>
+   </div>
+   <hr>
+ {{/each}}
 </template>
 <template name="learn">
-<h2>Learn</h2>
+<h2 class="alert-info">Learn</h2>
 {{#each symbols}}
-<div class="thumbnail">{{> show_symbol}}<div class="caption">{{symbol}}</div></div>
+<div class="thumbnail span3">{{> show_symbol}}<div class="caption">{{symbol}}</div></div>
 {{/each}}
 </template>
 <template name="show_symbol">

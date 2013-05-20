@@ -18,10 +18,9 @@
 <img src="/images/famfamfam_flag_icons/png/{{flag}}.png" class="flag"/>
 </template>
 <template name="game">
-<div class="container">
 {{#with level}}
   <div class="row">
-    <div class="span4">
+    <div class="span6">
       <ul id="learning-steps" class="nav nav-tabs">
         <li data-toggle="tab" class="active"><a href="#learn">{{t "Learn"}}</a></li>
         <li data-toggle="tab"><a href="#combine">{{t "Combine" }}</a></li>
@@ -29,50 +28,52 @@
       </ul>
     </div>
     <div class="span2">
+      <div class="icon-backward previous" title="{{t 'Previous level'}}"></div>
       <div class="badge badge-info">{{t "Level %s" currentLevel}}</div>
+      <div class="icon-forward next" title="{{t 'Next level' }}"></div>
     </div>
-    <div class="span6">
+    <div class="span4">
       {{> flags_panel }}
     </div>
   </div>
-  <div class="tab-content">
-    <div class="tab-pane fade active in" id="learn">{{> learn}}</div>
-    <div class="tab-pane fade" id="combine">{{> combine}}</div>
-    <div class="tab-pane fade" id="answer">{{> answer}}</div>
+  <div class="container">
+    <div class="tab-content">
+      <div class="tab-pane fade active in" id="learn">{{> learn}}</div>
+      <div class="tab-pane fade" id="combine">{{> combine}}</div>
+      <div class="tab-pane fade" id="answer">{{> answer}}</div>
+    </div>
   </div>
-</div>
 {{/with}}
-</div>
 </template>
 <template name="answer">
 <h4 class="alert">{{t "Answer"}}</h4>
 {{#each question_fragments }}
-  {{> show_symbol}}
+{{> show_symbol}}
 {{/each}}
 <ul class="thumbnails">
   {{#each alternatives}}
-    <li class="span12">
-      <div class="thumbnail">
-        <img src=""/><div class="caption alternative">{{alternative}}</div>
-      </div>
-   </li>
+  <li class="span12">
+  <div class="thumbnail">
+    <img src=""/><div class="caption alternative">{{alternative}}</div>
+  </div>
+  </li>
   {{/each}}
 </ul>
 </template>
 <template name="combine">
 {{#if title}}
- <h4 class="alert-success">{{t "Combine %s" title }}</h4>
+<h4 class="alert-success">{{t "Combine %s" title }}</h4>
 {{else}}
- <h4 class="alert-success">{{t "Combine"}}</h4>
+<h4 class="alert-success">{{t "Combine"}}</h4>
 {{/if}}
- {{#each combinations }}
-   <div class="row-fluid">
-     {{#each combination }}
-      <div class="span2 thumbnail">{{>show_symbol}}<div class="caption">{{symbol}}</div></div>
-     {{/each}}
-   </div>
-   <hr>
- {{/each}}
+{{#each combinations }}
+<div class="row-fluid">
+  {{#each combination }}
+  <div class="span2 thumbnail">{{>show_symbol}}<div class="caption">{{symbol}}</div></div>
+  {{/each}}
+</div>
+<hr>
+{{/each}}
 </template>
 <template name="learn">
 <h4 class="alert-info">{{t "Learn"}}</h4>

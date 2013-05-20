@@ -5,7 +5,7 @@ Translations = new Meteor.Collection('translations');
 
 if (Meteor.isClient) {
   Meteor.startup(function(){
-    if (!Session.get('currentLevel')) Session.set('currentLevel',0);
+    if (!Session.get('currentLevel')) setLevel(0);
     if (!Session.get('currentLanguage')) Session.set('currentLanguage','br');
   });
   Handlebars.registerHelper('t', function(object){
@@ -19,6 +19,28 @@ if (Meteor.isClient) {
          return args[0];
       }
   });
+
+  function nextLevel(){
+    if (Session.get("currentLevel") < Template.game.levels().length-1)
+      setLevel(Session.get("currentLevel")+1);
+  }
+  function previousLevel(){
+   if (Session.get("currentLevel") > 0)
+     setLevel(Session.get("currentLevel")-1);
+  }
+  function setLevel(to){
+    Session.set("currentLevel",to);
+    if (to > 0){
+      $(".previous").show();
+    } else{
+      $(".previous").hide();
+    }
+    if (to < Template.game.levels().length-2){
+      $(".next").show();
+    } else {
+      $(".next").hide();
+    }
+  }
   Meteor.autorun(function(){
     if (! window.linkSymbols) {
       data = $.ajax({ url: "/images/link_symbols.txt", async: false, }).responseText;
@@ -87,7 +109,6 @@ if (Meteor.isClient) {
   Template.game.events({
     'click .alternative' : function (e) {
     level = Template.game.level();
-    console.log(e,this);
      $("#answer").removeClass("alert-success");
      $("#answer").removeClass("alert-error");
      right = (this.alternative == level.answer.answer);
@@ -98,11 +119,16 @@ if (Meteor.isClient) {
      if (right){
        if (Session.get("currentLevel") < Template.game.levels().length-1) {
          $("#answer").addClass("alert-info");
-         _.delay(function(level) { Session.set("currentLevel",level); }, 3000, Session.get("currentLevel")+1);
        } else {
          $("#answer").addClass("alert-success");
        }
      }else $("#answer").addClass("alert-error");
+    },
+    'click .next' : function (e) {
+      nextLevel();
+    },
+    'click .previous' : function (e) {
+      previousLevel();
     }
   });
 }

@@ -250,8 +250,8 @@ Meteor.startup(function(){
       {lang: 'de', base_str: 'Answer', new_str: 'Beantworten'}
    ];
 
-//Translations.find().forEach(function(e){Translations.remove(e._id)});
   if (Translations.find().count() < translations.length) {
+    Translations.find().forEach(function(e){Translations.remove(e._id)});
     _.each(translations, function(translation) {
       if (!Translations.findOne(translation)) {
         Translations.insert(translation);

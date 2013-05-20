@@ -234,6 +234,8 @@ Meteor.startup(function(){
       {lang: 'br', base_str: 'Combine %s', new_str: 'Combinar %s'}, // Combine title level
       {lang: 'br', base_str: 'Level %s', new_str: 'Nível %s'},
       {lang: 'br', base_str: 'Answer', new_str: 'Responda'},
+      {lang: 'br', base_str: 'Next level', new_str: 'Próximo nível'},
+      {lang: 'br', base_str: 'Previous level', new_str: 'Nível anterior'},
       {lang: 'ch', base_str: 'Learn', new_str: 'Lära'},
       {lang: 'ch', base_str: 'Symbols', new_str: 'Symboler'},
       {lang: 'ch', base_str: 'Combine', new_str: 'Kombinera'},

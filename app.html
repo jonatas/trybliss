@@ -20,13 +20,21 @@
 <template name="game">
 <div class="container">
 {{#with level}}
-  <ul id="learning-steps" class="nav nav-tabs">
-    <li data-toggle="tab" class="active badge-info"><a href="#learn"><img src="/images/symbols/seesaw,teeter-totter,teeter_board.png" alt="" class="mini" />{{t "Learn"}}</a></li>
-    <li data-toggle="tab" class="badge-success"><a href="#combine"><img src="/images/symbols/combine,connect,link-(to).png" alt="" class="mini"/>{{t "Combine" }}</a></li>
-    <li data-toggle="tab" class="badge-warning"><a href="#answer" ><img src="/images/symbols/answer,reply.png" alt="" class="mini"/>{{t "Answer"}}</a></li>
-    <div class="badge badge-info">{{t "Level %s" currentLevel}}</div>
-    {{> flags_panel }}
-  </ul>
+  <div class="row">
+    <div class="span4">
+      <ul id="learning-steps" class="nav nav-tabs">
+        <li data-toggle="tab" class="active"><a href="#learn">{{t "Learn"}}</a></li>
+        <li data-toggle="tab"><a href="#combine">{{t "Combine" }}</a></li>
+        <li data-toggle="tab"><a href="#answer" >{{t "Answer"}}</a></li>
+      </ul>
+    </div>
+    <div class="span2">
+      <div class="badge badge-info">{{t "Level %s" currentLevel}}</div>
+    </div>
+    <div class="span6">
+      {{> flags_panel }}
+    </div>
+  </div>
   <div class="tab-content">
     <div class="tab-pane fade active in" id="learn">{{> learn}}</div>
     <div class="tab-pane fade" id="combine">{{> combine}}</div>
@@ -37,7 +45,7 @@
 </div>
 </template>
 <template name="answer">
-<h2 class="alert">{{t "Answer"}}</h2>
+<h4 class="alert">{{t "Answer"}}</h4>
 {{#each question_fragments }}
   {{> show_symbol}}
 {{/each}}
@@ -53,9 +61,9 @@
 </template>
 <template name="combine">
 {{#if title}}
- <h2 class="alert-success">{{t "Combine %s" title }}</h2>
+ <h4 class="alert-success">{{t "Combine %s" title }}</h4>
 {{else}}
- <h2 class="alert-success">{{t "Combine"}}</h2>
+ <h4 class="alert-success">{{t "Combine"}}</h4>
 {{/if}}
  {{#each combinations }}
    <div class="row-fluid">
@@ -67,7 +75,7 @@
  {{/each}}
 </template>
 <template name="learn">
-<h2 class="alert-info">{{t "Learn"}}</h2>
+<h4 class="alert-info">{{t "Learn"}}</h4>
 {{#each symbols}}
 <div class="thumbnail span3">{{> show_symbol}}<div class="caption">{{symbol}}</div></div>
 {{/each}}

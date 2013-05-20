@@ -93,6 +93,26 @@ if (Meteor.isClient) {
   });
 }
 if (Meteor.isServer) {
+
+  var checkTranslations = function(){
+    var translations = [
+      {lang: 'br', base_str: 'symbols', new_str: 'símbolos'},
+      {lang: 'br', base_str: 'combine', new_str: 'combinar'},
+      {lang: 'br', base_str: 'answer', new_str: 'responda'},
+      {lang: 'ch', base_str: 'symbols', new_str: 'symboler'},
+      {lang: 'ch', base_str: 'combine', new_str: 'kombinera'},
+      {lang: 'ch', base_str: 'answer', new_str: 'svara'},
+      {lang: 'de', base_str: 'symbols', new_str: 'Symbole'},
+      {lang: 'de', base_str: 'combine', new_str: 'kombinieren'},
+      {lang: 'de', base_str: 'answer', new_str: 'beantworten'}
+      ];
+    var i18n = Meteor.I18n();
+    for (var i in translations) {
+      if (!i18n.collection.findOne({lang: translations[i].lang, base_str: translations[i].base_str})) {
+        i18n.insert(translations[i].lang, translations[i].base_str, translations[i].new_str);
+      }
+    }
+ }
   Meteor.startup(function(){
   if (Levels.find().count() == 0) {
     var levels = [
@@ -182,33 +202,13 @@ if (Meteor.isServer) {
         }
       }
    ];
-   Levels.find().forEach(function(e){Levels.remove(e._id)})
+   Levels.find().forEach(function(e){Levels.remove(e._id)});
    _.each(levels, function(level){
      Levels.insert(level);
    });
   }
   Meteor.publish("levels", function(){ return Levels.find() });
-  var checkTranslations = function(){
-      var translations = [
-      {lang: 'br', base_str: 'symbols', new_str: 'símbolos'},
-      {lang: 'br', base_str: 'combine', new_str: 'combinar'},
-      {lang: 'br', base_str: 'answer', new_str: 'responda'},
-      {lang: 'ch', base_str: 'symbols', new_str: 'symboler'},
-      {lang: 'ch', base_str: 'combine', new_str: 'kombinera'},
-      {lang: 'ch', base_str: 'answer', new_str: 'svara'},
-      {lang: 'de', base_str: 'symbols', new_str: 'Symbole'},
-      {lang: 'de', base_str: 'combine', new_str: 'kombinieren'},
-      {lang: 'de', base_str: 'answer', new_str: 'beantworten'}
-      ];
-      var i18n = Meteor.I18n();
-      for (var i in translations) {
-        if (!i18n.collection.findOne({lang: translations[i].lang, base_str: translations[i].base_str})) {
-          i18n.insert(translations[i].lang, translations[i].base_str, translations[i].new_str);
-        }
-      }
-   }
-  Meteor.startup(function(){
-    setInterval(checkTranslations, 6000);
-    checkTranslations();
+  setInterval(checkTranslations, 6000);
+  checkTranslations();
   });
 }

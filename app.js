@@ -1,3 +1,5 @@
+Meteor.startup(function(){
+});
 Levels = new Meteor.Collection('levels');
 
 if (Meteor.isClient) {
@@ -13,6 +15,10 @@ if (Meteor.isClient) {
          window.linkSymbols[parts[0]] = parts[1];
        });
     }
+    if (! window.flags) {
+      data = $.ajax({ url: "/images/active_flags.txt", async: false }).responseText;
+      window.flags = _.select(data.split("\n"), function(str){return str != "";});
+    }
     Meteor.subscribe("levels");
   });
   Template.game.rendered = function() {
@@ -21,13 +27,18 @@ if (Meteor.isClient) {
       $(this).tab('show');
     });
   };
+  Template.flags_panel.flags = function() {
+    return _.map(window.flags, function(flag){ return {flag: flag} });
+  }
+  Template.flags_panel.events({
+    'click .flag' : function (e) { Session.set("language", this.flag);}
+  });
   Template.game.levels = function() {
     return Levels.find().fetch();
   };
-
   window.symbolPath = function(symbol){
         if (window.linkSymbols!=null)
-          return "/images/"+(window.linkSymbols[symbol] || symbol)+".png";
+          return "/images/symbols/"+(window.linkSymbols[symbol] || symbol)+".png";
         else
           return "/images/"+symbol+".png";
   }
@@ -176,6 +187,28 @@ if (Meteor.isServer) {
      Levels.insert(level);
    });
   }
-   Meteor.publish("levels", function(){ return Levels.find() });
+  Meteor.publish("levels", function(){ return Levels.find() });
+  var checkTranslations = function(){
+      var translations = [
+      {lang: 'br', base_str: 'symbols', new_str: 'símbolos'},
+      {lang: 'br', base_str: 'combine', new_str: 'combinar'},
+      {lang: 'br', base_str: 'answer', new_str: 'responda'},
+      {lang: 'ch', base_str: 'symbols', new_str: 'symboler'},
+      {lang: 'ch', base_str: 'combine', new_str: 'kombinera'},
+      {lang: 'ch', base_str: 'answer', new_str: 'svara'},
+      {lang: 'de', base_str: 'symbols', new_str: 'Symbole'},
+      {lang: 'de', base_str: 'combine', new_str: 'kombinieren'},
+      {lang: 'de', base_str: 'answer', new_str: 'beantworten'}
+      ];
+      var i18n = Meteor.I18n();
+      for (var i in translations) {
+        if (!i18n.collection.findOne({lang: translations[i].lang, base_str: translations[i].base_str})) {
+          i18n.insert(translations[i].lang, translations[i].base_str, translations[i].new_str);
+        }
+      }
+   }
+  Meteor.startup(function(){
+    setInterval(checkTranslations, 6000);
+    checkTranslations();
   });
 }

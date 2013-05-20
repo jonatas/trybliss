@@ -3,15 +3,26 @@
 </head>
 <body>
   {{> game }}
+  <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.4.4/bootstrap-editable/css/bootstrap-editable.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.4.4/bootstrap-editable/js/bootstrap-editable.min.js"></script>
 </body>
+<template name="flags_panel">
+<div class="flags">
+{{# each flags }}
+  <img src="/images/famfamfam_flag_icons/png/{{flag}}.png" class="flag"/>
+{{/each}}
+<span class="label label-info">&lt; Click!</span>
+</div>
+</template>
 <template name="game">
 <div class="container">
 {{#with level}}
   <ul id="learning-steps" class="nav nav-tabs">
-    <li data-toggle="tab" class="active badge badge-info"><a href="#learn"><img src="/images/seesaw,teeter-totter,teeter_board.png" alt=""/>Learn</a></li>
-    <li data-toggle="tab" class="badge badge-success"><a href="#combine"><img src="/images/combine,connect,link-(to).png" alt=""/>Combine</a></li>
-    <li data-toggle="tab" class="badge badge-warning"><a href="#answer" ><img src="/images/answer,reply.png" alt=""/>Answer</a></li>
-    <div class="badge badge-info">{{currentLevel}}</div>
+    <li data-toggle="tab" class="active badge-info"><a href="#learn"><img src="/images/symbols/seesaw,teeter-totter,teeter_board.png" alt="" class="mini" />Learn</a></li>
+    <li data-toggle="tab" class="badge-success"><a href="#combine"><img src="/images/symbols/combine,connect,link-(to).png" alt="" class="mini"/>Combine</a></li>
+    <li data-toggle="tab" class="badge-warning"><a href="#answer" ><img src="/images/symbols/answer,reply.png" alt="" class="mini"/>Answer</a></li>
+    <div class="badge badge-info">Level: {{currentLevel}}</div>
+    {{> flags_panel }}
   </ul>
   <div class="tab-content">
     <div class="tab-pane fade active in" id="learn">{{> learn}}</div>
@@ -38,7 +49,11 @@
 </ul>
 </template>
 <template name="combine">
-<h2 class="alert-success">Combine {{title}}</h2>
+{{#if title}}
+ <h2 class="alert-success">{{t "Combine %s" title }}</h2>
+{{else}}
+ <h2 class="alert-success">{{t "Combine"}}</h2>
+{{/if}}
  {{#each combinations }}
    <div class="row-fluid">
      {{#each combination }}
@@ -57,3 +72,4 @@
 <template name="show_symbol">
 <img src="{{src}}">
 </template>
+

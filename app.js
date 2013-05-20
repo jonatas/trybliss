@@ -206,16 +206,19 @@ Meteor.startup(function(){
       {lang: 'br', base_str: 'Symbols', new_str: 'Símbolos'},
       {lang: 'br', base_str: 'Combine', new_str: 'Combinar'},
       {lang: 'br', base_str: 'Combine %s', new_str: 'Combinar %s'}, // Combine title level
+      {lang: 'br', base_str: 'Level %s', new_str: 'Nível %s'},
       {lang: 'br', base_str: 'Answer', new_str: 'Responda'},
       {lang: 'ch', base_str: 'Learn', new_str: 'Lära'},
       {lang: 'ch', base_str: 'Symbols', new_str: 'Symboler'},
       {lang: 'ch', base_str: 'Combine', new_str: 'Kombinera'},
       {lang: 'ch', base_str: 'Combine %s', new_str: 'Kombinera %s'},
+      {lang: 'ch', base_str: 'Level %s', new_str: 'Ebene %s'},
       {lang: 'ch', base_str: 'Answer', new_str: 'Svara'},
       {lang: 'de', base_str: 'Learn', new_str: 'Lernen'},
       {lang: 'de', base_str: 'Symbols', new_str: 'Symbole'},
       {lang: 'de', base_str: 'Combine', new_str: 'Kombinieren'},
       {lang: 'de', base_str: 'Combine %s', new_str: 'Kombinieren %s'},
+      {lang: 'de', base_str: 'Level %s', new_str: 'Nivå %s'},
       {lang: 'de', base_str: 'Answer', new_str: 'Beantworten'}
    ];
 

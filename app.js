@@ -212,13 +212,13 @@ Meteor.startup(function(){
       {lang: 'ch', base_str: 'Symbols', new_str: 'Symboler'},
       {lang: 'ch', base_str: 'Combine', new_str: 'Kombinera'},
       {lang: 'ch', base_str: 'Combine %s', new_str: 'Kombinera %s'},
-      {lang: 'ch', base_str: 'Level %s', new_str: 'Ebene %s'},
+      {lang: 'ch', base_str: 'Level %s', new_str: 'Nivå %s'},
       {lang: 'ch', base_str: 'Answer', new_str: 'Svara'},
       {lang: 'de', base_str: 'Learn', new_str: 'Lernen'},
       {lang: 'de', base_str: 'Symbols', new_str: 'Symbole'},
       {lang: 'de', base_str: 'Combine', new_str: 'Kombinieren'},
       {lang: 'de', base_str: 'Combine %s', new_str: 'Kombinieren %s'},
-      {lang: 'de', base_str: 'Level %s', new_str: 'Nivå %s'},
+      {lang: 'de', base_str: 'Level %s', new_str: 'Ebene %s'},
       {lang: 'de', base_str: 'Answer', new_str: 'Beantworten'}
    ];
 

@@ -9,19 +9,22 @@
 <template name="flags_panel">
 <div class="flags">
 {{# each flags }}
-  <img src="/images/famfamfam_flag_icons/png/{{flag}}.png" class="flag"/>
+{{> flag}}
 {{/each}}
 <span class="label label-info">&lt; Click!</span>
 </div>
+</template>
+<template name="flag">
+<img src="/images/famfamfam_flag_icons/png/{{flag}}.png" class="flag"/>
 </template>
 <template name="game">
 <div class="container">
 {{#with level}}
   <ul id="learning-steps" class="nav nav-tabs">
-    <li data-toggle="tab" class="active badge-info"><a href="#learn"><img src="/images/symbols/seesaw,teeter-totter,teeter_board.png" alt="" class="mini" />Learn</a></li>
-    <li data-toggle="tab" class="badge-success"><a href="#combine"><img src="/images/symbols/combine,connect,link-(to).png" alt="" class="mini"/>Combine</a></li>
-    <li data-toggle="tab" class="badge-warning"><a href="#answer" ><img src="/images/symbols/answer,reply.png" alt="" class="mini"/>Answer</a></li>
-    <div class="badge badge-info">Level: {{currentLevel}}</div>
+    <li data-toggle="tab" class="active badge-info"><a href="#learn"><img src="/images/symbols/seesaw,teeter-totter,teeter_board.png" alt="" class="mini" />{{t "Learn"}}</a></li>
+    <li data-toggle="tab" class="badge-success"><a href="#combine"><img src="/images/symbols/combine,connect,link-(to).png" alt="" class="mini"/>{{t "Combine" }}</a></li>
+    <li data-toggle="tab" class="badge-warning"><a href="#answer" ><img src="/images/symbols/answer,reply.png" alt="" class="mini"/>{{t "Answer"}}</a></li>
+    <div class="badge badge-info">{{t "Level %s" currentLevel}}</div>
     {{> flags_panel }}
   </ul>
   <div class="tab-content">
@@ -34,7 +37,7 @@
 </div>
 </template>
 <template name="answer">
-<h2 class="alert">Answer</h2>
+<h2 class="alert">{{t "Answer"}}</h2>
 {{#each question_fragments }}
   {{> show_symbol}}
 {{/each}}
@@ -64,7 +67,7 @@
  {{/each}}
 </template>
 <template name="learn">
-<h2 class="alert-info">Learn</h2>
+<h2 class="alert-info">{{t "Learn"}}</h2>
 {{#each symbols}}
 <div class="thumbnail span3">{{> show_symbol}}<div class="caption">{{symbol}}</div></div>
 {{/each}}
@@ -72,4 +75,3 @@
 <template name="show_symbol">
 <img src="{{src}}">
 </template>
-

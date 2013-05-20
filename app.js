@@ -1,10 +1,23 @@
 Meteor.startup(function(){
 });
 Levels = new Meteor.Collection('levels');
+Translations = new Meteor.Collection('translations');
 
 if (Meteor.isClient) {
   Meteor.startup(function(){
     if (!Session.get('currentLevel')) Session.set('currentLevel',0);
+    if (!Session.get('currentLanguage')) Session.set('currentLanguage','br');
+  });
+  Handlebars.registerHelper('t', function(object){
+      var args = Array.prototype.slice.call(arguments, 0, arguments.length - 1);
+      var row = Translations.findOne({lang:Session.get("currentLanguage"), base_str: args[0]});
+      if (row && row.new_str)
+        args[0] =row.new_str;
+      if (args.length > 1) {
+         return args[0].replace("%s",args[1]);
+      } else {
+         return args[0];
+      }
   });
   Meteor.autorun(function(){
     if (! window.linkSymbols) {
@@ -20,6 +33,7 @@ if (Meteor.isClient) {
       window.flags = _.select(data.split("\n"), function(str){return str != "";});
     }
     Meteor.subscribe("levels");
+    Meteor.subscribe("translations", Session.get("currentLanguage"));
   });
   Template.game.rendered = function() {
     $('#learning-steps a').click(function (e) {
@@ -30,8 +44,8 @@ if (Meteor.isClient) {
   Template.flags_panel.flags = function() {
     return _.map(window.flags, function(flag){ return {flag: flag} });
   }
-  Template.flags_panel.events({
-    'click .flag' : function (e) { Session.set("language", this.flag);}
+  Template.flag.events({
+    'click img' : function (e) { Session.set("currentLanguage", this.flag);}
   });
   Template.game.levels = function() {
     return Levels.find().fetch();
@@ -93,27 +107,7 @@ if (Meteor.isClient) {
   });
 }
 if (Meteor.isServer) {
-
-  var checkTranslations = function(){
-    var translations = [
-      {lang: 'br', base_str: 'symbols', new_str: 'símbolos'},
-      {lang: 'br', base_str: 'combine', new_str: 'combinar'},
-      {lang: 'br', base_str: 'answer', new_str: 'responda'},
-      {lang: 'ch', base_str: 'symbols', new_str: 'symboler'},
-      {lang: 'ch', base_str: 'combine', new_str: 'kombinera'},
-      {lang: 'ch', base_str: 'answer', new_str: 'svara'},
-      {lang: 'de', base_str: 'symbols', new_str: 'Symbole'},
-      {lang: 'de', base_str: 'combine', new_str: 'kombinieren'},
-      {lang: 'de', base_str: 'answer', new_str: 'beantworten'}
-      ];
-    var i18n = Meteor.I18n();
-    for (var i in translations) {
-      if (!i18n.collection.findOne({lang: translations[i].lang, base_str: translations[i].base_str})) {
-        i18n.insert(translations[i].lang, translations[i].base_str, translations[i].new_str);
-      }
-    }
- }
-  Meteor.startup(function(){
+Meteor.startup(function(){
   if (Levels.find().count() == 0) {
     var levels = [
       {
@@ -207,8 +201,33 @@ if (Meteor.isServer) {
      Levels.insert(level);
    });
   }
+    var translations = [
+      {lang: 'br', base_str: 'Learn', new_str: 'Aprender'},
+      {lang: 'br', base_str: 'Symbols', new_str: 'Símbolos'},
+      {lang: 'br', base_str: 'Combine', new_str: 'Combinar'},
+      {lang: 'br', base_str: 'Combine %s', new_str: 'Combinar %s'}, // Combine title level
+      {lang: 'br', base_str: 'Answer', new_str: 'Responda'},
+      {lang: 'ch', base_str: 'Learn', new_str: 'Lära'},
+      {lang: 'ch', base_str: 'Symbols', new_str: 'Symboler'},
+      {lang: 'ch', base_str: 'Combine', new_str: 'Kombinera'},
+      {lang: 'ch', base_str: 'Combine %s', new_str: 'Kombinera %s'},
+      {lang: 'ch', base_str: 'Answer', new_str: 'Svara'},
+      {lang: 'de', base_str: 'Learn', new_str: 'Lernen'},
+      {lang: 'de', base_str: 'Symbols', new_str: 'Symbole'},
+      {lang: 'de', base_str: 'Combine', new_str: 'Kombinieren'},
+      {lang: 'de', base_str: 'Combine %s', new_str: 'Kombinieren %s'},
+      {lang: 'de', base_str: 'Answer', new_str: 'Beantworten'}
+   ];
+
+//Translations.find().forEach(function(e){Translations.remove(e._id)});
+  if (Translations.find().count() < translations.length) {
+    _.each(translations, function(translation) {
+      if (!Translations.findOne(translation)) {
+        Translations.insert(translation);
+      }
+    });
+  }
   Meteor.publish("levels", function(){ return Levels.find() });
-  setInterval(checkTranslations, 6000);
-  checkTranslations();
-  });
+  Meteor.publish("translations", function(language){ return Translations.find({lang: language})});
+});
 }

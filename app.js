@@ -62,7 +62,23 @@ if (Meteor.isClient) {
       e.preventDefault();
       $(this).tab('show');
     });
+
+    $('a.edit').click(function (e) {
+       $(".edit-level").toggle();
+    });
   };
+  Template.edit_level.events({
+    "keyup input, change input" : function (evt) {
+       value = $(evt.target).val();
+       update = {};
+       update[evt.target.id] = value;
+       level = level();
+       Levels.update(level._id, {$set: update});
+    }
+  });
+  Template.edit_level.rendered = function() {
+    $("a[data-toggle='tooltip']").tooltip({animation: "fade", container: "body"});
+  }
   Template.flags_panel.flags = function() {
     return _.map(window.flags, function(flag){ return {flag: flag} });
   }

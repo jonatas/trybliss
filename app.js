@@ -64,7 +64,7 @@ if (Meteor.isClient) {
     });
 
     $('a.edit').click(function (e) {
-       $(".edit-level").toggle();
+       $(".edit-level").show();
     });
   };
   Template.edit_level.events({
@@ -72,12 +72,13 @@ if (Meteor.isClient) {
        value = $(evt.target).val();
        update = {};
        update[evt.target.id] = value;
-       level = level();
-       Levels.update(level._id, {$set: update});
+       console.log("change on ",evt,update);
     }
   });
   Template.edit_level.rendered = function() {
     $("a[data-toggle='tooltip']").tooltip({animation: "fade", container: "body"});
+    if (!Session.get("editingLevel"))
+      $(".edit_level").hide();
   }
   Template.flags_panel.flags = function() {
     return _.map(window.flags, function(flag){ return {flag: flag} });
@@ -98,7 +99,7 @@ if (Meteor.isClient) {
     src: function () { return symbolPath(this.symbol) }
   });
   Template.game.level = function() {
-    return Template.game.levels()[Session.get("currentLevel")];
+    return Session.get("editingLevel") || Template.game.levels()[Session.get("currentLevel")];
   }
   Template.combine.combinations = function() {
     if (level = Template.game.level())
@@ -145,7 +146,47 @@ if (Meteor.isClient) {
     },
     'click .previous' : function (e) {
       previousLevel();
+    },
+    'click a.edit-level' : function(e) {
+      console.log("Editing level", this, e)
+      Session.set("editingLevel", this);
+      $("div.edit-level").show();
     }
+  });
+  Template.edit_level.level = function(){
+    return Session.get("editingLevel");
+  };
+  Template.edit_level.events({
+    'click a.btn.save' : function(){
+      Levels.update(Session.get("editingLevel")._id, Session.get("editingLevel"));
+      Session.set("editingLevel", null);
+      $("div.editlevel").hide();
+     },
+    'focus input[focus-tab]' : function(e){
+      tab = $("a[href='"+$(e.target).attr("focus-tab")+"']");
+      if (! tab.hasClass("active"))
+        tab.tab('show');
+      $(e).focus();
+    },
+    "keyup input, change input" : function (evt) {
+      value = $(evt.target).val();
+      level = Session.get("editingLevel");
+
+      console.log(evt.target.id, "level before",level);
+      if (evt.target.id == "learn")
+        level.learn.symbols = value.split(/,|\s/);
+      else if (evt.target.id == "answer")
+        level.answer.answer = value;
+      else if (evt.target.id == "question")
+        level.answer.question = value.split(" ");
+      else if (evt.target.id == "alternatives")
+        level.answer.alternatives = value.split(",");
+      else if (evt.target.id == "title")
+        level.title = value;
+
+      console.log("editing level",level);
+      Session.set("editingLevel",level);
+    },
   });
 }
 if (Meteor.isServer) {

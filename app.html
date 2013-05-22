@@ -32,10 +32,10 @@
       <div class="icon-backward previous" title="{{t 'Previous level'}}"></div>
       <div class="badge badge-info">{{t "Level %s" currentLevel}}</div>
       <div class="icon-forward next" title="{{t 'Next level' }}"></div>
+      <div class="badge"><a href="#" class="edit-level">{{ t "Edit level"}}</a></div>
     </div>
     <div class="span4">
       {{> flags_panel }}
-      <a href="#" class="edit-level">{{ t "Edit level"}}</a>
     </div>
   </div>
   <div class="container">
@@ -87,27 +87,25 @@
 <img src="{{src}}">
 </template>
 <template name="edit_level">
-<div class="edit-level well sidebar-nav span2">
+{{#with level}}
+<div class="edit-level well sidebar-nav-fixed">
+  <h2>{{t "Editing level" currentLevel}} <small><a href="#" class="btn save btn-success btn-small"><i class="icon-ok-circle icon-white"></i> {{t "Save Changes"}}</a></small></h2>
   <ul>
   <li class="nav-header">{{t "Title"}}</li>
-  <input type="text" id="title" value="{{title}}"/>
+  <input type="text" id="title" value="{{title}}" focus-tab="#combine" />
   <li class="nav-header alert-info">{{t "Learn"}}</li>
-  <input type="text" id="learn" value={{learn}}/>
+  <input type="text" id="learn" value="{{learn.symbols}}" focus-tab="#learn"  />
   <li class="nav-header alert">{{t "Combine"}}</li>
-  <textarea id="combine">{{combine}}</textarea>
-  <li class="nav-header alert-warn">{{t "Question"}}</li>
-  <input type="text" id="question" value="{{question}}"/>
-  <li class="nav-header alert-success">{{t "Right Answer"}}</li>
-  <input type="text" id="answer" value="{{answer}}"/>
-  <li class="nav-header">
-  <a href="#" data-toggle="tooltip"
-    title='{{t "Alternatives divided by commas"}}'>
-    <i class="icon-question-sign"></i></a>
-    {{t "Alternatives"}}
-  </li>
+  <textarea id="combine" focus-tab="#combine">{{learn.combinations}}</textarea>
+  <li class="nav-header alert-warn"><a href="#" data-toggle="tooltip" title='{{t "Each word will be replaced by a image with a label"}}'><i class="icon-question-sign"></i></a>{{t "Question"}}</li>
+  <input type="text" id="question" value="{{answer.question}}" focus-tab="#answer"/>
+  <li class="nav-header alert-success"><a href="#" data-toggle="tooltip" title='{{t "Should be one word only"}}'><i class="icon-question-sign"></i></a>{{t "Answer"}}</li>
+  <input type="text" id="answer" value="{{answer.answer}}" focus-tab="#answer"/>
+  <li class="nav-header"><a href="#" data-toggle="tooltip" title='{{t "Alternatives divided by commas"}}'><i class="icon-question-sign"></i></a>{{t "Alternatives"}}</li>
   <li>
-    <input type="text" id="alternatives" value="{{alternatives}}" />
+    <input type="text" id="alternatives" value="{{answer.alternatives}}" />
     </li>
   </ul>
 </div>
+{{/with}}
 </template>

@@ -59,26 +59,32 @@ if (Meteor.isClient) {
   });
   Template.game.rendered = function() {
     $('#learning-steps a').click(function (e) {
-      e.preventDefault();
-      $(this).tab('show');
+      if (! Session.get("editingLevel")){
+        console.log("show tab", this);
+        $(this).tab('show');
+      }
     });
+    if (! Session.get("editingLevel")){
+      console.log("show tab", this);
+      $(this).tab('show');
+    }
 
+    console.log("game rendered");
     $('a.edit').click(function (e) {
        $(".edit-level").show();
     });
   };
-  Template.edit_level.events({
-    "keyup input, change input" : function (evt) {
-       value = $(evt.target).val();
-       update = {};
-       update[evt.target.id] = value;
-       console.log("change on ",evt,update);
-    }
-  });
   Template.edit_level.rendered = function() {
+    console.log("edit level rendered");
     $("a[data-toggle='tooltip']").tooltip({animation: "fade", container: "body"});
     if (!Session.get("editingLevel"))
       $(".edit_level").hide();
+     else{
+      $(Session.get("focus-tab")).tab('show')
+      $(Session.get("focus-input")).focus()
+
+    
+    }
   }
   Template.flags_panel.flags = function() {
     return _.map(window.flags, function(flag){ return {flag: flag} });
@@ -148,43 +154,59 @@ if (Meteor.isClient) {
       previousLevel();
     },
     'click a.edit-level' : function(e) {
-      console.log("Editing level", this, e)
-      Session.set("editingLevel", this);
+      if (! Session.get("editingLevel") || Session.get("editingLevel")._id != this._id)
+        Session.set("editingLevel", this);
       $("div.edit-level").show();
     }
   });
   Template.edit_level.level = function(){
     return Session.get("editingLevel");
   };
+  Template.edit_level.currentLevel = function(){
+    return Session.get("editingLevel").title;
+  }
   Template.edit_level.events({
     'click a.btn.save' : function(){
-      Levels.update(Session.get("editingLevel")._id, Session.get("editingLevel"));
+      id = delete Session.get("editingLevel"), "_id";
+      console.log(id,Session.get("editingLevel"));
+      Levels.update(id, Session.get("editingLevel"));
       Session.set("editingLevel", null);
-      $("div.editlevel").hide();
+      $("div.edit-level").hide();
      },
-    'focus input[focus-tab]' : function(e){
-      tab = $("a[href='"+$(e.target).attr("focus-tab")+"']");
+    'click a.hide-editor' : function(){
+      $("div.edit-level").hide();
+     },
+    'click a.btn.cancel-edition' : function(){
+      Session.set("editingLevel", null);
+      $("div.edit-level").hide();
+     },
+    'focus *[focus-tab]' : function(e){
+      tabSelector = "a[href='"+$(e.target).attr("focus-tab")+"']";
+      Session.set("focus-tab", tabSelector);
+      Session.set("focus-input", "#"+ e.target.id);
+      tab = $(tabSelector);
       if (! tab.hasClass("active"))
         tab.tab('show');
-      $(e).focus();
+      $(e.target).focus();
+      $(e.target).val($(e.target).val());
     },
-    "keyup input, change input" : function (evt) {
+    "change textarea, change input" : function (evt) {
       value = $(evt.target).val();
       level = Session.get("editingLevel");
-
-      console.log(evt.target.id, "level before",level);
+      console.log(evt.target.id, level, value);
       if (evt.target.id == "learn")
-        level.learn.symbols = value.split(/,|\s/);
+        level.learn.symbols = value.split(",");
+      else if (evt.target.id == "combine")
+        level.learn.combinations = value.split(",");
       else if (evt.target.id == "answer")
         level.answer.answer = value;
       else if (evt.target.id == "question")
-        level.answer.question = value.split(" ");
+        level.answer.question = value;
       else if (evt.target.id == "alternatives")
         level.answer.alternatives = value.split(",");
       else if (evt.target.id == "title")
         level.title = value;
 
-      console.log("editing level",level);
       Session.set("editingLevel",level);
     },
   });

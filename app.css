@@ -33,4 +33,9 @@ ul, li {
 .mini{
   width: 32px;
   height: 32px;
-}alertalert
+}
+.edit-level{
+  position: fixed;
+  top: 0px;
+  right: 0px;
+}

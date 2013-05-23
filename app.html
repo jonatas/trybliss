@@ -34,7 +34,9 @@
     <div class="span4">
       {{> flags_panel }}
     </div>
-    <a href="#" class="btn levels btn-inverse btn-small"><i class="icon-hand-right icon-white"></i>{{ t "Levels"}}</a>
+   {{#unless showingLevels}}
+      <a href="#" class="btn levels btn-inverse btn-small"><i class="icon-hand-left icon-white"></i>{{ t "Levels"}}</a>
+   {{/unless}}
   </div>
   <div class="container">
     <div class="tab-content">
@@ -85,13 +87,14 @@
 <img src="{{src}}">
 </template>
 <template name="levels">
- <div class="well levels sidebar-nav-fixed">
   {{#if editingLevel}}
     {{> edit_level}}
   {{/if}}
   {{#if showingLevels}}
+ <div class="levels">
+ <h2><a href="#" class="btn add btn-success btn-small"><i class="icon-plus icon-white"></i></a>
+     {{t "Levels"}}</h2>
     <ul>
-      <li class="nav-header">{{t "Levels"}} <a href="#" class="btn add btn-success btn-small"><i class="icon-plus icon-white"></i></a>
     {{#each levels}}
     <li>
     <a href="#" class="btn play btn-success btn-small"><i class="icon-play icon-white"></i></a>
@@ -100,34 +103,39 @@
      </li>
     {{/each}}
     </ul>
+    <a href="#" class="btn hide-levels btn-inverse btn-small"><i class="icon-hand-right icon-white"></i>{{t "Hide levels"}}</a>
   {{/if}}
 </div>
 </template>
 <template name="edit_level">
-{{#with level}}
-<div class="edit-level">
-  <h2>{{t "Editing level %s" levelTitle}} </h2>
-  <ul>
-  <li class="nav-header alert-info"><a href="#" data-toggle="tooltip" title='{{t "Symbols divided by comma. Example dog,cat"}}'><i class="icon-question-sign"></i></a>{{t "Learn"}}</li>
-  <input type="text" id="learn" value="{{learn.symbols}}" focus-tab="#learn"  />
-  <li class="nav-header"><a href="#" data-toggle="tooltip" title='{{t "Free title to remember these level"}}'><i class="icon-question-sign"></i></a>{{t "Title"}}</li>
-  <input type="text" id="title" value="{{title}}" focus-tab="#combine" />
-  <li class="nav-header alert"><a href="#" data-toggle="tooltip" title='{{t "Each phrase are divided by comma. Symbols are spaced into the statement"}}'><i class="icon-question-sign"></i>{{t "Combine"}}</li>
-  <textarea id="combine" focus-tab="#combine">{{learn.combinations}}</textarea>
-  <li class="nav-header alert-warn"><a href="#" data-toggle="tooltip" title='{{t "Each word will be replaced by a image with a label"}}'><i class="icon-question-sign"></i></a>{{t "Question"}}</li>
-  <input type="text" id="question" value="{{answer.question}}" focus-tab="#answer"/>
-  <li class="nav-header alert-success"><a href="#" data-toggle="tooltip" title='{{t "Should be one word only"}}'><i class="icon-question-sign"></i></a>{{t "Answer"}}</li>
-  <input type="text" id="answer" value="{{answer.answer}}" focus-tab="#answer"/>
-  <li class="nav-header"><a href="#" data-toggle="tooltip" title='{{t "Alternatives divided by commas"}}'><i class="icon-question-sign"></i></a>{{t "Alternatives"}}</li>
-  <li>
-    <input type="text" id="alternatives" value="{{answer.alternatives}}" />
-  </li>
-  <li>
-    <a href="#" class="btn save btn-success btn-small"><i class="icon-ok-circle icon-white"></i>{{t "Save"}}</a>
-    <a href="#" class="btn hide-editor btn-inverse btn-small"><i class="icon-hand-right icon-white"></i>{{t "Preview"}}</a>
-    <a href="#" class="btn cancel-edition btn-danger btn-small"><i class="icon-remove-circle icon-white"></i>{{t "Cancel"}}</a>
-    </li>
-  </ul>
+<div class="levels">
+  {{#with level}}
+  <div class="edit-level">
+    <h4 class="badge-inverse">{{t "Editing level %s" levelTitle}}</h4>
+    <ul>
+      <li class="nav-header alert-info"><a href="#" data-toggle="tooltip" title='{{t "Symbols divided by comma. Example dog,cat"}}'><i class="icon-question-sign"></i></a>{{t "Learn"}}</li>
+      <input type="text" id="learn" value="{{learn.symbols}}" focus-tab="#learn"  />
+      <li class="nav-header"><a href="#" data-toggle="tooltip" title='{{t "Free title to remember these level"}}'><i class="icon-question-sign"></i></a>{{t "Title"}}</li>
+      <input type="text" id="title" value="{{title}}" focus-tab="#combine" />
+      <li class="nav-header alert"><a href="#" data-toggle="tooltip" title='{{t "Each phrase are divided by comma. Symbols are spaced into the statement"}}'><i class="icon-question-sign"></i></a>{{t "Combine"}}</li>
+        <textarea id="combine" focus-tab="#combine">{{learn.combinations}}</textarea>
+        <li class="nav-header alert-warn"><a href="#" data-toggle="tooltip" title='{{t "Each word will be replaced by a image with a label"}}'><i class="icon-question-sign"></i></a>{{t "Question"}}</li>
+        <input type="text" id="question" value="{{answer.question}}" focus-tab="#answer"/>
+        <li class="nav-header"><a href="#" data-toggle="tooltip" title='{{t "Alternatives divided by commas"}}'><i class="icon-question-sign"></i></a>{{t "Alternatives"}}</li>
+        <li> <input type="text" id="alternatives" value="{{answer.alternatives}}" /> </li>
+        <li class="nav-header alert-success"><a href="#" data-toggle="tooltip" title='{{t "Should be one word only"}}'><i class="icon-question-sign"></i></a>{{t "Answer"}}</li>
+        <select id="answer" value="{{answer.answer}}" focus-tab="#answer">
+          {{#each possible_alternatives}}
+            <option value="{{alternative}}">{{alternative}}</option>
+           {{/each}}
+        </select>
+        <li>
+        <a href="#" class="btn save btn-success btn-small"><i class="icon-ok-circle icon-white"></i>{{t "Save"}}</a>
+        <a href="#" class="btn hide-editor btn-inverse btn-small"><i class="icon-hand-right icon-white"></i>{{t "Preview"}}</a>
+        <a href="#" class="btn cancel-edition btn-danger btn-small"><i class="icon-remove-circle icon-white"></i>{{t "Cancel"}}</a>
+        </li>
+      </ul>
+    </div>
+    {{/with}}
 </div>
-{{/with}}
 </template>

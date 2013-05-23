@@ -3,9 +3,7 @@
 </head>
 <body>
   {{> game }}
-  {{> edit_level}}
-  <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.4.4/bootstrap-editable/css/bootstrap-editable.css">
-  <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.4.4/bootstrap-editable/js/bootstrap-editable.min.js"></script>
+  {{> levels }}
 </body>
 <template name="flags_panel">
 <div class="flags">
@@ -30,13 +28,13 @@
     </div>
     <div class="span2">
       <div class="icon-backward previous" title="{{t 'Previous level'}}"></div>
-      <div class="badge badge-info">{{t "Level %s" currentLevel}}</div>
+      <div class="badge badge-info">{{t "Level %s" levelNumber}}</div>
       <div class="icon-forward next" title="{{t 'Next level' }}"></div>
     </div>
     <div class="span4">
       {{> flags_panel }}
     </div>
-    <a href="#" class="btn edit-level btn-inverse btn-small"><i class="icon-hand-right icon-white"></i>{{ t "Edit level"}}</a>
+    <a href="#" class="btn levels btn-inverse btn-small"><i class="icon-hand-right icon-white"></i>{{ t "Levels"}}</a>
   </div>
   <div class="container">
     <div class="tab-content">
@@ -86,10 +84,29 @@
 <template name="show_symbol">
 <img src="{{src}}">
 </template>
+<template name="levels">
+ <div class="well levels sidebar-nav-fixed">
+  {{#if editingLevel}}
+    {{> edit_level}}
+  {{/if}}
+  {{#if showingLevels}}
+    <ul>
+      <li class="nav-header">{{t "Levels"}} <a href="#" class="btn add btn-success btn-small"><i class="icon-plus icon-white"></i></a>
+    {{#each levels}}
+    <li>
+    <a href="#" class="btn play btn-success btn-small"><i class="icon-play icon-white"></i></a>
+    <a href="#" class="btn edit btn-inverse btn-small"><i class="icon-pencil icon-white"></i></a>
+       {{title}}
+     </li>
+    {{/each}}
+    </ul>
+  {{/if}}
+</div>
+</template>
 <template name="edit_level">
 {{#with level}}
-<div class="edit-level well sidebar-nav-fixed">
-  <h2>{{t "Editing level" currentLevel}} </h2>
+<div class="edit-level">
+  <h2>{{t "Editing level %s" levelTitle}} </h2>
   <ul>
   <li class="nav-header alert-info"><a href="#" data-toggle="tooltip" title='{{t "Symbols divided by comma. Example dog,cat"}}'><i class="icon-question-sign"></i></a>{{t "Learn"}}</li>
   <input type="text" id="learn" value="{{learn.symbols}}" focus-tab="#learn"  />

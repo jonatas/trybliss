@@ -34,8 +34,8 @@ ul, li {
   width: 32px;
   height: 32px;
 }
-.edit-level{
+.levels{
   position: fixed;
-  top: 0px;
   right: 0px;
+  top: 0px;
 }

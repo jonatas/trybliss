@@ -1,11 +1,9 @@
-Meteor.startup(function(){
-});
 Levels = new Meteor.Collection('levels');
 Translations = new Meteor.Collection('translations');
 
 if (Meteor.isClient) {
   Meteor.startup(function(){
-    if (!Session.get('currentLevel')) setLevel(0);
+    if (!Session.get('levelNumber')||!Session.get("currentLevel")) setLevelNumber(1);
     if (!Session.get('currentLanguage')) Session.set('currentLanguage','br');
   });
   Handlebars.registerHelper('t', function(object){
@@ -21,16 +19,21 @@ if (Meteor.isClient) {
   });
 
   function nextLevel(){
-    if (Session.get("currentLevel") < Template.game.levels().length-1)
-      setLevel(Session.get("currentLevel")+1);
+    if (Session.get("levelNumber") < Template.game.levels().length-1)
+      setLevelNumber(Session.get("levelNumber")+1);
   }
   function previousLevel(){
-   if (Session.get("currentLevel") > 0)
-     setLevel(Session.get("currentLevel")-1);
+   if (Session.get("levelNumber") > 1)
+     setLevelNumber(Session.get("levelNumber")-1);
   }
-  function setLevel(to){
-    Session.set("currentLevel",to);
-    if (to > 0){
+  function setLevelNumber(to){
+    if (Template.game.levels().length == 0)
+      return;
+    Session.set("levelNumber", to);
+    console.log("levelnumber,",to,Template.game.levels())
+    Session.set("currentLevel",Template.game.levels()[to-1]);
+    console.log("currentLevel",Session.get("currentLevel"));
+    if (to > 1){
       $(".previous").show();
     } else{
       $(".previous").hide();
@@ -69,9 +72,11 @@ if (Meteor.isClient) {
       $(this).tab('show');
     }
 
-    console.log("game rendered");
     $('a.edit').click(function (e) {
        $(".edit-level").show();
+    });
+    $('a.levels').click(function (e) {
+       $(".levels").show();
     });
   };
   Template.edit_level.rendered = function() {
@@ -92,8 +97,9 @@ if (Meteor.isClient) {
   Template.flag.events({
     'click img' : function (e) { Session.set("currentLanguage", this.flag);}
   });
-  Template.game.levels = function() {
-    return Levels.find().fetch();
+  Template.levels.levels =
+    Template.game.levels = function() {
+      return Levels.find().fetch();
   };
   window.symbolPath = function(symbol){
         if (window.linkSymbols!=null)
@@ -105,7 +111,10 @@ if (Meteor.isClient) {
     src: function () { return symbolPath(this.symbol) }
   });
   Template.game.level = function() {
-    return Session.get("editingLevel") || Template.game.levels()[Session.get("currentLevel")];
+    if ( a=(Session.get("editingLevel") || Session.get("currentLevel")))
+      return a;
+    else
+      return setLevelNumber(1);
   }
   Template.combine.combinations = function() {
     if (level = Template.game.level())
@@ -114,8 +123,8 @@ if (Meteor.isClient) {
   Template.game.symbols = function(){
     return Template.game.level().learn.symbols;
   }
-  Template.game.currentLevel = function(){
-    return Session.get("currentLevel")+1;
+  Template.game.levelNumber = function(){
+    return Session.get("levelNumber");
   }
   Template.learn.symbols = function() {
     if (level = Template.game.level())
@@ -140,35 +149,38 @@ if (Meteor.isClient) {
      $(e.target).removeClass("btn btn-action").addClass(right ? "btn-success" : "btn-danger");
 
      if (right){
-       if (Session.get("currentLevel") < Template.game.levels().length-1) {
-         $("#answer").addClass("alert-info");
-       } else {
-         $("#answer").addClass("alert-success");
-       }
+       $("#answer").addClass("alert-success");
      }else $("#answer").addClass("alert-error");
     },
     'click .next' : function (e) {
       nextLevel();
     },
+    'click .levels' : function (e) {
+      Session.set("showLevels", true);
+    },
+    'click .hidelevels' : function (e) {
+      Session.set("showLevels", null);
+    },
     'click .previous' : function (e) {
       previousLevel();
     },
     'click a.edit-level' : function(e) {
-      if (! Session.get("editingLevel") || Session.get("editingLevel")._id != this._id)
+      if (! Session.get("editingLevel") || Session.get("editingLevel")._id != this._id){
         Session.set("editingLevel", this);
+        Session.set("showLevels",null);
+      }
       $("div.edit-level").show();
     }
   });
   Template.edit_level.level = function(){
     return Session.get("editingLevel");
   };
-  Template.edit_level.currentLevel = function(){
+  Template.edit_level.levelTitle = function(){
     return Session.get("editingLevel").title;
   }
   Template.edit_level.events({
     'click a.btn.save' : function(){
-      id = delete Session.get("editingLevel"), "_id";
-      console.log(id,Session.get("editingLevel"));
+      id = Session.get("editingLevel")._id;
       Levels.update(id, Session.get("editingLevel"));
       Session.set("editingLevel", null);
       $("div.edit-level").hide();
@@ -208,6 +220,38 @@ if (Meteor.isClient) {
         level.title = value;
 
       Session.set("editingLevel",level);
+    },
+  });
+  Template.levels.editingLevel = function(){
+    return Session.get("editingLevel") != null;
+  }
+  Template.levels.showingLevels = function(){
+    return !Template.levels.editingLevel() && Session.get("showLevels");
+  }
+  Template.levels.events({
+    'click a.btn.add' : function(){
+      Session.set("editingLevel", {
+        title: "Change title",
+        learn: {
+          symbols: [ 'house', 'feeling'],
+          combinations: ['house and feeling equal home,fire and mind is desire']
+        },
+        answer: {
+          question: 'what is the question',
+          answer: 'right',
+          alternatives: ['left','thing','right']
+        }
+      });
+    },
+    'click a.btn.edit' : function(){
+      Session.set("currentLevel", this);
+      Session.set("editingLevel", this);
+    },
+    'click a.btn.play' : function(){
+      Session.set("currentLevel", this);
+    },
+    'click a.btn.hidelevels' : function(){
+      Session.set("showLevels",null);
     },
   });
 }

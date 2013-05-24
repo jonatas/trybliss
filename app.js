@@ -283,15 +283,15 @@ Meteor.startup(function(){
       {
         title: "More about places",
         learn: {
-          symbols: [ 'place', 'food', 'medical'],
+          symbols: [ 'public_room', 'food', 'medical'],
           combinations: [
             'house and medical equal hospital',
-            'house and money equal bank',
-            'house and God equal church'
+            'container and money equal business',
+            'public_room and business equal store'
           ]
         },
         answer: {
-            question: 'place and food equal question',
+            question: 'public_room and food equal question',
             answer: 'restaurant',
             alternatives: ['restaurant','home', 'church', 'hotel']
         }
@@ -299,10 +299,11 @@ Meteor.startup(function(){
       {
         title: "More places and things",
         learn: {
-          symbols: [ 'house', 'machine', 'car', 'person'],
+          symbols: [ 'house', 'boat', 'car', 'person'],
           combinations: [
-           'house and medical equal hospital',
-           'house and God equal church'
+           'person and car equal driver',
+           'house and boat equal boathouse',
+           'boat and house equal houseboat'
           ]
         },
         answer: {
@@ -314,8 +315,11 @@ Meteor.startup(function(){
       {
         title: "Knowledge",
         learn: {
-          symbols: [ 'knowledge', 'mind', "gift"],
-          combinations: [ 'knowledge and learn-(to) equal teach']
+          symbols: [ 'knowledge', 'give', 'get'],
+          combinations: [ 
+            'knowledge and give equal teach',
+            'knowledge and get equal learn-(to)'
+            ]
         },
         answer: {
           question: 'house and learn-(to) equal question',
@@ -328,7 +332,7 @@ Meteor.startup(function(){
         learn: {
           symbols: [ 'wing(s)', 'man', 'bird', 'wheel'],
           combinations: ['wing(s) and man equal angel_(1)',
-                         'wing(s) and bird equal duck']
+                         'bird and water equal duck']
         },
         answer: {
           question: 'wing(s) and wheel',
@@ -364,12 +368,12 @@ Meteor.startup(function(){
       {lang: 'br', base_str: 'Answer', new_str: 'Responda'},
       {lang: 'br', base_str: 'Next level', new_str: 'Próximo nível'},
       {lang: 'br', base_str: 'Previous level', new_str: 'Nível anterior'},
-      {lang: 'ch', base_str: 'Learn', new_str: 'Lära'},
-      {lang: 'ch', base_str: 'Symbols', new_str: 'Symboler'},
-      {lang: 'ch', base_str: 'Combine', new_str: 'Kombinera'},
-      {lang: 'ch', base_str: 'Combine %s', new_str: 'Kombinera %s'},
-      {lang: 'ch', base_str: 'Level %s', new_str: 'Nivå %s'},
-      {lang: 'ch', base_str: 'Answer', new_str: 'Svara'},
+      {lang: 'se', base_str: 'Learn', new_str: 'Lära'},
+      {lang: 'se', base_str: 'Symbols', new_str: 'Symboler'},
+      {lang: 'se', base_str: 'Combine', new_str: 'Kombinera'},
+      {lang: 'se', base_str: 'Combine %s', new_str: 'Kombinera %s'},
+      {lang: 'se', base_str: 'Level %s', new_str: 'Nivå %s'},
+      {lang: 'se', base_str: 'Answer', new_str: 'Svara'},
       {lang: 'de', base_str: 'Learn', new_str: 'Lernen'},
       {lang: 'de', base_str: 'Symbols', new_str: 'Symbole'},
       {lang: 'de', base_str: 'Combine', new_str: 'Kombinieren'},

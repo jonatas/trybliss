@@ -23,7 +23,6 @@ var translations = [
 
 Meteor.startup(function(){
   if (Translations.find().count() < translations.length) {
-    Translations.find().forEach(function(e){Translations.remove(e._id)});
     _.each(translations, function(translation) {
       if (translated=Translations.findOne(translation)){
         Translations.update(translated._id, translation);
@@ -32,5 +31,5 @@ Meteor.startup(function(){
       }
     });
   }
-  Meteor.publish("translations", function(language){ return Translations.find({lang: language})});
+  Meteor.publish("translations", function(){return Translations.find();});
 });

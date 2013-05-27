@@ -26,7 +26,6 @@ function setLevelNumber(to){
   if (Template.game.levels().length == 0)
     return;
   Session.set("levelNumber", to);
-  console.log("levelnumber,",to,Template.game.levels())
   Session.set("currentLevel",Template.game.levels()[to-1]);
   console.log("currentLevel",Session.get("currentLevel"));
   if (to > 1){
@@ -49,12 +48,8 @@ Meteor.autorun(function(){
        window.linkSymbols[parts[0]] = parts[1];
      });
   }
-  if (! window.flags) {
-    data = $.ajax({ url: "/images/active_flags.txt", async: false }).responseText;
-    window.flags = _.select(data.split("\n"), function(str){return str != "";});
-  }
   Meteor.subscribe("levels");
-  Meteor.subscribe("translations", Session.get("currentLanguage"));
+  Meteor.subscribe("translations");
 });
 Template.game.rendered = function() {
   $('#learning-steps a').click(function (e) {
@@ -76,19 +71,22 @@ Template.game.rendered = function() {
   });
 };
 Template.edit_level.rendered = function() {
-  console.log("edit level rendered");
   $("a[data-toggle='tooltip']").tooltip({animation: "fade", container: "body"});
   if (!Session.get("editingLevel"))
     $(".edit_level").hide();
    else{
     $(Session.get("focus-tab")).tab('show')
     $(Session.get("focus-input")).focus()
-
-  
   }
 }
 Template.flags_panel.flags = function() {
-  return _.map(window.flags, function(flag){ return {flag: flag} });
+  flags = [];
+  Translations.find().forEach(function(translation){
+    if (!_.include(flags,translation.lang))
+    flags.push(translation.lang);
+  });
+  flags.push('us');
+  return _.map(flags, function(flag){return {flag: flag}});;
 }
 Template.flag.events({
   'click img' : function (e) { Session.set("currentLanguage", this.flag);}

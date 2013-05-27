@@ -1,4 +1,3 @@
-
 var translations = [
    {lang: 'br', base_str: 'Learn', new_str: 'Aprender'},
    {lang: 'br', base_str: 'Symbols', new_str: 'Símbolos'},
@@ -26,7 +25,9 @@ Meteor.startup(function(){
   if (Translations.find().count() < translations.length) {
     Translations.find().forEach(function(e){Translations.remove(e._id)});
     _.each(translations, function(translation) {
-      if (!Translations.findOne(translation)) {
+      if (translated=Translations.findOne(translation)){
+        Translations.update(translated._id, translation);
+      } else {
         Translations.insert(translation);
       }
     });

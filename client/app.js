@@ -71,13 +71,41 @@ Template.edit_level.rendered = function() {
   function extractLast( term ) {
     return term.split(" ").pop();
   }
+
+  $( "input#learn[autocomplete], input#question[autocomplete]").autocomplete( {
+     minLength: 2,
+     source: function(request,response){
+       response( $.ui.autocomplete.filter( Symbols.find().fetch(), extractLast(request.term)));
+     },
+     focus: function( event, ui ) {
+       $( event.target).val(ui.item.label);
+       return false;
+     },
+     select: function( event, ui ) {
+       value = ui.item.label;
+       level = Session.get("editingLevel");
+       if (! _.contains(level.learn.symbols,value)){
+         level.learn.symbols.push(value);
+       }
+       Session.set("editingLevel",level);
+       $( event.target ).val("");
+       $( event.target ).focus();
+       return true;
+    }
+  });
+  $( "input#learn[autocomplete]").autocomplete().data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+     return $( "<li class='ui-menu-item'><a><img src='/images/small_symbols/"+ item.label+ ".png' />" + item.label+ "</a></li>" ).appendTo( ul );
+   };
+  $( "input#question[autocomplete]").autocomplete().data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+     return $( "<li class='ui-menu-item'><a><img src='/images/svg_symbols/"+ item.label+ ".svg' width='15%' height='15%' />" + item.label+ "</a></li>" ).appendTo( ul );
+   };
   $( "input#learn[autocomplete]").autocomplete( {
      minLength: 2,
      source: function(request,response){
        response( $.ui.autocomplete.filter( Symbols.find().fetch(), extractLast(request.term)));
      },
      focus: function( event, ui ) {
-       $( event.target ).val( ui.item.label).change();
+       $( event.target).val(ui.item.label);
        return false;
      },
      select: function( event, ui ) {

@@ -27,7 +27,6 @@ function setLevelNumber(to){
     return;
   Session.set("levelNumber", to);
   Session.set("currentLevel",Template.game.levels()[to-1]);
-  console.log("currentLevel",Session.get("currentLevel"));
   if (to > 1){
     $(".previous").show();
   } else{
@@ -40,26 +39,17 @@ function setLevelNumber(to){
   }
 }
 Meteor.autorun(function(){
-  if (! window.linkSymbols) {
-    data = $.ajax({ url: "/images/link_symbols.txt", async: false, }).responseText;
-    window.linkSymbols = {};
-    _.each(data.split("\n"),function(line){
-       parts = line.split(" ");
-       window.linkSymbols[parts[0]] = parts[1];
-     });
-  }
   Meteor.subscribe("levels");
   Meteor.subscribe("translations");
+  Meteor.subscribe("symbols");
 });
 Template.game.rendered = function() {
   $('#learning-steps a').click(function (e) {
     if (! Session.get("editingLevel")){
-      console.log("show tab", this);
       $(this).tab('show');
     }
   });
   if (! Session.get("editingLevel")){
-    console.log("show tab", this);
     $(this).tab('show');
   }
 
@@ -74,10 +64,36 @@ Template.edit_level.rendered = function() {
   $("a[data-toggle='tooltip']").tooltip({animation: "fade", container: "body"});
   if (!Session.get("editingLevel"))
     $(".edit_level").hide();
-   else{
+  else{
     $(Session.get("focus-tab")).tab('show')
     $(Session.get("focus-input")).focus()
   }
+  function extractLast( term ) {
+    return term.split(" ").pop();
+  }
+  $( "input#learn[autocomplete]").autocomplete( {
+     minLength: 2,
+     source: function(request,response){
+       response( $.ui.autocomplete.filter( Symbols.find().fetch(), extractLast(request.term)));
+     },
+     focus: function( event, ui ) {
+       $( event.target ).val( ui.item.label).change();
+       return false;
+     },
+     select: function( event, ui ) {
+       value = ui.item.label;
+       level = Session.get("editingLevel");
+       if (! _.contains(level.learn.symbols,value)){
+         level.learn.symbols.push(value);
+       }
+       Session.set("editingLevel",level);
+       $( event.target ).val("");
+       $( event.target ).focus();
+       return true;
+    }
+  }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+     return $( "<li class='ui-menu-item'><a><img src='/images/small_symbols/"+ item.label+ ".png' />" + item.label+ "</a></li>" ).appendTo( ul );
+   };
 }
 Template.flags_panel.flags = function() {
   flags = [];
@@ -96,10 +112,7 @@ Template.levels.levels =
     return Levels.find().fetch();
 };
 window.symbolPath = function(symbol){
-      if (window.linkSymbols!=null)
-        return "/images/symbols/"+(window.linkSymbols[symbol] || symbol)+".png";
-      else
-        return "/images/"+symbol+".png";
+  return "/images/symbols/"+symbol+".png";
 }
 Template.show_symbol.helpers({
   src: function () { return symbolPath(this.symbol) }
@@ -203,10 +216,10 @@ Template.edit_level.events({
   "change textarea, change input" : function (evt) {
     value = $(evt.target).val();
     level = Session.get("editingLevel");
-    console.log(evt.target.id, level, value);
+    console.log("change",evt.target.id,value);
     if (evt.target.id == "learn")
-      level.learn.symbols = value.split(",");
-    else if (evt.target.id == "combine")
+      level.learn.symbols = value.length > 0 ? value.split(" ") : [];
+    if (evt.target.id == "combine")
       level.learn.combinations = value.split(",");
     else if (evt.target.id == "answer")
       level.answer.answer = value;

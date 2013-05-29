@@ -71,7 +71,8 @@
 {{#each combinations }}
 <div class="row-fluid">
   {{#each combination }}
-  <div class="span2 thumbnail">{{>show_symbol}}<div class="caption">{{symbol}}</div></div>
+  <div class="span2 thumbnail">{{>show_symbol}}<div class="caption">{{symbol}}</div>
+  </div>
   {{/each}}
 </div>
 <hr>
@@ -84,6 +85,9 @@
 {{/each}}
 </template>
 <template name="show_symbol">
+{{#if editingLevel}}
+<div class="btn-danger icon-remove" title="{{t "Remove" }}"/>
+{{/if}}
 <img src="{{src}}">
 </template>
 <template name="levels">
@@ -113,16 +117,16 @@
   <div class="edit-level">
     <h4>{{t "Editing level %s" levelTitle}}</h4>
     <ul>
-      <li class="nav-header alert-info"><a href="#" data-toggle="tooltip" title='{{t "Symbols divided by comma. Example dog,cat"}}'><i class="icon-question-sign"></i></a>{{t "Learn"}}</li>
+      <li class="nav-header alert-info"><a href="#" data-toggle="tooltip" title='{{t "Type to filter symbols"}}'><i class="icon-question-sign"></i></a>{{t "Learn"}}</li>
       <input type="text" id="learn" autocomplete focus-tab="#learn"  />
       <li class="nav-header"><a href="#" data-toggle="tooltip" title='{{t "Free title to remember these level"}}'><i class="icon-question-sign"></i></a>{{t "Title"}}</li>
       <input type="text" id="title" value="{{title}}" focus-tab="#combine" />
-      <li class="nav-header alert"><a href="#" data-toggle="tooltip" title='{{t "Each phrase are divided by comma. Symbols are spaced into the statement"}}'><i class="icon-question-sign"></i></a>{{t "Combine"}}</li>
-        <textarea id="combine" focus-tab="#combine" autocomplete>{{learn.combinations}}</textarea>
+      <li class="nav-header alert"><a href="#" data-toggle="tooltip" title='{{t "Each symbol selected goes to the phrase."}}'><i class="icon-question-sign"></i></a>{{t "Combine"}}</li>
+        <input type="text" id="combine" focus-tab="#combine" autocomplete>
         <li class="nav-header alert-warn"><a href="#" data-toggle="tooltip" title='{{t "Each word will be replaced by a image with a label"}}'><i class="icon-question-sign"></i></a>{{t "Question"}}</li>
-        <input type="text" id="question" autocomplete value="{{answer.question}}" focus-tab="#answer"/>
+        <input type="text" id="question" autocomplete focus-tab="#answer"/>
         <li class="nav-header"><a href="#" data-toggle="tooltip" title='{{t "Alternatives divided by commas"}}'><i class="icon-question-sign"></i></a>{{t "Alternatives"}}</li>
-        <li> <input type="text" id="alternatives" autocomplete value="{{answer.alternatives}}" /> </li>
+        <li> <input type="text" id="alternatives" autocomplete  /> </li>
         <li class="nav-header alert-success"><a href="#" data-toggle="tooltip" title='{{t "Should be one word only"}}'><i class="icon-question-sign"></i></a>{{t "Answer"}}</li>
         <select id="answer" value="{{answer.answer}}" focus-tab="#answer">
           {{#each possible_alternatives}}

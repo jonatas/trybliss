@@ -1,3 +1,4 @@
+
 Meteor.startup(function(){
   if (!Session.get('levelNumber')||!Session.get("currentLevel")) setLevelNumber(1);
   if (!Session.get('currentLanguage')) Session.set('currentLanguage','br');
@@ -137,13 +138,29 @@ Template.flag.events({
 });
 Template.levels.levels =
   Template.game.levels = function() {
-    return Levels.find().fetch();
+    return Levels.find();
 };
 window.symbolPath = function(symbol){
   return "/images/symbols/"+symbol+".png";
 }
 Template.show_symbol.helpers({
   src: function () { return symbolPath(this.symbol) }
+});
+Template.show_symbol.events({
+  "click .icon-remove" : function(e){
+    id = $(e.target).closest(".tab-pane").attr("id");
+    level = Session.get("editingLevel");
+    console.log("editing ",level);
+    if (id == "learn"){
+      level.learn.symbols.remove( this.symbol)
+    }else if (id == "combine"){
+      for (var i=0;i<level.learn.combinations.length;i++){
+        level.learn.combinations[i] = level.learn.combinations[i].split(" ").remove( this.symbol).join(" ");
+      }
+    }
+    console.log("saving!",level);
+    Session.set("editingLevel",level);
+  }
 });
 Template.game.level = function() {
   if ( a=(Session.get("editingLevel") || Session.get("currentLevel")))
@@ -261,6 +278,7 @@ Template.edit_level.events({
     Session.set("editingLevel",level);
   },
 });
+Template.show_symbol.editingLevel =
 Template.levels.editingLevel = function(){
   return Session.get("editingLevel") != null;
 }
@@ -294,3 +312,11 @@ Template.levels.events({
     Session.set("showLevels",null);
   },
 });
+Array.prototype.remove= function(item){
+  var L= this.length, indexed;
+  while(L){
+    indexed= this[--L];
+    if(indexed=== item) this.splice(L, 1);
+  }
+  return this;
+}

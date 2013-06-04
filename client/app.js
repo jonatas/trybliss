@@ -24,10 +24,13 @@ function previousLevel(){
    setLevelNumber(Session.get("levelNumber")-1);
 }
 function setLevelNumber(to){
-  if (Template.game.levels().length == 0)
+  console.log("setLevelNumber",to);
+  if (Template.game.levels().length == 0) { 
+    console.log("no levels yet..");
     return;
+  }
   Session.set("levelNumber", to);
-  Session.set("currentLevel",Template.game.levels()[to-1]);
+  Session.set("currentLevel",Levels.find().fetch()[to-1]);
   if (to > 1){
     $(".previous").show();
   } else{
@@ -134,7 +137,7 @@ Template.flags_panel.flags = function() {
   return _.map(flags, function(flag){return {flag: flag}});;
 }
 Template.flag.events({
-  'click img' : function (e) { Session.set("currentLanguage", this.flag);}
+  'click img': function (e) { Session.set("currentLanguage", this.flag);}
 });
 Template.levels.levels =
   Template.game.levels = function() {
@@ -163,14 +166,26 @@ Template.show_symbol.events({
   }
 });
 Template.game.level = function() {
-  if ( a=(Session.get("editingLevel") || Session.get("currentLevel")))
-    return a;
-  else
+  if ( level=(Session.get("editingLevel") || Session.get("currentLevel"))){
+    console.log("game level:" ,level);
+    return level;
+  } else {
     return setLevelNumber(1);
+  }
 }
 Template.combine.combinations = function() {
-  if (level = Template.game.level())
-    return _.map(level.learn.combinations, function(combination){return {combination: _.map(combination.split(" "),function(symbol){return {symbol:symbol};})};});
+  if (level = Template.game.level()){
+    return _.map(level.learn.combinations, 
+        function(combination){
+          return {
+            combination: _.map(combination.split(" "),
+                           function(symbol){
+                             return {symbol:symbol};
+                           })
+          };
+        }
+   );
+  }
 }
 Template.game.symbols = function(){
   return Template.game.level().learn.symbols;

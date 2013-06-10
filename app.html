@@ -42,9 +42,9 @@
    {{/unless}}
   </div>
   <div class="container">
-    {{#constant}}
+    {{#isolate}}
     {{> markdown_content}}
-    {{/constant}}
+    {{/isolate}}
   </div>
 {{/with}}
 </template>
@@ -123,11 +123,9 @@
   <div class="edit-level">
     <h4>{{t "Editing level %s" title}}</h4>
     <form>
-
-    {{#constant}}
-    {{ t "Title" }} <input type="text" name="title" placeholder="title" /> </br>
-    {{ t "Content" }} <textarea cols="50" rows="40" id="code" name="code">{{content}}</textarea>
-    {{/constant}}
+    {{#isolate}}
+    <textarea cols="50" rows="40" id="code" name="code">{{content}}</textarea>
+    {{/isolate}}
     <ul>
       <li>
         <a href="#" class="btn save btn-success btn-small"><i class="icon-ok-circle icon-white"></i>{{t "Save"}}</a>

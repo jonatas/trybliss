@@ -1,5 +1,13 @@
 <head>
   <title>Try Bliss Symbolics</title>
+    <link rel="stylesheet" href="/codemirror/lib/codemirror.css">
+    <script src="/codemirror/lib/codemirror.js"></script>
+    <script src="/codemirror/addon/dialog/dialog.js"></script>
+    <script src="/codemirror/addon/search/searchcursor.js"></script>
+    <script src="/codemirror/mode/clike/clike.js"></script>
+    <script src="/codemirror/keymap/vim.js"></script>
+    <link rel="stylesheet" href="/codemirror/doc/docs.css">
+    <link rel="stylesheet" href="/codemirror/addon/dialog/dialog.css">
 </head>
 <body>
   {{> game }}
@@ -115,31 +123,19 @@
 <div class="levels">
   {{#with level}}
   <div class="edit-level">
-    <h4>{{t "Editing level %s" levelTitle}}</h4>
+    <h4>{{t "Editing level %s" title}}</h4>
+    <form>
+    {{ t "Title" }} <input type="text" name="title" placeholder="title" /> </br>
+    {{ t "Content" }} <textarea cols="50" rows="40" id="code" name="code"></textarea>
     <ul>
-      <li class="nav-header alert-info"><a href="#" data-toggle="tooltip" title='{{t "Type to filter symbols"}}'><i class="icon-question-sign"></i></a>{{t "Learn"}}</li>
-      <input type="text" id="learn" autocomplete focus-tab="#learn"  />
-      <li class="nav-header"><a href="#" data-toggle="tooltip" title='{{t "Free title to remember these level"}}'><i class="icon-question-sign"></i></a>{{t "Title"}}</li>
-      <input type="text" id="title" value="{{title}}" focus-tab="#combine" />
-      <li class="nav-header alert"><a href="#" data-toggle="tooltip" title='{{t "Each symbol selected goes to the phrase."}}'><i class="icon-question-sign"></i></a>{{t "Combine"}}</li>
-        <input type="text" id="combine" focus-tab="#combine" autocomplete>
-        <li class="nav-header alert-warn"><a href="#" data-toggle="tooltip" title='{{t "Each word will be replaced by a image with a label"}}'><i class="icon-question-sign"></i></a>{{t "Question"}}</li>
-        <input type="text" id="question" autocomplete focus-tab="#answer"/>
-        <li class="nav-header"><a href="#" data-toggle="tooltip" title='{{t "Alternatives divided by commas"}}'><i class="icon-question-sign"></i></a>{{t "Alternatives"}}</li>
-        <li> <input type="text" id="alternatives" autocomplete  /> </li>
-        <li class="nav-header alert-success"><a href="#" data-toggle="tooltip" title='{{t "Should be one word only"}}'><i class="icon-question-sign"></i></a>{{t "Answer"}}</li>
-        <select id="answer" value="{{answer.answer}}" focus-tab="#answer">
-          {{#each possible_alternatives}}
-            <option value="{{alternative}}">{{alternative}}</option>
-           {{/each}}
-        </select>
-        <li>
+      <li>
         <a href="#" class="btn save btn-success btn-small"><i class="icon-ok-circle icon-white"></i>{{t "Save"}}</a>
         <a href="#" class="btn hide-editor btn-inverse btn-small"><i class="icon-hand-right icon-white"></i>{{t "Preview"}}</a>
         <a href="#" class="btn cancel-edition btn-danger btn-small"><i class="icon-remove-circle icon-white"></i>{{t "Cancel"}}</a>
-        </li>
-      </ul>
-    </div>
-    {{/with}}
+      </li>
+    </ul>
+    </form>
+  </div>
+  {{/with}}
 </div>
 </template>

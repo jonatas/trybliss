@@ -76,6 +76,8 @@ CodeMirror.showHint = function(cm, getHints, options) {
     hints.className = "CodeMirror-hints";
     for (var i = 0; i < completions.length; ++i) {
       var elt = hints.appendChild(document.createElement("li")), completion = completions[i];
+      img = elt.appendChild(document.createElement("img"));
+      img.src = "/images/symbols/"+completion+".png";
       var className = "CodeMirror-hint" + (i ? "" : " CodeMirror-hint-active");
       if (completion.className != null) className = completion.className + " " + className;
       elt.className = className;

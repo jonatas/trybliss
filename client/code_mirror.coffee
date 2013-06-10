@@ -3,21 +3,40 @@ Template.edit_level.rendered = ->
   if not Session.get("editingLevel")
     $(".edit_level").hide()
   else
+    $("a.levels").hide()
     CodeMirror.commands.save = (editor) ->
       if level = Session.get("editingLevel")
-        console.log("updating level",level)
-        level.content = editor.getValue()
-        Level.update(level._id, level)
+        Levels.update(level._id, $set: {content: editor.getValue()})
 
-    @editor = CodeMirror.fromTextArea($("#code")[0], {
+    CodeMirror.commands.autocomplete = (cm) ->
+      CodeMirror.showHint(cm, CodeMirror.showBlissSymbolsHint)
+
+    window.editor = CodeMirror.fromTextArea($("#code")[0], {
       lineNumbers: true,
       mode: "markdown",
       keyMap: "vim",
       showCursorWhenSelecting: true,
-      extraKeys: {"Enter": "newlineAndIndentContinueMarkdownList"},
-      onKeyEvent: (e , s) ->
+      extraKeys: {"Enter": "newlineAndIndentContinueMarkdownList", "Ctrl-Space":"autocomplete"},
+      onKeyEvent: (editor, s) ->
         if s.type is "keyup"
-          content = Template.markdown_content({content: e.doc.getValue()})
-          console.log("updating.. ",content)
+          content = Template.markdown_content({content: editor.doc.getValue()})
           $(".container").html(content)
     })
+
+Template.edit_level.events({
+  'click a.btn.save' : ->
+    if level = Session.get("editingLevel")
+      level.content = window.editor.getValue()
+    if(id = level._id)
+      Levels.update(id, level)
+    else
+      Levels.insert(Session.get("editingLevel"))
+
+    Session.set("editingLevel", null)
+    $("div.edit-level").hide()
+  'click a.hide-editor' : ->
+    $("div.edit-level").hide()
+  'click a.btn.cancel-edition' : ->
+    Session.set("editingLevel", null)
+    $("div.edit-level").hide()
+})

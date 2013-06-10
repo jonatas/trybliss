@@ -138,11 +138,6 @@ Template.answer.question_fragments = function() {
   if (level=Template.game.level())
     return _.map(level.answer.question.split(" "),function(symbol){return {symbol:symbol}});
 }
-Template.edit_level.possible_alternatives =
-  Template.answer.alternatives = function() {
-  if (level=Template.game.level())
-    return _.map(level.answer.alternatives,function(alternative){return {alternative: alternative};});
-}
 Template.game.events({
   'click .alternative' : function (e) {
   level = Template.game.level();
@@ -180,56 +175,6 @@ Template.game.events({
 Template.edit_level.level = function(){
   return Session.get("editingLevel");
 };
-Template.edit_level.levelTitle = function(){
-  return Session.get("editingLevel").title;
-}
-Template.edit_level.events({
-  'click a.btn.save' : function(){
-    if(id = Session.get("editingLevel")._id)
-      Levels.update(id, Session.get("editingLevel"));
-    else
-      Levels.insert(Session.get("editingLevel"));
-
-    Session.set("editingLevel", null);
-    $("div.edit-level").hide();
-   },
-  'click a.hide-editor' : function(){
-    $("div.edit-level").hide();
-   },
-  'click a.btn.cancel-edition' : function(){
-    Session.set("editingLevel", null);
-    $("div.edit-level").hide();
-   },
-  'focus *[focus-tab]' : function(e){
-    tabSelector = "a[href='"+$(e.target).attr("focus-tab")+"']";
-    Session.set("focus-tab", tabSelector);
-    Session.set("focus-input", "#"+ e.target.id);
-    tab = $(tabSelector);
-    if (! tab.hasClass("active"))
-      tab.tab('show');
-    $(e.target).focus();
-    $(e.target).val($(e.target).val());
-  },
-  "change textarea, change input" : function (evt) {
-    value = $(evt.target).val();
-    level = Session.get("editingLevel");
-    console.log("change",evt.target.id,value);
-    if (evt.target.id == "learn")
-      level.learn.symbols = value.length > 0 ? value.split(" ") : [];
-    if (evt.target.id == "combine")
-      level.learn.combinations = value.split(",");
-    else if (evt.target.id == "answer")
-      level.answer.answer = value;
-    else if (evt.target.id == "question")
-      level.answer.question = value;
-    else if (evt.target.id == "alternatives")
-      level.answer.alternatives = value.split(",");
-    else if (evt.target.id == "title")
-      level.title = value;
-
-    Session.set("editingLevel",level);
-  },
-});
 Template.show_symbol.editingLevel =
 Template.levels.editingLevel = function(){
   return Session.get("editingLevel") != null;

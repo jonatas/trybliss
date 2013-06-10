@@ -4,12 +4,20 @@ Template.edit_level.rendered = ->
     $(".edit_level").hide()
   else
     CodeMirror.commands.save = (editor) ->
-      console.log("Saving", this, editor)
-
+      if level = Session.get("editingLevel")
+        console.log("updating level",level)
+        level.content = editor.getValue()
+        Level.update(level._id, level)
 
     @editor = CodeMirror.fromTextArea($("#code")[0], {
       lineNumbers: true,
-      mode: "text/x-csrc",
+      mode: "markdown",
       keyMap: "vim",
-      showCursorWhenSelecting: true
+      showCursorWhenSelecting: true,
+      extraKeys: {"Enter": "newlineAndIndentContinueMarkdownList"},
+      onKeyEvent: (e , s) ->
+        if s.type is "keyup"
+          content = Template.markdown_content({content: e.doc.getValue()})
+          console.log("updating.. ",content)
+          $(".container").html(content)
     })

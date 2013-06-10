@@ -4,7 +4,9 @@
     <script src="/codemirror/lib/codemirror.js"></script>
     <script src="/codemirror/addon/dialog/dialog.js"></script>
     <script src="/codemirror/addon/search/searchcursor.js"></script>
-    <script src="/codemirror/mode/clike/clike.js"></script>
+    <script src="/codemirror/addon/edit/continuelist.js"></script>
+    <script src="/codemirror/xml/xml.js"></script>
+    <script src="/codemirror/mode/markdown/markdown.js"></script>
     <script src="/codemirror/keymap/vim.js"></script>
     <link rel="stylesheet" href="/codemirror/doc/docs.css">
     <link rel="stylesheet" href="/codemirror/addon/dialog/dialog.css">
@@ -27,13 +29,6 @@
 <template name="game">
 {{#with level}}
   <div class="row">
-    <div class="span6">
-      <ul id="learning-steps" class="nav nav-tabs">
-        <li data-toggle="tab" class="active"><a href="#learn">{{t "Learn"}}</a></li>
-        <li data-toggle="tab"><a href="#combine">{{t "Combine" }}</a></li>
-        <li data-toggle="tab"><a href="#answer" >{{t "Answer"}}</a></li>
-      </ul>
-    </div>
     <div class="span2">
       <div class="icon-backward previous" title="{{t 'Previous level'}}"></div>
       <div class="badge badge-info">{{t "Level %s" levelNumber}}</div>
@@ -47,13 +42,16 @@
    {{/unless}}
   </div>
   <div class="container">
-    <div class="tab-content">
-      <div class="tab-pane fade active in" id="learn">{{> learn}}</div>
-      <div class="tab-pane fade" id="combine">{{> combine}}</div>
-      <div class="tab-pane fade" id="answer">{{> answer}}</div>
-    </div>
-    </div>
+    {{#constant}}
+    {{> markdown_content}}
+    {{/constant}}
+  </div>
 {{/with}}
+</template>
+<template name="markdown_content">
+{{#markdown}}
+{{content}}
+{{/markdown}}
 </template>
 <template name="answer">
 <h4 class="alert">{{t "Answer"}}</h4>
@@ -125,8 +123,11 @@
   <div class="edit-level">
     <h4>{{t "Editing level %s" title}}</h4>
     <form>
+
+    {{#constant}}
     {{ t "Title" }} <input type="text" name="title" placeholder="title" /> </br>
-    {{ t "Content" }} <textarea cols="50" rows="40" id="code" name="code"></textarea>
+    {{ t "Content" }} <textarea cols="50" rows="40" id="code" name="code">{{content}}</textarea>
+    {{/constant}}
     <ul>
       <li>
         <a href="#" class="btn save btn-success btn-small"><i class="icon-ok-circle icon-white"></i>{{t "Save"}}</a>

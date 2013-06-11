@@ -7,9 +7,9 @@ Template.edit_level.rendered = ->
     CodeMirror.commands.save = (editor) ->
       if level = Session.get("editingLevel")
         Levels.update(level._id, $set: {content: editor.getValue()})
-
     CodeMirror.commands.autocomplete = (cm) ->
-      CodeMirror.showHint(cm, CodeMirror.showBlissSymbolsHint)
+      console.log("show autocomplete",cm)
+      CodeMirror.showHint(cm, window.showBlissSymbolsHint)
 
     window.editor = CodeMirror.fromTextArea($("#code")[0], {
       lineNumbers: true,
@@ -19,8 +19,8 @@ Template.edit_level.rendered = ->
       extraKeys: {"Enter": "newlineAndIndentContinueMarkdownList", "Ctrl-Space":"autocomplete"},
       onKeyEvent: (editor, s) ->
         if s.type is "keyup"
-          content = Template.markdown_content({content: editor.doc.getValue()})
-          $(".container").html(content)
+          content = Template.markdown_content content: editor.doc.getValue()
+          $(".container").html content
     })
 
 Template.edit_level.events({

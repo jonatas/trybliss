@@ -21,6 +21,7 @@ CodeMirror.showHint = function(cm, getHints, options) {
   function pickCompletion(cm, data, completion) {
     if (completion.hint) completion.hint(cm, data, completion);
     else cm.replaceRange(getText(completion), data.from, data.to);
+    console.log("pickCompletion",getText(completion), cm,data)
   }
 
   function buildKeyMap(options, handle) {
@@ -127,6 +128,7 @@ CodeMirror.showHint = function(cm, getHints, options) {
         hints.scrollTop = node.offsetTop - 3;
       else if (node.offsetTop + node.offsetHeight > hints.scrollTop + hints.clientHeight)
         hints.scrollTop = node.offsetTop + node.offsetHeight - hints.clientHeight + 3;
+      console.log("CodeMirror.signal",data,node,completions[selectedHint]);
       CodeMirror.signal(data, "select", completions[selectedHint], node);
     }
 

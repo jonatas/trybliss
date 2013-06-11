@@ -31,6 +31,7 @@ function setLevelNumber(to){
   }
   Session.set("levelNumber", to);
   Session.set("currentLevel",Levels.find().fetch()[to-1]);
+  Session.set("editingLevel",Session.get("currentLevel"));
   if (to > 1){
     $(".previous").show();
   } else{
@@ -76,7 +77,6 @@ Template.flags_panel.flags = function() {
 Template.flag.events({
   'click img': function (e) { Session.set("currentLanguage", this.flag);}
 });
-Template.levels.levels =
   Template.game.levels = function() {
     return Levels.find();
 };
@@ -85,22 +85,6 @@ window.symbolPath = function(symbol){
 }
 Template.show_symbol.helpers({
   src: function () { return symbolPath(this.symbol) }
-});
-Template.show_symbol.events({
-  "click .icon-remove" : function(e){
-    id = $(e.target).closest(".tab-pane").attr("id");
-    level = Session.get("editingLevel");
-    console.log("editing ",level);
-    if (id == "learn"){
-      level.learn.symbols.remove( this.symbol)
-    }else if (id == "combine"){
-      for (var i=0;i<level.learn.combinations.length;i++){
-        level.learn.combinations[i] = level.learn.combinations[i].split(" ").remove( this.symbol).join(" ");
-      }
-    }
-    console.log("saving!",level);
-    Session.set("editingLevel",level);
-  }
 });
 Template.game.level = function() {
   if ( level=(Session.get("editingLevel") || Session.get("currentLevel"))){
@@ -176,39 +160,9 @@ Template.edit_level.level = function(){
   return Session.get("editingLevel");
 };
 Template.show_symbol.editingLevel =
-Template.levels.editingLevel = function(){
-  return Session.get("editingLevel") != null;
-}
-Template.levels.showingLevels =
-  Template.game.showingLevels = function(){
+Template.game.showingLevels = function(){
   return !Template.levels.editingLevel() && Session.get("showLevels");
 }
-Template.levels.events({
-  'click a.btn.add' : function(){
-    Session.set("editingLevel", {
-      title: "Change title",
-      learn: {
-        symbols: [ 'house', 'feeling'],
-        combinations: ['house and feeling equal home,fire and mind is desire']
-      },
-      answer: {
-        question: 'what is the question',
-        answer: 'right',
-        alternatives: ['left','thing','right']
-      }
-    });
-  },
-  'click a.btn.edit' : function(){
-    Session.set("currentLevel", this);
-    Session.set("editingLevel", this);
-  },
-  'click a.btn.play' : function(){
-    Session.set("currentLevel", this);
-  },
-  'click a.btn.hide-levels' : function(){
-    Session.set("showLevels",null);
-  },
-});
 Array.prototype.remove= function(item){
   var L= this.length, indexed;
   while(L){

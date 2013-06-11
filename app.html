@@ -2,6 +2,7 @@
   <title>Try Bliss Symbolics</title>
     <link rel="stylesheet" href="/codemirror/lib/codemirror.css">
     <link rel="stylesheet" href="/codemirror/addon/hint/show-hint.css">
+    <link rel="stylesheet" href="/codemirror/theme/night.css">
     <script src="/codemirror/lib/codemirror.js"></script>
     <script src="/codemirror/addon/dialog/dialog.js"></script>
     <script src="/codemirror/addon/search/searchcursor.js"></script>
@@ -14,7 +15,7 @@
 </head>
 <body>
   {{> game }}
-  {{> levels }}
+  {{> edit_level}}
 </body>
 <template name="flags_panel">
 <div class="flags">
@@ -38,9 +39,6 @@
     <div class="span4">
       {{> flags_panel }}
     </div>
-   {{#unless editingLevel}}
-      <a href="#" class="btn levels btn-inverse btn-small"><i class="icon-hand-left icon-white"></i>{{ t "Levels"}}</a>
-   {{/unless}}
   </div>
   <div class="container">
     {{#isolate}}
@@ -92,50 +90,22 @@
 {{/each}}
 </template>
 <template name="show_symbol">
-{{#if editingLevel}}
-<div class="btn-danger icon-remove" title="{{t "Remove" }}"/>
-{{/if}}
 <img src="{{src}}">
 </template>
-<template name="levels">
-  {{#if editingLevel}}
-    {{> edit_level}}
-  {{/if}}
-  {{#if showingLevels}}
- <div class="levels">
- <h2><a href="#" class="btn add btn-success btn-small"><i class="icon-plus icon-white"></i></a>
-     {{t "Levels"}}</h2>
-    <ul>
-    {{#each levels}}
-    <li>
-    <a href="#" class="btn play btn-success btn-small"><i class="icon-play icon-white"></i></a>
-    <a href="#" class="btn edit btn-inverse btn-small"><i class="icon-pencil icon-white"></i></a>
-       {{title}}
-     </li>
-    {{/each}}
-    </ul>
-    <a href="#" class="btn hide-levels btn-inverse btn-small"><i class="icon-hand-right icon-white"></i>{{t "Hide levels"}}</a>
-  {{/if}}
-</div>
-</template>
 <template name="edit_level">
-<div class="levels">
-  {{#with level}}
-  <div class="edit-level">
-    <h4>{{t "Editing level %s" title}}</h4>
-    <form>
+{{#with level}}
+<div class="editor">
+  <h4>{{t "Level editor" }}</h4>
+  <form>
     {{#isolate}}
-    <textarea cols="50" rows="40" id="code" name="code">{{content}}</textarea>
+    <textarea cols="80" rows="120" id="code" name="code">{{content}}</textarea>
     {{/isolate}}
-    <ul>
-      <li>
-        <a href="#" class="btn save btn-success btn-small"><i class="icon-ok-circle icon-white"></i>{{t "Save"}}</a>
-        <a href="#" class="btn hide-editor btn-inverse btn-small"><i class="icon-hand-right icon-white"></i>{{t "Preview"}}</a>
-        <a href="#" class="btn cancel-edition btn-danger btn-small"><i class="icon-remove-circle icon-white"></i>{{t "Cancel"}}</a>
-      </li>
-    </ul>
-    </form>
-  </div>
-  {{/with}}
+     <div>
+      <a href="#" class="btn save btn-success btn-small"><i class="icon-ok-circle icon-white"></i>{{t "Save"}}</a>
+      <a href="#" class="btn hide-editor btn-inverse btn-small"><i class="icon-hand-right icon-white"></i>{{t "Preview"}}</a>
+      <a href="#" class="btn cancel-edition btn-danger btn-small"><i class="icon-remove-circle icon-white"></i>{{t "Cancel"}}</a>
+     </div>
+  </form>
 </div>
+{{/with}}
 </template>

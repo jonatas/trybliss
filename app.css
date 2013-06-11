@@ -10,11 +10,6 @@
 .big {
   font-size: 35px;
 }
-
-ul, li {
-    list-style-type: none;
-}
-
 .answers {
   float:right;
 }
@@ -41,5 +36,12 @@ ul, li {
   top: 0px;
   padding-right: 25px;
   width: 40%;
-  size: auto;
+  height: 100%;
+}
+.editor{
+  position: fixed;
+  right: 0px;
+  top: 0px;
+  min-width: 50%;
+  min-height: 100%;
 }

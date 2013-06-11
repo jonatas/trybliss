@@ -12,7 +12,7 @@ var levels = [
        "\n"+
        "## Dont forget to use reference there."+
        "\n"+
-       "\nI'm fixing these with a snipped, but for a while,"+
+       "\nI'm fixing these, but for a while,"+
        "\nyou need to reference each image here in the bottom."+
        "\n"+
        "\n[archery]: /images/symbols/archery.png"+

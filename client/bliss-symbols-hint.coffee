@@ -22,8 +22,21 @@ window.getCompletions = (token,  keywords, options) ->
   found = []
   start = token.string
   maybeAdd = (str) ->
-    found.push(str) if str.indexOf(start) is 0 and not arrayContains(found, str)
-
+    if str.indexOf(start) is 0 and not arrayContains(found, str)
+      found.push text: str,
+        hint: (cm,data, obj) ->
+          cursor = cm.getCursor()
+          link = "["+str+"]"
+          text = "\n"+link+": "+symbolPath(str)
+          cm.doc.setValue cm.doc.getValue()+text
+          cm.replaceRange("!"+link+"[]"+"\n\n"+str, data.from, data.to)
+          cursor.line += 2
+          cm.setCursor cursor
+        render: (li, data, obj) ->
+          img = li.appendChild(document.createElement("img"))
+          img.src = symbolPath(str)
+          li.appendChild(document.createTextNode str)
+                                
   forEach(keywords, maybeAdd)
   return found
 

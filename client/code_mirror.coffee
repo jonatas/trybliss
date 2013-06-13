@@ -19,6 +19,7 @@ Template.edit_level.rendered = ->
         content = Template.markdown_content content: editor.doc.getValue()
         $(".container").html content
   })
+  editor.setSize($(window).width(),$(window).height()*0.8)
 
 Template.edit_level.events({
   'click a.btn.save' : ->

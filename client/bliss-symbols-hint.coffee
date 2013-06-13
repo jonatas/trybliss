@@ -22,7 +22,7 @@ window.getCompletions = (token,  keywords, options) ->
   found = []
   start = token.string
   maybeAdd = (str) ->
-    if str.indexOf(start) is 0 and not arrayContains(found, str)
+    if str.indexOf(start) >= 0 and not arrayContains(found, str)
       found.push text: str,
         hint: (cm,data, obj) ->
           cursor = cm.getCursor()

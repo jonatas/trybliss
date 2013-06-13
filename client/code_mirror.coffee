@@ -27,13 +27,12 @@ Template.edit_level.events({
     if(id = level._id)
       Levels.update(id, level)
     else
-      Levels.insert(Session.get("editingLevel"))
+      level._id = Levels.insert(Session.get("editingLevel"))
 
-    Session.set("editingLevel", null)
-    $("div.edit-level").hide()
+    Session.set("editingLevel", level)
+    layout.toggle("east")
   'click a.hide-editor' : ->
-    $("div.edit-level").hide()
+    layout.toggle("east")
   'click a.btn.cancel-edition' : ->
-    Session.set("editingLevel", null)
-    $("div.edit-level").hide()
+    layout.toggle("east")
 })

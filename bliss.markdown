@@ -88,6 +88,70 @@ E um grupo de pessoas que vivem juntos formam uma família.
 ![family_(group_home)][]
 
 família (_family_ _group_ _home_)
+# Animais
+
+Existem uma série de animais simbolizados. Vamos mostrar alguns delhes.
+
+![animal,beast][]
+
+animal
+
+    O felino é um animal com unhas
+        
+![cat,feline_(animal),felid][]
+
+gato
+
+![dog,canine_(animal),canid][]
+
+    O cachorro vive com seu rabo cabo de guarda-chuva
+
+
+    E boi com seus chifres
+                    
+![animal_(bovine),bovine,ovine][]
+
+boi, bovino
+
+### Girafa    
+                        
+![giraffe][] ![sky][]
+
+    girafa com pescoço que ultrapassa até o céu
+
+                            
+![animal_skin,hide,pelt][]
+
+# Mente
+
+A mente é um símbolo muito importante no bliss.
+
+Com ele e outros símbolos se compõe muitos significados 
+importantes na linguagem bliss.
+
+![mind,intellect,reason][]
+
+mente, intelectuo, razão
+
+### adquira o conhecimento
+
+![knowledge,class_(in_combinations)][]
+
+    O conhecimento é uma mente conectada a terra.
+
+### Esta é uma boca
+![mouth][]
+
+### Esta é a fala
+![say,speak,talk,tell,express-(to)][]
+
+   A fala é a ação da boca.
+
+### Explicar
+
+![explain-(to)][]
+
+   Explicar é falar do conhecimento
 
 
 ---

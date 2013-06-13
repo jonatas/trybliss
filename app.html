@@ -14,9 +14,12 @@
     <link rel="stylesheet" href="/codemirror/addon/dialog/dialog.css">
 </head>
 <body>
+  {{> body}}
+</body>
+<template name="body">
   {{> game }}
   {{> edit_level}}
-</body>
+</template>
 <template name="flags_panel">
 <div class="flags">
 {{# each flags }}
@@ -30,8 +33,9 @@
 </template>
 <template name="game">
 {{#with level}}
-  <div class="row">
-    <div class="span2">
+<div class="ui-layout-center"> 
+  <div class="header row">
+    <div class=" span2">
       <div class="icon-backward previous" title="{{t 'Previous level'}}"></div>
       <div class="badge badge-info">{{t "Level %s" levelNumber}}</div>
       <div class="icon-forward next" title="{{t 'Next level' }}"></div>
@@ -40,11 +44,12 @@
       {{> flags_panel }}
     </div>
   </div>
-  <div class="container">
+  <div class="container ui-layout-content">
     {{#isolate}}
     {{> markdown_content}}
     {{/isolate}}
   </div>
+</div>
 {{/with}}
 </template>
 <template name="markdown_content">
@@ -94,18 +99,18 @@
 </template>
 <template name="edit_level">
 {{#with level}}
-<div class="editor">
-  <h4>{{t "Level editor" }}</h4>
+<div class="ui-layout-east editor">
+  <h4 class="header">{{t "Level editor" }}</h4>
+  <div class="ui-layout-content">
   <form>
-    {{#isolate}}
     <textarea cols="80" rows="120" id="code" name="code">{{content}}</textarea>
-    {{/isolate}}
      <div>
       <a href="#" class="btn save btn-success btn-small"><i class="icon-ok-circle icon-white"></i>{{t "Save"}}</a>
       <a href="#" class="btn hide-editor btn-inverse btn-small"><i class="icon-hand-right icon-white"></i>{{t "Preview"}}</a>
       <a href="#" class="btn cancel-edition btn-danger btn-small"><i class="icon-remove-circle icon-white"></i>{{t "Cancel"}}</a>
      </div>
   </form>
+  </div>
 </div>
 {{/with}}
 </template>

@@ -39,9 +39,11 @@
   height: 100%;
 }
 .editor{
-  position: fixed;
-  right: 0px;
-  top: 0px;
   min-width: 50%;
+  width: 50%;
   min-height: 100%;
+  height: 100%;
+}
+.ui-layout-content {
+  overflow: scroll;
 }

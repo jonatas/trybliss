@@ -2,6 +2,8 @@ var translations = [
    {lang: 'br', base_str: 'Learn', new_str: 'Aprender'},
    {lang: 'br', base_str: 'Symbols', new_str: 'Símbolos'},
    {lang: 'br', base_str: 'Combine', new_str: 'Combinar'},
+   {lang: 'br', base_str: 'Save', new_str: 'Salvar'},
+   {lang: 'br', base_str: 'Preview', new_str: 'Visualizar'},
    {lang: 'br', base_str: 'Combine %s', new_str: 'Combinar %s'}, // Combine title level
    {lang: 'br', base_str: 'Level %s', new_str: 'Nível %s'},
    {lang: 'br', base_str: 'Content editor', new_str: 'Editor de conteúdo'},

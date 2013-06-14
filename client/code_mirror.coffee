@@ -31,9 +31,9 @@ Template.edit_level.events({
       level._id = Levels.insert(Session.get("editingLevel"))
 
     Session.set("editingLevel", level)
-    layout.toggle("east")
+    theLayout.toggle("east")
   'click a.hide-editor' : ->
-    layout.toggle("east")
+    theLayout.toggle("east")
   'click a.btn.cancel-edition' : ->
-    layout.toggle("east")
+    theLayout.toggle("east")
 })

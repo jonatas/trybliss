@@ -31,7 +31,7 @@ function setLevelNumber(to){
   }
   Session.set("levelNumber", to);
   Session.set("currentLevel",Levels.find().fetch()[to-1]);
-  Session.set("editingLevel",Session.get("currentLevel"));
+  Session.set("editingLevel",Levels.find().fetch()[to-1]);
   if (to > 1){
     $(".previous").show();
   } else{

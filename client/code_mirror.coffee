@@ -7,22 +7,24 @@ Template.edit_level.rendered = ->
     console.log("show autocomplete",cm)
     CodeMirror.showHint(cm, window.showBlissSymbolsHint)
 
-  showEditor = ->
-    window.theLayout = $('body').layout(contentSelector: ".content", applyDemoStyles: true, east:{size: $(window).size() / 1.95, resizable: true} )
-    window.editor = CodeMirror.fromTextArea $("textarea")[0],
-      lineNumbers: true,
-      mode: "markdown",
-      keyMap: "vim",
-      showCursorWhenSelecting: true,
-      theme: "night",
-      extraKeys: {"Enter": "newlineAndIndentContinueMarkdownList", "Ctrl-Space":"autocomplete"},
-      onKeyEvent: (editor, s) ->
-        if s.type is "keyup"
-          content = Template.markdown_content content: editor.doc.getValue()
-          $(".container").html content
-    editor.setSize($(window).width()/2.1,$(window).height()*0.8)
+  window.editor = CodeMirror.fromTextArea $("textarea")[0],
+    lineNumbers: true,
+    mode: "markdown",
+    keyMap: "vim",
+    showCursorWhenSelecting: true,
+    theme: "night",
+    extraKeys: {"Enter": "newlineAndIndentContinueMarkdownList", "Ctrl-Space":"autocomplete"},
+    onKeyEvent: (editor, s) ->
+      if s.type is "keyup"
+        content = Template.markdown_content content: editor.doc.getValue()
+        $(".container").html content
+  editor.setSize($(window).width()/2.2,$(window).height()*0.9)
 
-  Meteor.setTimeout showEditor,1000
+  window.theLayout = $('body').layout contentSelector: ".content",
+    applyDemoStyles: true,
+    east:
+      size: $(window).size() / 1.95,
+      resizable: true
 
 Template.edit_level.events({
   'click a.btn.save' : ->

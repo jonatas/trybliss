@@ -18,13 +18,7 @@ Template.edit_level.rendered = ->
       if s.type is "keyup"
         content = Template.markdown_content content: editor.doc.getValue()
         $(".container").html content
-  editor.setSize($(window).width()/2.2,$(window).height()*0.9)
-
-  window.theLayout = $('body').layout contentSelector: ".content",
-    applyDemoStyles: true,
-    east:
-      size: $(window).size() / 1.95,
-      resizable: true
+  editor.setSize($(window).width()/2,$(window).height()*0.9)
 
 Template.edit_level.events({
   'click a.btn.save' : ->
@@ -36,9 +30,10 @@ Template.edit_level.events({
       level._id = Levels.insert(Session.get("editingLevel"))
 
     Session.set("editingLevel", level)
-    theLayout.toggle("east")
-  'click a.hide-editor' : ->
-    theLayout.toggle("east")
-  'click a.btn.cancel-edition' : ->
-    theLayout.toggle("east")
+  'click a.preview' : ->
+    $(".editor").hide()
+    $(".show-editor").show()
+  'click a.show-editor' : ->
+    $(".show-editor").hide()
+    $(".editor").show()
 })

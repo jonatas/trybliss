@@ -33,7 +33,6 @@
 </template>
 <template name="game">
 {{#with level}}
-<div class="ui-layout-center "> 
   <div class="header row">
     <div class=" span2">
       <div class="icon-backward previous" title="{{t 'Previous level'}}"></div>
@@ -44,12 +43,11 @@
       {{> flags_panel }}
     </div>
   </div>
-  <div class="container ui-layout-content">
+  <div class="container">
     <div class="content">
       {{> markdown_content}}
     </div>
   </div>
-</div>
 {{/with}}
 </template>
 <template name="markdown_content">
@@ -98,17 +96,16 @@
 <img src="{{src}}">
 </template>
 <template name="edit_level">
+<a href="#" class="btn show-editor btn-inverse btn-small"><i class="icon-hand-left icon-white"></i>{{t "Editor"}}</a>
 {{#with level}}
-<div class="ui-layout-east editor">
-  <h4 class="header">{{t "Level editor" }}</h4>
-  <div class="ui-layout-content">
+<div class="editor">
+  <h4 class="header">{{t "Content editor" }}
+      <a href="#" class="btn save btn-success btn-small"><i class="icon-ok-circle icon-white"></i>{{t "Save"}}</a>
+      <a href="#" class="btn preview btn-inverse btn-small"><i class="icon-hand-right icon-white"></i>{{t "Preview"}}</a>
+ </h4>
+  <div class="row-fluid">
   <form>
     <textarea>{{content}}</textarea>
-     <div>
-      <a href="#" class="btn save btn-success btn-small"><i class="icon-ok-circle icon-white"></i>{{t "Save"}}</a>
-      <a href="#" class="btn hide-editor btn-inverse btn-small"><i class="icon-hand-right icon-white"></i>{{t "Preview"}}</a>
-      <a href="#" class="btn cancel-edition btn-danger btn-small"><i class="icon-remove-circle icon-white"></i>{{t "Cancel"}}</a>
-     </div>
   </form>
   </div>
 </div>

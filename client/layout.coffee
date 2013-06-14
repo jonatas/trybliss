@@ -1,6 +1,3 @@
-delay = (ms, func) -> setTimeout func, ms
 Template.body.rendered = ->
-  window.theLayout = $('body').layout(applyDemoStyles: true)
-  delay 3000, -> theLayout.toggle("east")
+  window.theLayout = $('body').layout(applyDemoStyles: true, east:{size: $(window).size() / 2})
   $(window).scroll()
-

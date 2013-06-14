@@ -7,19 +7,20 @@ Template.edit_level.rendered = ->
     console.log("show autocomplete",cm)
     CodeMirror.showHint(cm, window.showBlissSymbolsHint)
 
-  window.editor = CodeMirror.fromTextArea($("#code")[0], {
-    lineNumbers: true,
-    mode: "markdown",
-    keyMap: "vim",
-    showCursorWhenSelecting: true,
-    theme: "night",
-    extraKeys: {"Enter": "newlineAndIndentContinueMarkdownList", "Ctrl-Space":"autocomplete"},
-    onKeyEvent: (editor, s) ->
-      if s.type is "keyup"
-        content = Template.markdown_content content: editor.doc.getValue()
-        $(".container").html content
-  })
-  editor.setSize($(window).width(),$(window).height()*0.8)
+  if $("textarea")
+    window.editor = CodeMirror.fromTextArea($("textarea")[0], {
+      lineNumbers: true,
+      mode: "markdown",
+      keyMap: "vim",
+      showCursorWhenSelecting: true,
+      theme: "night",
+      extraKeys: {"Enter": "newlineAndIndentContinueMarkdownList", "Ctrl-Space":"autocomplete"},
+      onKeyEvent: (editor, s) ->
+        if s.type is "keyup"
+          content = Template.markdown_content content: editor.doc.getValue()
+          $(".container").html content
+    })
+    editor.setSize($(window).width(),$(window).height()*0.8)
 
 Template.edit_level.events({
   'click a.btn.save' : ->

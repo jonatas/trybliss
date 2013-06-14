@@ -7,7 +7,9 @@ Template.edit_level.rendered = ->
     console.log("show autocomplete",cm)
     CodeMirror.showHint(cm, window.showBlissSymbolsHint)
 
-  if $("textarea")
+  showEditorAndScrollContent = ->
+    window.theLayout = $('body').layout(applyDemoStyles: true, east:{size: $(window).size() / 2, resizable: true} )
+    $(window).scroll()
     window.editor = CodeMirror.fromTextArea($("textarea")[0], {
       lineNumbers: true,
       mode: "markdown",
@@ -21,6 +23,8 @@ Template.edit_level.rendered = ->
           $(".container").html content
     })
     editor.setSize($(window).width(),$(window).height()*0.8)
+
+  Meteor.setTimeout showEditorAndScrollContent,1000
 
 Template.edit_level.events({
   'click a.btn.save' : ->

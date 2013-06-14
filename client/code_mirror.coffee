@@ -7,10 +7,9 @@ Template.edit_level.rendered = ->
     console.log("show autocomplete",cm)
     CodeMirror.showHint(cm, window.showBlissSymbolsHint)
 
-  showEditorAndScrollContent = ->
-    window.theLayout = $('body').layout(applyDemoStyles: true, east:{size: $(window).size() / 2, resizable: true} )
-    $(window).scroll()
-    window.editor = CodeMirror.fromTextArea($("textarea")[0], {
+  showEditor = ->
+    window.theLayout = $('body').layout(contentSelector: ".content", applyDemoStyles: true, east:{size: $(window).size() / 1.95, resizable: true} )
+    window.editor = CodeMirror.fromTextArea $("textarea")[0],
       lineNumbers: true,
       mode: "markdown",
       keyMap: "vim",
@@ -21,10 +20,9 @@ Template.edit_level.rendered = ->
         if s.type is "keyup"
           content = Template.markdown_content content: editor.doc.getValue()
           $(".container").html content
-    })
-    editor.setSize($(window).width(),$(window).height()*0.8)
+    editor.setSize($(window).width()/2.1,$(window).height()*0.8)
 
-  Meteor.setTimeout showEditorAndScrollContent,1000
+  Meteor.setTimeout showEditor,1000
 
 Template.edit_level.events({
   'click a.btn.save' : ->

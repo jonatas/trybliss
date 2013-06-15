@@ -46,7 +46,6 @@ function setLevelNumber(to){
 Meteor.autorun(function(){
   Meteor.subscribe("levels");
   Meteor.subscribe("translations");
-  Meteor.subscribe("symbols");
 });
 Template.game.rendered = function() {
   $('#learning-steps a').click(function (e) {

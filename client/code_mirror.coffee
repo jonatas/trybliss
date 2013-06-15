@@ -18,7 +18,11 @@ Template.edit_level.rendered = ->
       if s.type is "keyup"
         content = Template.blissdown_content( content:  editor.doc.getValue() )
         $(".container").html content
+
   editor.setSize($(window).width()/2,$(window).height()*0.9)
+  $(".editor").hide()
+  $(".show-editor").show()
+
 
 Template.blissdown_content.rendered = ->
   $(".alternative > img, .alternative > p > img").hide()

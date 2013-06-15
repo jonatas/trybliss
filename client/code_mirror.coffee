@@ -7,7 +7,7 @@ Template.edit_level.rendered = ->
     CodeMirror.showHint(cm, window.showBlissSymbolsHint)
 
 
-  window.editor ?= CodeMirror.fromTextArea $("textarea")[0],
+  window.editor = CodeMirror.fromTextArea $("textarea")[0],
     lineNumbers: true,
     mode: "markdown",
     keyMap: "vim",

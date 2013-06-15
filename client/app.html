@@ -55,46 +55,6 @@
 {{content}}
 {{/blissdown}}
 </template>
-<template name="answer">
-<h4 class="alert">{{t "Answer"}}</h4>
-{{#each question_fragments }}
-{{> show_symbol}}
-{{/each}}
-<ul class="thumbnails">
-  {{#each alternatives}}
-  <li class="span12">
-  <div class="thumbnail">
-    <img src=""/><div class="caption alternative">{{alternative}}</div>
-  </div>
-  </li>
-  {{/each}}
-</ul>
-</template>
-<template name="combine">
-{{#if title}}
-<h4 class="alert-success">{{t "Combine %s" title }}</h4>
-{{else}}
-<h4 class="alert-success">{{t "Combine"}}</h4>
-{{/if}}
-{{#each combinations }}
-<div class="row-fluid">
-  {{#each combination }}
-  <div class="span2 thumbnail">{{>show_symbol}}<div class="caption">{{symbol}}</div>
-  </div>
-  {{/each}}
-</div>
-<hr>
-{{/each}}
-</template>
-<template name="learn">
-<h4 class="alert-info">{{t "Learn"}}</h4>
-{{#each symbols}}
-<div class="thumbnail span3">{{> show_symbol}}<div class="caption">{{symbol}}</div></div>
-{{/each}}
-</template>
-<template name="show_symbol">
-<img src="{{src}}">
-</template>
 <template name="edit_level">
 <a href="#" class="btn show-editor btn-inverse btn-small"><i class="icon-hand-left icon-white"></i>{{t "Editor"}}</a>
 {{#with level}}

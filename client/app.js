@@ -85,18 +85,12 @@ Template.flag.events({
 window.symbolPath = function(symbol){
   return "/images/symbols/"+symbol+".png";
 }
-Template.show_symbol.helpers({
-  src: function () { return symbolPath(this.symbol) }
-});
 Template.game.level = function() {
   if ( level=(Session.get("editingLevel") || Session.get("currentLevel"))){
     return level;
   } else {
     return setLevelNumber(1);
   }
-}
-Template.game.symbols = function(){
-  return Template.game.level().learn.symbols;
 }
 Template.game.levelNumber = function(){
   return Session.get("levelNumber");
@@ -132,15 +126,6 @@ Template.game.events({
 Template.edit_level.level = function(){
   return Session.get("editingLevel");
 };
-Template.show_symbol.editingLevel =
 Template.game.showingLevels = function(){
   return !Template.levels.editingLevel() && Session.get("showLevels");
-}
-Array.prototype.remove= function(item){
-  var L= this.length, indexed;
-  while(L){
-    indexed= this[--L];
-    if(indexed=== item) this.splice(L, 1);
-  }
-  return this;
 }

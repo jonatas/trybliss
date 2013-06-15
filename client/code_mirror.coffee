@@ -28,6 +28,12 @@ Template.blissdown_content.rendered = ->
   $(".alternative").addClass("btn large-button")
   $(".alternative > img, .alternative > p > img").hide()
   $(".header").append(Template.blissdown_headers())
+  $(".ul li").click (e) ->
+    $(".ul li").removeClass("active")
+    $(this).addClass("active")
+    e.preventDefault()
+  $('ul.nav > li > a[href="' + document.hash + '"]').parent().addClass('active');
+
 
 Template.edit_level.events({
   'click a.btn.save' : ->

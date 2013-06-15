@@ -57,9 +57,19 @@
 </template>
 <template name="blissdown_headers">
 <div class="headers">
+  <ul class="nav nav-list">
  {{#each links }}
- <a href="#{{id}}"><span class="badge badge-info">{{index}}</span></a>
+ <li>
+ <a href="#{{id}}" title="{{title}}">
+  {{#if symbol }}
+    <img src='{{symbol}}' class='img-circle' />
+  {{else}}
+    <span class="badge badge-info">{{index}}</span>
+  {{/if}}
+</a>
+</li>
  {{/each}}
+ </ul>
 </div>
 </template>
 <template name="edit_level">

@@ -27,8 +27,21 @@ li.alternative {
 li.alternative > p {
   padding: 20px;
 }
+.content {
+  margin-left: 60px;
+}
 .headers {
   position: fixed;
-  left: 50%;
-  top: 0;
+  left: 0%;
+  top: 0%;
 }
+.headers a {
+  background-color: rgb(155, 221, 94);
+  display: block;
+  text-align: center;
+  vertical-align: middle;
+}
+.headers a img {
+  size: 50%;
+}
+

@@ -32,7 +32,14 @@ Template.blissdown_content.rendered = ->
     $(".ul li").removeClass("active")
     $(this).addClass("active")
     e.preventDefault()
-  $('ul.nav > li > a[href="' + document.hash + '"]').parent().addClass('active');
+  $('a[href="' + document.hash + '"]').parent().addClass('active')
+  $(".headers > a").button().css "background-color": "rgb(155, 221, 94)"
+  $(window).resize ->
+    percent = Math.round($(window).height() / ($(".headers img").length * 100) * 100)
+    if percent < 100
+      $(".headers img").css({"width": "#{percent}%"})
+
+  $(window).trigger "resize"
 
 
 Template.edit_level.events({
@@ -56,5 +63,8 @@ Template.blissdown_headers.links = ->
   a = []
   for link in $("h1")
     link = $(link)
-    a.push text: link.text(), id: link.attr("id"), index: a.length+1
+    header = title: link.text(), id: link.attr("id"), index: a.length+1
+    if img = link.nextUntil("img").find("img:first").first()[0]
+      header.symbol = img.src
+    a.push header
   a

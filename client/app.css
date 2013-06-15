@@ -22,6 +22,7 @@
 }
 li.alternative {
   margin: 20px;
+  list-style: none;
 }
 li.alternative > p {
   padding: 20px;

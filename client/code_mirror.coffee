@@ -27,6 +27,7 @@ Template.edit_level.rendered = ->
 Template.blissdown_content.rendered = ->
   $(".alternative").addClass("btn large-button")
   $(".alternative > img, .alternative > p > img").hide()
+  $(".header").append(Template.blissdown_headers())
 
 Template.edit_level.events({
   'click a.btn.save' : ->
@@ -45,3 +46,9 @@ Template.edit_level.events({
     $(".show-editor").hide()
     $(".editor").show()
 })
+Template.blissdown_headers.links = ->
+  a = []
+  for link in $("h1")
+    link = $(link)
+    a.push text: link.text(), id: link.attr("id"), index: a.length+1
+  a

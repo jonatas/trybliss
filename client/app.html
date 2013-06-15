@@ -57,11 +57,9 @@
 </template>
 <template name="blissdown_headers">
 <div class="headers">
-<ul class="nav nav-list">
  {{#each links }}
- <li class="nav-item badge badge-info"><a href="#{{id}}">{{index}}</a></li>
+ <a href="#{{id}}"><span class="badge badge-info">{{index}}</span></a>
  {{/each}}
-</ul>
 </div>
 </template>
 <template name="edit_level">

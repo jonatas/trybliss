@@ -45,15 +45,15 @@
   </div>
   <div class="container">
     <div class="content">
-      {{> markdown_content}}
+      {{> blissdown_content}}
     </div>
   </div>
 {{/with}}
 </template>
-<template name="markdown_content">
-{{#markdown}}
+<template name="blissdown_content">
+{{#blissdown}}
 {{content}}
-{{/markdown}}
+{{/blissdown}}
 </template>
 <template name="answer">
 <h4 class="alert">{{t "Answer"}}</h4>

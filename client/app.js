@@ -1,4 +1,6 @@
-
+Levels = new Meteor.Collection('levels');
+Translations = new Meteor.Collection('translations');
+Symbols = new Meteor.Collection('symbols');
 Meteor.startup(function(){
   if (!Session.get('levelNumber')||!Session.get("currentLevel")) setLevelNumber(1);
   if (!Session.get('currentLanguage')) Session.set('currentLanguage','br');
@@ -114,27 +116,13 @@ Template.game.symbols = function(){
 Template.game.levelNumber = function(){
   return Session.get("levelNumber");
 }
-Template.learn.symbols = function() {
-  if (level = Template.game.level())
-    return _.map(level.learn.symbols, function(symbol){ return {symbol: symbol} });
-}
-Template.answer.question_fragments = function() {
-  if (level=Template.game.level())
-    return _.map(level.answer.question.split(" "),function(symbol){return {symbol:symbol}});
-}
 Template.game.events({
   'click .alternative' : function (e) {
   level = Template.game.level();
-   $("#answer").removeClass("alert-success");
-   $("#answer").removeClass("alert-error");
-   right = (this.alternative == level.answer.answer);
-
-   $(e.target.parentElement).find("img").attr("src", symbolPath(this.alternative));
-   $(e.target).removeClass("btn btn-action").addClass(right ? "btn-success" : "btn-danger");
-
-   if (right){
-     $("#answer").addClass("alert-success");
-   }else $("#answer").addClass("alert-error");
+   $(".question").removeClass("alert-success");
+   $(".question").removeClass("alert-error");
+   $(e.target).find("img").show();
+   $(e.target).addClass( $(e.target).hasClass("right") ?  "btn-success" : "btn-danger");
   },
   'click .next' : function (e) {
     nextLevel();

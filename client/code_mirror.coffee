@@ -7,6 +7,7 @@ Template.edit_level.rendered = ->
     console.log("show autocomplete",cm)
     CodeMirror.showHint(cm, window.showBlissSymbolsHint)
 
+
   window.editor = CodeMirror.fromTextArea $("textarea")[0],
     lineNumbers: true,
     mode: "markdown",
@@ -16,9 +17,13 @@ Template.edit_level.rendered = ->
     extraKeys: {"Enter": "newlineAndIndentContinueMarkdownList", "Ctrl-Space":"autocomplete"},
     onKeyEvent: (editor, s) ->
       if s.type is "keyup"
-        content = Template.markdown_content content: editor.doc.getValue()
+        content = Template.blissdown_content( content:  editor.doc.getValue() )
         $(".container").html content
+        $(".alternative > img").hide()
   editor.setSize($(window).width()/2,$(window).height()*0.9)
+
+Template.blissdown_content.rendered = ->
+  $(".alternative > img").hide()
 
 Template.edit_level.events({
   'click a.btn.save' : ->

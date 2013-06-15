@@ -1,3 +1,4 @@
+Translations = new Meteor.Collection('translations');
 var translations = [
    {lang: 'br', base_str: 'Learn', new_str: 'Aprender'},
    {lang: 'br', base_str: 'Symbols', new_str: 'Símbolos'},

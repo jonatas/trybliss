@@ -1,3 +1,4 @@
+Levels = new Meteor.Collection('levels')
 var levels = [
    {
      content: "# Content Header"+

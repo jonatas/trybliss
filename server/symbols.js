@@ -1,3 +1,4 @@
+Symbols = new Meteor.Collection('symbols')
 Meteor.startup(function(){
 //  Symbols.find().forEach(function(e){Symbols.remove(e._id);});
   if (Symbols.find().count() == 0) {

@@ -47,16 +47,17 @@
   font-size: 35px;
   margin: auto;
   padding: 20px;
-  text-align: center;
   background-color: rgba(255, 200, 128, 0.5);
   width: 50%;
 }
 li.alternative {
   font-size: 150%;
+  display: block;
+  float:left;
   margin: 20px;
+  padding: 20px;
   margin-top: 10px;
   list-style: none;
   background-color: rgba(0, 160, 255, 0.25);
   cursor: pointer;
-  width: 50%;
 }

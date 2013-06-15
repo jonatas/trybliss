@@ -26,7 +26,6 @@ function previousLevel(){
    setLevelNumber(Session.get("levelNumber")-1);
 }
 function setLevelNumber(to){
-  console.log("setLevelNumber",to);
   if (Template.game.levels().length == 0) { 
     console.log("no levels yet..");
     return;
@@ -66,6 +65,7 @@ Template.game.rendered = function() {
   $('a.levels').click(function (e) {
      $(".levels").show();
   });
+  $(".alternative > img").hide();
 };
 Template.flags_panel.flags = function() {
   flags = [];
@@ -90,24 +90,9 @@ Template.show_symbol.helpers({
 });
 Template.game.level = function() {
   if ( level=(Session.get("editingLevel") || Session.get("currentLevel"))){
-    console.log("game level:" ,level);
     return level;
   } else {
     return setLevelNumber(1);
-  }
-}
-Template.combine.combinations = function() {
-  if (level = Template.game.level()){
-    return _.map(level.learn.combinations, 
-        function(combination){
-          return {
-            combination: _.map(combination.split(" "),
-                           function(symbol){
-                             return {symbol:symbol};
-                           })
-          };
-        }
-   );
   }
 }
 Template.game.symbols = function(){
@@ -122,7 +107,7 @@ Template.game.events({
    $(".question").removeClass("alert-success");
    $(".question").removeClass("alert-error");
    $(e.target).find("img").show();
-   $(e.target).addClass( $(e.target).hasClass("right") ?  "btn-success" : "btn-danger");
+   $(e.target).addClass( $(e.target).parent(".alternative").hasClass("right") ?  "btn-success" : "btn-danger");
   },
   'click .next' : function (e) {
     nextLevel();

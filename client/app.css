@@ -45,7 +45,7 @@
 }
 .question {
   font-size: 35px;
-  width: auto;
+  margin: auto;
   padding: 20px;
   text-align: center;
   background-color: rgba(255, 200, 128, 0.5);
@@ -53,7 +53,7 @@
 }
 li.alternative {
   font-size: 150%;
-  padding: 20px;
+  margin: 20px;
   margin-top: 10px;
   list-style: none;
   background-color: rgba(0, 160, 255, 0.25);

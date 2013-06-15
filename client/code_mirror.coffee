@@ -4,11 +4,10 @@ Template.edit_level.rendered = ->
     if level = Session.get("editingLevel")
       Levels.update(level._id, $set: {content: editor.getValue()})
   CodeMirror.commands.autocomplete = (cm) ->
-    console.log("show autocomplete",cm)
     CodeMirror.showHint(cm, window.showBlissSymbolsHint)
 
 
-  window.editor = CodeMirror.fromTextArea $("textarea")[0],
+  window.editor ?= CodeMirror.fromTextArea $("textarea")[0],
     lineNumbers: true,
     mode: "markdown",
     keyMap: "vim",
@@ -19,11 +18,10 @@ Template.edit_level.rendered = ->
       if s.type is "keyup"
         content = Template.blissdown_content( content:  editor.doc.getValue() )
         $(".container").html content
-        $(".alternative > img").hide()
   editor.setSize($(window).width()/2,$(window).height()*0.9)
 
 Template.blissdown_content.rendered = ->
-  $(".alternative > img").hide()
+  $(".alternative > img, .alternative > p > img").hide()
 
 Template.edit_level.events({
   'click a.btn.save' : ->

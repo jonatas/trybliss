@@ -50,13 +50,7 @@
   background-color: rgba(255, 200, 128, 0.5);
 }
 li.alternative {
-  font-size: 150%;
-  display: block;
-  float:left;
   margin: 20px;
-  list-style: none;
-  background-color: rgba(0, 160, 255, 0.25);
-  cursor: pointer;
 }
 li.alternative > p {
   padding: 20px;

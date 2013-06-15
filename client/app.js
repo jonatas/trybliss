@@ -99,7 +99,8 @@ Template.game.events({
    $(".question").removeClass("alert-success");
    $(".question").removeClass("alert-error");
    $(e.target).find("img").show();
-   $(e.target).addClass( $(e.target).parent(".alternative").hasClass("right") ?  "btn-success" : "btn-danger");
+   alt = $(e.target).parent(".alternative");
+   alt.addClass( alt.hasClass("right") ?  "btn-success" : "btn-danger");
   },
   'click .next' : function (e) {
     nextLevel();

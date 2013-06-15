@@ -25,6 +25,7 @@ Template.edit_level.rendered = ->
 
 
 Template.blissdown_content.rendered = ->
+  $(".alternative").addClass("btn large-button")
   $(".alternative > img, .alternative > p > img").hide()
 
 Template.edit_level.events({

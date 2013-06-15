@@ -34,14 +34,20 @@ li.alternative > p {
   position: fixed;
   left: 0%;
   top: 0%;
+  padding: 0;
 }
 .headers a {
   background-color: rgb(155, 221, 94);
   display: block;
   text-align: center;
   vertical-align: middle;
+  padding: 0;
 }
 .headers a img {
   size: 50%;
 }
 
+.nav-list>li>a {
+  padding: 0;
+}
+  

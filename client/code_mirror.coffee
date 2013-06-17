@@ -1,12 +1,18 @@
+saveLevel = ->
+  if level = Session.get("currentLevel")
+    level.content = window.editor.getValue()
+  if (id = level._id and level.author is Meteor.userId())
+    Levels.update(id, level)
+  else
+    level._id = Levels.insert(Session.get("currentLevel"))
+
+  Session.set("currentLevel", level)
+
 Template.edit_level.rendered = ->
-  console.log("Rendered edit_level...",this)
   $("a[data-toggle='tooltip']").tooltip animation: "fade", container: "body"
   if Meteor.user()
-    CodeMirror.commands.save = (editor) ->
-      if level = Session.get("editingLevel")
-        Levels.update(level._id, $set: {content: editor.getValue()})
-    CodeMirror.commands.autocomplete = (cm) ->
-      CodeMirror.showHint(cm, window.showBlissSymbolsHint)
+    CodeMirror.commands.save = (editor) -> saveLevel()
+    CodeMirror.commands.autocomplete = (cm) -> CodeMirror.showHint(cm, window.showBlissSymbolsHint)
 
     if $("textarea")[0]
       window.editor = CodeMirror.fromTextArea $("textarea")[0],
@@ -44,47 +50,63 @@ Template.blissdown_content.rendered = ->
 
 
 Template.edit_level.events({
-  'click a.btn.save' : ->
-    if level = Session.get("editingLevel")
-      level.content = window.editor.getValue()
-    if(id = level._id)
-      Levels.update(id, level)
-    else
-      level._id = Levels.insert(Session.get("editingLevel"))
-
-    Session.set("editingLevel", level)
-  'click a.preview' : ->
+  'click a.btn.save': ->
+    saveLevel()
+  'click a.preview': ->
     $(".editor").hide()
     $(".show-editor").show()
-  'click a.show-editor' : ->
+  'click a.show-editor': ->
     $(".show-editor").hide()
     $(".editor").show()
-  'click a.new-file' : ->
+  'click .fileitem': ->
+    level = Levels.findOne this.levelId
+    Session.set "currentLevel", level
+  'click a.new-file': ->
     t = (str) ->
-      if translate = Translations.findOne({lang:Session.get("currentLanguage"), base_str: str})
+      withString = lang: Session.get("currentLanguage"), base_str: str
+      translate = Translations.findOne(withString)
+      if translate
         translate.new_str
       else
         str
+
     input = prompt(t("Insert the title"), t("My first level"))
+
     if input isnt null and input isnt ""
-      level = author: Meteor.userId(),title: input, language: Session.get("currentLanguage")
-      if (!level=Levels.find(level))
-        level._id = Levels.insert(level)
-      # else start editing 
-      # FIXME: include a nice introductory bliss content here
+      level = author: Meteor.userId(), title: input, language: Session.get("currentLanguage")
+      if exists = Levels.findOne(level)
+        id = Levels.insert(level)
+        level._id = id
+      else
+        console.log("exits level", level)
+        level = exists
+
+      if not level.content or level.content is ""
+        level.content = t("# Welcome to bliss")+"\n\n"+
+          t("* Try to start using the editor with markdow.")+"\n\n"+
+          t("* There's a vim keybinds here")+"\n\n"+
+          t(" - Use i to start inserting code and <esc> to escape to command mode.")+"\n\n"+
+          t(" - Use ctrl-space to get suggestions around the symbols")+"\n\n"+
+          t(" - Selecting the symbol will automatically reproduce the symbol introduction into the markdown sintax.")+"\n\n"+
+          t("* The language is auto selected by the language you use")+"\n\n"+
+          t("## Use interative questions")+"\n\n"+
+          t("Write answers using '* ->' (a bullet with an arrow) to introduce new symbols")+"\n\n"+
+          t("The right answer should have an arrow on the right side showing the right question")+"\n\n"
+          t("If you use images into the question, the images will be hidden while asking and show the image when click in the answer.")
+        Levels.update(level._id, level)
       Session.set "currentLevel",level
-      Session.set "editingLevel",level
   'click a.rename-file' : ->
     input = prompt("Insert the title", Session.get("currentLevel").title)
     if input isnt null and input isnt ""
       Levels.update Session.get("currentLevel")._id, $set: {title: input}
+
 
 })
 Template.edit_level.blissfiles = ->
   files = []
   for level in Levels.find().fetch()
     author = Meteor.users.findOne(level.author)
-    files.push title: level.title, authorName: author.profile.name, flag: level.language
+    files.push title: level.title, authorName: author.profile.name, levelId: level._id, flag: level.language
   files
 
 Template.blissdown_headers.links = ->

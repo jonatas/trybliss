@@ -4,9 +4,8 @@ Meteor.startup ->
     strFull = ""
     for line in string.split "\n"
       newString = line.replace /^\? (.*)/, (string,question) ->
-        console.log("question",string,">>>",question,"htmlIt::",htmlIt(question))
         "<div class='question'>"+htmlIt(question)+"</div>"
-      newString = newString.replace /^\*- (.*)/, (string,alternative) ->
+      newString = newString.replace /^\* -(>|&gt;) (.*)/, (string,gt,alternative) ->
         regex = /(<|&lt;)[-=]$/
         if alternative.match regex
           "<li class='alternative right'>#{htmlIt(alternative.replace regex, "")}</li>"

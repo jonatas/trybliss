@@ -197,9 +197,9 @@ Dúvida, incerteza
 
 ![observation][]
 
-*- Admiração ![respect,admiration][]
-*- Observação ![observation][] <-
-*- Expectativa ![expect,anticipate-(to)][]
+* -> Admiração ![respect,admiration][]
+* -> Observação ![observation][] <-
+* -> Expectativa ![expect,anticipate-(to)][]
 
 
 ### Esta é uma boca
@@ -232,9 +232,9 @@ Amor
 ![home][]
 
 
-*- Família ![family,couple][] 
-*- Lar ![home][] <-
-*- Restaurante ![restaurant,cafeteria][]
+* -> Família ![family,couple][] 
+* -> Lar ![home][] <-
+* -> Restaurante ![restaurant,cafeteria][]
 
 # Roda
 
@@ -252,9 +252,9 @@ máquina, motor, engrenagem
 
 ![computer_(OLD)][]
 
-*- Computador ![computer_(OLD)][] <-
-*- Dinheiro ![money,cash][]
-*- Fabrica ![factory,plant][]
+* -> Computador ![computer_(OLD)][] <-
+* -> Dinheiro ![money,cash][]
+* -> Fabrica ![factory,plant][]
 
 
 # Veja a água
@@ -295,9 +295,9 @@ Oceano
 
 ### O que é o fogo dentro da mente?
 
-*- Dinheiro![money,cash][]
-*- Saúde ![health][]
-*- Desejo ![wish,desire][] <-
+* -> Dinheiro![money,cash][]
+* -> Saúde ![health][]
+* -> Desejo ![wish,desire][] <-
 
 # Ação
 
@@ -319,9 +319,9 @@ Pensar
 
 ![see,look,watch-(to)][]
 
-*- Olhar ![see,look,watch-(to)][] <-
-*- Admirar ![health][]
-*- Observar ![observe-(to)][]
+* -> Olhar ![see,look,watch-(to)][] <-
+* -> Admirar ![health][]
+* -> Observar ![observe-(to)][]
 
 
 # Tempo

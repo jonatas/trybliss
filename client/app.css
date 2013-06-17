@@ -51,3 +51,15 @@ li.alternative > p {
   padding: 0;
 }
   
+.login{
+  top: 0;
+  right: 0;
+}
+.author {
+  font-width: 10px;
+}
+.fileitem {
+  width: auto;
+  white-space:nowrap;
+  margin-left: 5px;
+}

@@ -1,28 +1,29 @@
 Template.edit_level.rendered = ->
+  console.log("Rendered edit_level...",this)
   $("a[data-toggle='tooltip']").tooltip animation: "fade", container: "body"
-  CodeMirror.commands.save = (editor) ->
-    if level = Session.get("editingLevel")
-      Levels.update(level._id, $set: {content: editor.getValue()})
-  CodeMirror.commands.autocomplete = (cm) ->
-    CodeMirror.showHint(cm, window.showBlissSymbolsHint)
+  if Meteor.user()
+    CodeMirror.commands.save = (editor) ->
+      if level = Session.get("editingLevel")
+        Levels.update(level._id, $set: {content: editor.getValue()})
+    CodeMirror.commands.autocomplete = (cm) ->
+      CodeMirror.showHint(cm, window.showBlissSymbolsHint)
 
-
-  window.editor = CodeMirror.fromTextArea $("textarea")[0],
-    lineNumbers: true,
-    mode: "markdown",
-    keyMap: "vim",
-    showCursorWhenSelecting: true,
-    theme: "night",
-    extraKeys: {"Enter": "newlineAndIndentContinueMarkdownList", "Ctrl-Space":"autocomplete"},
-    onKeyEvent: (editor, s) ->
-      if s.type is "keyup"
-        content = Template.blissdown_content( content:  editor.doc.getValue() )
-        $(".container").html content
-
-  editor.setSize($(window).width()/2,$(window).height()*0.9)
-  $(".editor").hide()
-  $(".show-editor").show()
-
+    if $("textarea")[0]
+      window.editor = CodeMirror.fromTextArea $("textarea")[0],
+        lineNumbers: true,
+        mode: "markdown",
+        keyMap: "vim",
+        showCursorWhenSelecting: true,
+        theme: "night",
+        extraKeys: {"Enter": "newlineAndIndentContinueMarkdownList", "Ctrl-Space":"autocomplete"},
+        onKeyEvent: (editor, s) ->
+          if s.type is "keyup"
+            content = Template.blissdown_content( content:  editor.doc.getValue() )
+            $(".container").html content
+      
+      editor.setSize($(window).width()/2,$(window).height()*0.9)
+      $(".editor").hide()
+      $(".show-editor").show()
 
 Template.blissdown_content.rendered = ->
   $(".alternative").addClass("btn large-button")
@@ -58,7 +59,34 @@ Template.edit_level.events({
   'click a.show-editor' : ->
     $(".show-editor").hide()
     $(".editor").show()
+  'click a.new-file' : ->
+    t = (str) ->
+      if translate = Translations.findOne({lang:Session.get("currentLanguage"), base_str: str})
+        translate.new_str
+      else
+        str
+    input = prompt(t("Insert the title"), t("My first level"))
+    if input isnt null and input isnt ""
+      level = author: Meteor.userId(),title: input, language: Session.get("currentLanguage")
+      if (!level=Levels.find(level))
+        level._id = Levels.insert(level)
+      # else start editing 
+      # FIXME: include a nice introductory bliss content here
+      Session.set "currentLevel",level
+      Session.set "editingLevel",level
+  'click a.rename-file' : ->
+    input = prompt("Insert the title", Session.get("currentLevel").title)
+    if input isnt null and input isnt ""
+      Levels.update Session.get("currentLevel")._id, $set: {title: input}
+
 })
+Template.edit_level.blissfiles = ->
+  files = []
+  for level in Levels.find().fetch()
+    author = Meteor.users.findOne(level.author)
+    files.push title: level.title, authorName: author.profile.name, flag: level.language
+  files
+
 Template.blissdown_headers.links = ->
   a = []
   for link in $("h1")

@@ -16,3 +16,4 @@ Meteor.startup ->
 
   Handlebars.registerHelper 'blissdown', (options) ->
     htmlIt(preMarkdownIt(options.fn(this)))
+

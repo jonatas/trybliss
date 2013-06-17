@@ -8,3 +8,5 @@ accounts-google
 coffeescript
 showdown
 insecure
+accounts-facebook
+accounts-ui

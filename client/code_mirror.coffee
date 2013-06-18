@@ -1,10 +1,10 @@
 saveLevel = ->
-  if level = Session.get("currentLevel")
-    level.content = window.editor.getValue()
-  if (id = level._id and level.author is Meteor.userId())
-    Levels.update(id, level)
+  level = Session.get("currentLevel")
+  if (level._id isnt null) and (level.author is Meteor.userId())
+    Levels.update(level._id, $set: {content:  window.editor.getValue()})
   else
-    level._id = Levels.insert(Session.get("currentLevel"))
+    id = Levels.insert(Session.get("currentLevel"))
+    level = Level.findOne(id)
 
   Session.set("currentLevel", level)
 
@@ -27,14 +27,14 @@ Template.edit_level.rendered = ->
             content = Template.blissdown_content( content:  editor.doc.getValue() )
             $(".container").html content
       
-      editor.setSize($(window).width()/2,$(window).height()*0.9)
+      editor.setSize($(window).width()/2,$(window).height()-32)
       $(".editor").hide()
       $(".show-editor").show()
 
-Template.blissdown_content.rendered = ->
+Template.game.rendered = ->
   $(".alternative").addClass("btn large-button")
   $(".alternative > img, .alternative > p > img").hide()
-  $(".header").append(Template.blissdown_headers())
+  $(".headers").append(Template.blissdown_headers())
   $(".ul li").click (e) ->
     $(".ul li").removeClass("active")
     $(this).addClass("active")
@@ -49,29 +49,32 @@ Template.blissdown_content.rendered = ->
   $(window).trigger "resize"
 
 
+hideEditor = ->
+ $(".editor").hide()
+ $(".show-editor").show()
+showEditor = ->
+ $(".show-editor").hide()
+ $(".editor").show()
+
 Template.edit_level.events({
-  'click a.btn.save': ->
+  'click .save': ->
     saveLevel()
-  'click a.preview': ->
-    $(".editor").hide()
-    $(".show-editor").show()
-  'click a.show-editor': ->
-    $(".show-editor").hide()
-    $(".editor").show()
-  'click .fileitem': ->
-    level = Levels.findOne this.levelId
-    Session.set "currentLevel", level
-  'click a.new-file': ->
-    t = (str) ->
-      withString = lang: Session.get("currentLanguage"), base_str: str
-      translate = Translations.findOne(withString)
-      if translate
-        translate.new_str
-      else
-        str
+    hideEditor()
+  'click a.preview': hideEditor
+  'click a.show-editor': showEditor
+})
 
+t = (str) ->
+  withString = lang: Session.get("currentLanguage"), base_str: str
+  translate = Translations.findOne(withString)
+  if translate
+    translate.new_str
+  else
+    str
+Template.game.events({
+  'click .new-file': ->
+    console.log("new file")
     input = prompt(t("Insert the title"), t("My first level"))
-
     if input isnt null and input isnt ""
       level = author: Meteor.userId(), title: input, language: Session.get("currentLanguage")
       if exists = Levels.findOne(level)
@@ -95,26 +98,37 @@ Template.edit_level.events({
           t("If you use images into the question, the images will be hidden while asking and show the image when click in the answer.")
         Levels.update(level._id, level)
       Session.set "currentLevel",level
+      showEditor()
   'click a.rename-file' : ->
-    input = prompt("Insert the title", Session.get("currentLevel").title)
-    if input isnt null and input isnt ""
-      Levels.update Session.get("currentLevel")._id, $set: {title: input}
+    input = prompt(t("Insert the new title"), Session.get("currentLevel").title)
+    if input isnt ""
+      Levels.update( Session.get("currentLevel")._id, {$set: {title: input}})
 
-
+  'click .fileitem': ->
+    level = Levels.findOne this._id
+    console.log level
+    Session.set "currentLevel", level
+  'click .alternative': (e) ->
+    $(".question").removeClass("alert-success")
+    $(".question").removeClass("alert-error")
+    $(e.target).find("img").show()
+    alt = $(e.target).parent ".alternative"
+    if alt.hasClass "right"
+      alt.addClass "btn-success"
+    else
+      alt.addClass "btn-danger"
 })
-Template.edit_level.blissfiles = ->
-  files = []
-  for level in Levels.find().fetch()
-    author = Meteor.users.findOne(level.author)
-    files.push title: level.title, authorName: author.profile.name, levelId: level._id, flag: level.language
-  files
+
+Template.body.level = -> Session.get("currentLevel")
+Template.body.blissfiles = -> Levels.find()
+Template.body.authorName = -> author.profile.name if author = Meteor.users.findOne(this.author)
 
 Template.blissdown_headers.links = ->
   a = []
   for link in $("h1")
     link = $(link)
-    header = title: link.text(), id: link.attr("id"), index: a.length+1
-    if img = link.nextUntil("img").find("img:first").first()[0]
-      header.symbol = img.src
+    header = {title: link.text(), id: link.attr("id"), index: a.length+1}
+    img = link.nextUntil("img").find("img:first").first()[0]
+    header.symbol = img.src if img
     a.push header
   a

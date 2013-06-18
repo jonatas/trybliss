@@ -55,6 +55,9 @@ li.alternative > p {
   top: 0;
   right: 0;
 }
+.logo{
+  width: 10px;
+}
 .author {
   font-width: 10px;
 }

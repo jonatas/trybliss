@@ -31,7 +31,7 @@ Template.flags_panel.flags = function() {
   flags.push('us');
   return _.map(flags, function(flag){return {flag: flag}});;
 }
-Template.flag.events({
+Template.language.events({
   'click img': function (e) { Session.set("currentLanguage", this.flag);}
 });
   Template.game.levels = function() {
@@ -43,19 +43,6 @@ window.symbolPath = function(symbol){
 Template.game.level = function() {
   return Session.get("currentLevel");
 }
-Template.game.events({
-  'click .alternative' : function (e) {
-  level = Template.game.level();
-   $(".question").removeClass("alert-success");
-   $(".question").removeClass("alert-error");
-   $(e.target).find("img").show();
-   alt = $(e.target).parent(".alternative");
-   alt.addClass( alt.hasClass("right") ?  "btn-success" : "btn-danger");
-  }
-});
 Template.edit_level.level = function(){
   return Session.get("currentLevel");
 };
-Template.game.showingLevels = function(){
-  return !Template.levels.editingLevel() && Session.get("showLevels");
-}

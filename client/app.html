@@ -17,32 +17,52 @@
   {{> body}}
 </body>
 <template name="body">
-  {{> game }}
-  {{#if currentUser }} 
+<div class="container">
+  <div class="navbar">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse" target="_blank">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </a>
+        <a class="brand about" href="/"><img class="logo" src="/images/symbols/blissymbol.png" /></a>
+        <ul class="files nav">
+          <li class="dropdown open">
+          {{#with level}}
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{>language}} {{title}}<b class="caret"></b></a>
+          {{/with}}
+          <ul class="dropdown-menu" id="swatch-menu">
+            <li> <a href="#" class="new-file"><i class="icon-ok-plus icon-white"></i>{{{t "New file"}}</a></li>
+            <li> <a href="#" class="rename-file"><i class="icon-ok-plus icon-white"></i>{{{t "Renomear"}}</a></li>
+            {{#each blissfiles}}
+            <li class="fileitem"><a href="#">{{> language}} {{title}} <span class="author badge badge-info">{{authorName}}</span></a></li>
+            {{/each}}
+          </ul>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{{> game }}
+{{#if currentUser }} 
   {{> edit_level}}
-  {{/if}}
+{{/if}}
 </template>
 <template name="flags_panel">
 <div class="flags">
 {{# each flags }}
-{{> flag}}
+{{> language}}
 {{/each}}
 <span class="label label-info">&lt; Click!</span>
 </div>
 </template>
-<template name="flag">
-<img src="/images/famfamfam_flag_icons/png/{{flag}}.png" class="flag"/>
+<template name="language">
+<img src="/images/famfamfam_flag_icons/png/{{language}}.png" class="flag"/>
 </template>
 <template name="game">
+<div class="headers">
+</div>
 {{#with level}}
-  <div class="header row">
-    <div class="span4">
-      {{> flags_panel }}
-    </div>
-    <div class="login">
-      {{ loginButtons }}
-    </div>
-  </div>
   <div class="container">
     <div class="content">
       {{> blissdown_content}}
@@ -56,7 +76,6 @@
 {{/blissdown}}
 </template>
 <template name="blissdown_headers">
-<div class="headers">
   <ul class="nav nav-list">
  {{#each links }}
  <li>
@@ -70,36 +89,13 @@
 </li>
  {{/each}}
  </ul>
-</div>
 </template>
 <template name="edit_level">
 {{#with level}}
-<a href="#" class="btn show-editor btn-inverse btn-small"><i class="icon-hand-left icon-white"></i>{{t "Editor"}}</a>
+<a href="#" class="btn show-editor btn-inverse btn-small" title='{{t "Editor"}}'><i class="icon-hand-left icon-white"></i></a>
 <div class="editor">
-  <div class="navbar">
-    <div class="navbar-inner">
-      <div class="container">
-        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse" target="_blank">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </a>
-        <a class="brand about" href="#">{{t "Content editor" }}</a>
-        <ul class="files nav">
-          <li class="dropdown open">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{t "Files"}}<b class="caret"></b></a>
-          <ul class="dropdown-menu" id="swatch-menu">
-            <li> <a href="#" class="new-file"><i class="icon-ok-plus icon-white"></i>{{{t "New file"}}</a></li>
-            <li> <a href="#" class="rename-file"><i class="icon-ok-plus icon-white"></i>{{{t "Renomear"}}</a></li>
-            {{#each blissfiles}}
-            <li class="fileitem"><a href="#">{{> flag}} {{title}} <span class="author badge badge-info">{{authorName}}</span></a></li>
-            {{/each}}
-          </ul>
-        </ul>
-        <a href="#" class="btn save btn-success btn-small"><i class="icon-ok-circle icon-white"></i>{{t "Save"}}</a> 
-        <a href="#" class="btn preview btn-inverse btn-small"><i class="icon-hand-right icon-white"></i>{{t "Preview"}}</a>
-      </div>
-    </div>
-  </div>
+  <a href="#" class="btn save btn-success btn-small" title='{{t "Save"}}'><i class="icon-ok-circle icon-white"></i></a>
+  <a href="#" class="btn preview btn-inverse btn-small" title='{{t "Preview"}}'><i class="icon-hand-right icon-white"></i></a>
   <div class="row-fluid">
     <form>
       <textarea>{{content}}</textarea>

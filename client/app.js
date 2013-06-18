@@ -22,15 +22,6 @@ Template.game.rendered = function() {
   });
   $(".alternative > img").hide();
 };
-Template.flags_panel.flags = function() {
-  flags = [];
-  Translations.find().forEach(function(translation){
-    if (!_.include(flags,translation.lang))
-    flags.push(translation.lang);
-  });
-  flags.push('us');
-  return _.map(flags, function(flag){return {flag: flag}});;
-}
 Template.language.events({
   'click img': function (e) { Session.set("currentLanguage", this.flag);}
 });

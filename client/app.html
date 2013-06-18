@@ -25,14 +25,17 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </a>
+        {{>flags_panel}}
         <a class="brand about" href="/"><img class="logo" src="/images/symbols/blissymbol.png" /></a>
         <ul class="files nav">
           <li class="dropdown open">
           {{#with level}}
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{>language}} {{title}}<b class="caret"></b></a>
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{> language}} {{title}}<b class="caret"></b></a>
           {{/with}}
           <ul class="dropdown-menu" id="swatch-menu">
-            <li> <a href="#" class="new-file"><i class="icon-ok-plus icon-white"></i>{{{t "New file"}}</a></li>
+            {{#with currentLanguage }}
+            <li> <a href="#" class="new-file"><i class="selected image-circle">{{> language}}</i>{{t "New file"}}</a></li>
+            {{/with}}
             <li> <a href="#" class="rename-file"><i class="icon-ok-plus icon-white"></i>{{{t "Renomear"}}</a></li>
             {{#each blissfiles}}
             <li class="fileitem"><a href="#">{{> language}} {{title}} <span class="author badge badge-info">{{authorName}}</span></a></li>
@@ -49,12 +52,11 @@
 {{/if}}
 </template>
 <template name="flags_panel">
-<div class="flags">
+<span class="flags pull-right">
 {{# each flags }}
 {{> language}}
 {{/each}}
-<span class="label label-info">&lt; Click!</span>
-</div>
+</span>
 </template>
 <template name="language">
 <img src="/images/famfamfam_flag_icons/png/{{language}}.png" class="flag"/>

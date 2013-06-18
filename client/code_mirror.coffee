@@ -11,7 +11,9 @@ saveLevel = ->
 Template.edit_level.rendered = ->
   $("a[data-toggle='tooltip']").tooltip animation: "fade", container: "body"
   if Meteor.user()
-    CodeMirror.commands.save = (editor) -> saveLevel()
+    CodeMirror.commands.save = (editor) -> 
+      saveLevel()
+      $(".headers").html(Template.blissdown_headers())
     CodeMirror.commands.autocomplete = (cm) -> CodeMirror.showHint(cm, window.showBlissSymbolsHint)
 
     if $("textarea")[0]
@@ -71,18 +73,18 @@ t = (str) ->
     translate.new_str
   else
     str
-Template.game.events({
+Template.body.events({
   'click .new-file': ->
     console.log("new file")
     input = prompt(t("Insert the title"), t("My first level"))
     if input isnt null and input isnt ""
       level = author: Meteor.userId(), title: input, language: Session.get("currentLanguage")
       if exists = Levels.findOne(level)
-        id = Levels.insert(level)
-        level._id = id
-      else
         console.log("exits level", level)
         level = exists
+      else
+        id = Levels.insert(level)
+        level._id = id
 
       if not level.content or level.content is ""
         level.content = t("# Welcome to bliss")+"\n\n"+
@@ -103,11 +105,12 @@ Template.game.events({
     input = prompt(t("Insert the new title"), Session.get("currentLevel").title)
     if input isnt ""
       Levels.update( Session.get("currentLevel")._id, {$set: {title: input}})
-
   'click .fileitem': ->
     level = Levels.findOne this._id
     console.log level
     Session.set "currentLevel", level
+})
+Template.game.events({
   'click .alternative': (e) ->
     $(".question").removeClass("alert-success")
     $(".question").removeClass("alert-error")
@@ -120,6 +123,18 @@ Template.game.events({
 })
 
 Template.body.level = -> Session.get("currentLevel")
+Template.body.currentLanguage= -> language: Session.get("currentLanguage")
+
+flagLanguages = ->
+  flags = []
+  currentLang = Session.get("currentLanguage")
+  Translations.find().forEach (translation) ->
+    if translation.lang isnt currentLang and not _.include(flags,translation.lang)
+      flags.push translation.lang
+  flags.push('us') if 'us' isnt currentLang
+  _.map(flags, (flag) -> language: flag)
+Template.flags_panel.flags = flagLanguages
+Template.body.flags = flagLanguages
 Template.body.blissfiles = -> Levels.find()
 Template.body.authorName = -> author.profile.name if author = Meteor.users.findOne(this.author)
 

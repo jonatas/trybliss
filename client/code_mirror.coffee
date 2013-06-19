@@ -8,12 +8,14 @@ saveLevel = ->
 
   Session.set("currentLevel", level)
 
+updateHeaders = -> $(".headers").html(Template.blissdown_headers())
+adjustEditorSize = -> editor.setSize($(window).width()/2,$(window).height()-32)
 Template.edit_level.rendered = ->
   $("a[data-toggle='tooltip']").tooltip animation: "fade", container: "body"
   if Meteor.user()
     CodeMirror.commands.save = (editor) -> 
       saveLevel()
-      $(".headers").html(Template.blissdown_headers())
+      adjustGameUI()
     CodeMirror.commands.autocomplete = (cm) -> CodeMirror.showHint(cm, window.showBlissSymbolsHint)
 
     if $("textarea")[0]
@@ -27,16 +29,17 @@ Template.edit_level.rendered = ->
         onKeyEvent: (editor, s) ->
           if s.type is "keyup"
             content = Template.blissdown_content( content:  editor.doc.getValue() )
-            $(".container").html content
+            $(".content").html content
+            adjustGameUI()
       
-      editor.setSize($(window).width()/2,$(window).height()-32)
+      adjustEditorSize()
       $(".editor").hide()
       $(".show-editor").show()
 
-Template.game.rendered = ->
+adjustGameUI = ->
   $(".alternative").addClass("btn large-button")
   $(".alternative > img, .alternative > p > img").hide()
-  $(".headers").append(Template.blissdown_headers())
+  updateHeaders()
   $(".ul li").click (e) ->
     $(".ul li").removeClass("active")
     $(this).addClass("active")
@@ -44,10 +47,14 @@ Template.game.rendered = ->
   $('a[href="' + document.hash + '"]').parent().addClass('active')
   $(".headers > a").button().css "background-color": "rgb(155, 221, 94)"
   $(window).resize ->
+    adjustEditorSize()
     percent = Math.round($(window).height() / ($(".headers img").length * 100) * 100)
     if percent < 100
       $(".headers img").css({"width": "#{percent}%"})
 
+
+Template.game.rendered = ->
+  adjustGameUI()
   $(window).trigger "resize"
 
 

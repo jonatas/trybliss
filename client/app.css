@@ -66,3 +66,12 @@ li.alternative > p {
   white-space:nowrap;
   margin-left: 5px;
 }
+ul.flags {
+  padding: 5px;
+  min-width: 22px;
+}
+a.rename-file > i.icon-pencil {
+  margin-right: 11px;
+  margin-left: 4px;
+}
+a.

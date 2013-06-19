@@ -22,15 +22,22 @@ var translations = [
    {lang: 'se', base_str: 'Combine %s', new_str: 'Kombinera %s'},
    {lang: 'se', base_str: 'Level %s', new_str: 'Nivå %s'},
    {lang: 'se', base_str: 'Answer', new_str: 'Svara'},
+   {lang: 'se', base_str: 'New file', new_str: 'ny fil'},
+   {lang: 'se', base_str: 'Rename', new_str: 'byta namn'},
    {lang: 'de', base_str: 'Learn', new_str: 'Lernen'},
    {lang: 'de', base_str: 'Symbols', new_str: 'Symbole'},
    {lang: 'de', base_str: 'Combine', new_str: 'Kombinieren'},
    {lang: 'de', base_str: 'Combine %s', new_str: 'Kombinieren %s'},
    {lang: 'de', base_str: 'Level %s', new_str: 'Ebene %s'},
+   {lang: 'de', base_str: 'New file', new_str: 'neue Datei'},
+   {lang: 'de', base_str: 'Rename', new_str: 'umbenennen'},
    {lang: 'de', base_str: 'Answer', new_str: 'Beantworten'}
 ];
 
 Meteor.startup(function(){
+/*  _.each(Translations.find().fetch(), function(translation) {
+     Translations.remove(translation._id)
+  }); */
   if (Translations.find().count() < translations.length) {
     _.each(translations, function(translation) {
       if (translated=Translations.findOne(translation)){

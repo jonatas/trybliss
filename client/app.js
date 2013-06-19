@@ -23,11 +23,8 @@ Template.game.rendered = function() {
   $(".alternative > img").hide();
 };
 Template.language.events({
-  'click img': function (e) { Session.set("currentLanguage", this.flag);}
+  'click img': function () { Session.set("currentLanguage", this.language);}
 });
-  Template.game.levels = function() {
-    return Levels.find();
-};
 window.symbolPath = function(symbol){
   return "/images/symbols/"+symbol+".png";
 }

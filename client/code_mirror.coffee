@@ -123,7 +123,7 @@ Template.game.events({
 })
 
 Template.body.level = -> Session.get("currentLevel")
-Template.body.currentLanguage= -> language: Session.get("currentLanguage")
+Template.body.currentLanguage = Template.flags_panel.currentLanguage = -> language: Session.get("currentLanguage")
 
 flagLanguages = ->
   flags = []
@@ -134,7 +134,6 @@ flagLanguages = ->
   flags.push('us') if 'us' isnt currentLang
   _.map(flags, (flag) -> language: flag)
 Template.flags_panel.flags = flagLanguages
-Template.body.flags = flagLanguages
 Template.body.blissfiles = -> Levels.find()
 Template.body.authorName = -> author.profile.name if author = Meteor.users.findOne(this.author)
 

@@ -9,11 +9,13 @@ saveLevel = ->
   Session.set("currentLevel", level)
 
 updateHeaders = -> $(".headers").html(Template.blissdown_headers())
-adjustEditorSize = -> editor.setSize($(window).width()/2,$(window).height()-32)
+adjustEditorSize = ->
+  if window.editor
+    window.editor.setSize($(window).width()/2,$(window).height()-32)
 Template.edit_level.rendered = ->
   $("a[data-toggle='tooltip']").tooltip animation: "fade", container: "body"
   if Meteor.user()
-    CodeMirror.commands.save = (editor) -> 
+    CodeMirror.commands.save = (editor) ->
       saveLevel()
       adjustGameUI()
     CodeMirror.commands.autocomplete = (cm) -> CodeMirror.showHint(cm, window.showBlissSymbolsHint)

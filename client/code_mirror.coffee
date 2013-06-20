@@ -11,7 +11,11 @@ saveLevel = ->
 updateHeaders = -> $(".headers").html(Template.blissdown_headers())
 adjustEditorSize = ->
   if window.editor
-    window.editor.setSize($(window).width()/2,$(window).height()-32)
+    if Session.get("fullscreen")
+      factor = 1
+    else
+      factor = 2
+    window.editor.setSize($(window).width()/factor,$(window).height()-32)
 Template.edit_level.rendered = ->
   $("a[data-toggle='tooltip']").tooltip animation: "fade", container: "body"
   if Meteor.user()
@@ -72,6 +76,9 @@ Template.edit_level.events({
     saveLevel()
     hideEditor()
   'click a.preview': hideEditor
+  'click a.fullscreen': ->
+    Session.set("fullscreen",!Session.get("fullscreen"))
+    adjustEditorSize()
   'click a.show-editor': showEditor
 })
 

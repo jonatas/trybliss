@@ -15,6 +15,7 @@ Handlebars.registerHelper('t', function(object){
 Meteor.autorun(function(){
   Meteor.subscribe("levels");
   Meteor.subscribe("translations");
+  Meteor.subscribe("directory");
 });
 Template.game.rendered = function() {
   $('a.edit').click(function (e) {

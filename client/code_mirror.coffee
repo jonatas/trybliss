@@ -4,7 +4,7 @@ saveLevel = ->
     Levels.update(level._id, $set: {content:  window.editor.getValue()})
   else
     id = Levels.insert(Session.get("currentLevel"))
-    level = Level.findOne(id)
+    level = Levels.findOne(id)
 
   Session.set("currentLevel", level)
 

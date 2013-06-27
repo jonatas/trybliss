@@ -1,9 +1,16 @@
 saveLevel = ->
   level = Session.get("currentLevel")
-  if (level._id isnt null) and (level.author is Meteor.userId())
-    Levels.update(level._id, $set: {content:  window.editor.getValue()})
-  else
-    id = Levels.insert(Session.get("currentLevel"))
+  if level._id isnt null
+    if level.author is Meteor.userId()
+      Levels.update level._id, $set: {content:  window.editor.getValue()}
+    else
+      level.original_level = level._id
+      level.language = Session.get "currentLanguage"
+      delete level._id
+      Levels.insert level
+
+  if not level._id
+    id = Levels.insert(level)
     level = Levels.findOne(id)
 
   Session.set("currentLevel", level)

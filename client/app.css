@@ -70,4 +70,10 @@ a.rename-file > i.icon-pencil {
   margin-right: 11px;
   margin-left: 4px;
 }
-a.
+table th, table td {
+  border: 1px solid #ddd;
+  padding: 6px 13px;
+}
+table th {
+  font-weight: bold;
+}

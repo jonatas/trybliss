@@ -50,6 +50,7 @@ Template.edit_level.rendered = ->
       $(".show-editor").show()
 
 adjustGameUI = ->
+  # renderAllBliss() FIXME: use it when using annotated bliss
   $(".alternative").addClass("btn large-button")
   $(".alternative > img, .alternative > p > img").hide()
   updateHeaders()

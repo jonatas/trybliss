@@ -1,5 +1,5 @@
 Meteor.startup ->
-  htmlIt = (text) -> (new Showdown.converter()).makeHtml(text)
+  htmlIt = (text) -> marked(text)
   preMarkdownIt = (string) ->
     strFull = ""
     for line in string.split "\n"

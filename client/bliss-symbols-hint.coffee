@@ -21,28 +21,23 @@ window.showBlissSymbolCompletion = (editor, keywords, getToken, options) ->
 window.getCompletions = (token,  keywords, options) ->
   found = []
   start = token.string
-  addFirst = (str) -> str.indexOf(start) == 0
-  addAfter = (str) -> str.indexOf(start) > 0
-  addSymbol= ( str) ->
-    return if arrayContains(found, str)
-    found.push text: str,
-      hint: (cm,data, obj) ->
-        cursor = cm.getCursor()
-        link = "["+str+"]"
-        text = "\n"+link+": "+symbolPath(str)
-        cm.doc.setValue cm.doc.getValue()+text
-        cm.replaceRange("!"+link+"[]"+"\n\n"+str, data.from, data.to)
-        cursor.line += 2
-        cm.setCursor cursor
-      render: (li, data, obj) ->
-        img = li.appendChild(document.createElement("img"))
-        img.src = symbolPath(str)
-        li.appendChild(document.createTextNode str)
+  maybeAdd = (str) ->
+    if str.indexOf(start) >= 0 and not arrayContains(found, str)
+      found.push text: str,
+        hint: (cm,data, obj) ->
+          cursor = cm.getCursor()
+          link = "["+str+"]"
+          text = "\n"+link+": "+symbolPath(str)
+          cm.doc.setValue cm.doc.getValue()+text
+          cm.replaceRange("!"+link+"[]"+"\n\n"+str, data.from, data.to)
+          cursor.line += 2
+          cm.setCursor cursor
+        render: (li, data, obj) ->
+          img = li.appendChild(document.createElement("img"))
+          img.src = symbolPath(str)
+          li.appendChild(document.createTextNode str)
                                 
-  for keyword in keywords
-    addSymbol(keyword) if addFirst(keyword)
-  for keyword in keywords
-    addSymbol(keyword) if addAfter(keyword)
+  forEach(keywords, maybeAdd)
   return found
 
 window.blissSymbols = ("ATB,all-terrain_bike ATM,cash_machine Abraham Adam Adar Advent Aegir Afghanistan Africa Allah Antarctic April Aquarius_(in_zodiac) Arabic_(language) Aries_(in_zodiac) Ascension_(of_Christ) Ascension_Day Asia August Australia Austria Av Balder Bangladesh Batman Belarus Belgium Bible_(Christian) Bliss,Bliss_language,Blissymbolics Bliss_(class) Bliss_fanatic Brahma Brazil Brontosaurus Buddha Buddhism CD,record CD CD_cover CD_player,record_player,stereo Canada Cancer_(in_zodiac) Capricorn_(in_zodiac) Ceres_(dwarf_planet) Chanukah,Hanukkah Cheshvan Children's_Day China Christian_(person) Christian_charity Christian_event Christian_faith Christian_hope Christian_love Christianity Christmas Christmas_Eve_(day) Christmas_Eve_(evening) Christmas_pudding Christmas_song,carol Christmas_tree Chronic_Fatigue_Syndrome Chumash,Pentateuch Czech_Republic DVD,movie_disc DVD DVD_player Danish_(language) December Denmark Dharma_wheel Durga Earth,Tellus_(planet) Earth_axis Eastern_Orthodox_Church Egypt Elul England English_(class) English_(language) Epiphany Eris_(dwarf_planet) Estonia Estonian_(language) Euro Europe Eve Family_Day Father's_Day February Finland Finnish_(class) Finnish_(language) Formula_One,NASCAR_Kart France French_(language) French_fries,chips French_fries,chips_(OLD) French_horn_(1) French_horn_(2) Frey Freya Friday_(OLD) Friday_(day5) Friday_(day6) Friday_(day7) Frigg GPS,satnav GPS_(system) Ganesh Gemini_(in_zodiac) German_(class) German_(language) Germany God God_the_father God_the_son Good_Friday Good_day_(bye) Good_day_(hello) Good_evening_(bye) Good_evening_(hello) Good_morning_(bye) Good_morning_(hello) Good_night_(bye) Good_night_(hello) Greece Haggadah Halloween,All_Saint's_Day Hattifatteners Havdalah Heaven,Kingdom_of_God Hebrew_(class) Hebrew_(language) Hemulen Holy_City Holy_Family Holy_Infant Holy_Spirit Holy_Trinity Host,wafer_(in_religious_ceremony) Hugin_and_Munin Hungary I,me,myself-(feminine) I,me,myself-(masculine) I,me,myself I_need_more_time,give_me_time Iceland Icelandic_(language) Independence_Day_(Israel) India Iran Iraq Ireland Irish_(language) Islam Israel Italian_(language) Italy Iyar January Japan Jerusalem_Day Jesus_(of_Nazareth),Jesus_Christ,Christ Jesus_Christ Jew Jewish Joseph,Saint_Joseph Judaism July June Jupiter_(planet) Kabbalat_Shabbat Kali Kazakhstan Kislev Koran Lag_B'Omer Lakshmi Lent Leo_(in_zodiac) Libra_(in_zodiac) Little_My Loki MMS MP3_player,iPod_(etc) March Mars_(planet) Mary_(Mother_of_Christ) May Megillah_(Book_of_Esther) Mercury_(planet) Messiah Midgard's_serpent Mjolnir Monday_(OLD) Monday_(day1) Monday_(day2) Monday_(day3) Moominmamma Moominpappa Moomintroll Moses Mother's_Day Muhammad,Mohammed,Muhammed Muslim,Moslem,Islamic Muslim,Moslem Neptune_(planet) Netherlands_(The),Holland New_Testament New_Year's_Day New_Year's_eve,end_of_year_(day) New_Year's_eve,end_of_year_(evening) New_Year's_eve_(day) New_Year's_eve_(evening) New_Year_(general) Nisan,Nissan Noah Nordic_God"+

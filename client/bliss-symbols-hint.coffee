@@ -41,7 +41,8 @@ window.getCompletions = (token,  keywords, options) ->
      pushToFound str if str.indexOf(search) > 0
                                 
   forEach(keywords, shouldAdd)
-  forEach(keywords, maybeAdd)
+  if found.length < 5
+    forEach(keywords, maybeAdd) 
 
   return found
 

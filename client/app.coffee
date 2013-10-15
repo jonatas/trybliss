@@ -177,8 +177,6 @@ adjustGameUI = ->
     if percent < 100
       $(".headers img").css({"width": "#{percent}%"})
 
-   wrapper = null
-   headers_count = 0
 
 Template.game.rendered = ->
   adjustGameUI()
@@ -197,7 +195,7 @@ Template.slides.rendered = ->
       horizontalWrapper.insertBefore e
       verticalWrapper = null
 
-    if verticalWrapper is null or e.tagName is "H2"
+    if verticalWrapper is null or e.tagName.match "H[23]|TABLE|UL"or $(e).hasClass("question")
       verticalWrapper = $("<section></section>")
       horizontalWrapper.append verticalWrapper
 
@@ -272,17 +270,18 @@ Template.body.events({
     level = Levels.findOne this._id
     Session.set "currentLevel", level
 })
-Template.game.events({
-  'click .alternative': (e) ->
-    $(".question").removeClass("alert-success")
-    $(".question").removeClass("alert-error")
-    $(e.target).find("img").show()
-    alt = $(e.target).parent ".alternative"
-    if alt.hasClass "right"
-      alt.addClass "btn-success"
-    else
-      alt.addClass "btn-danger"
-})
+clickAlternative = (e) ->
+  $(".question").removeClass("alert-success")
+  $(".question").removeClass("alert-error")
+  $(e.target).find("img").show()
+  alt = $(e.target).parent ".alternative"
+  if alt.hasClass "right"
+    alt.addClass "btn-success"
+  else
+    alt.addClass "btn-danger"
+
+Template.game.events 'click .alternative': clickAlternative
+Template.slides.events 'click .alternative': clickAlternative
 
 Template.body.level = -> Session.get("currentLevel")
 Template.body.showSlides = -> true

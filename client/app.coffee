@@ -47,8 +47,13 @@ window.getCompletions = (token,  keywords, options) ->
           cursor = cm.getCursor()
           link = "["+str+"]"
           text = "\n"+link+": "+symbolPath(str)
-          cm.doc.setValue cm.doc.getValue()+text
-          cm.replaceRange("!"+link+"[]", data.from, data.to)
+          bliss_close = 
+          symbol = "<bliss symbols='#{str}'>#{start}</bliss>"+
+          cursor = cm.getCursor()
+          cm.replaceRange(symbol, data.from, data.to)
+          cursor.ch = symbol.length - 9
+          #cm.doc.setValue cm.doc.getValue()+text
+          #cm.replaceRange("!"+link+"[]", data.from, data.to)
           cm.setCursor cursor
         render: (li, data, obj) ->
           img = li.appendChild(document.createElement("img"))
@@ -99,6 +104,7 @@ Template.language.events
 
 window.symbolPath = (symbol) -> "/images/symbols/"+symbol+".png"
 
+Template.slides.level =
 Template.game.level =
 Template.edit_level.level = -> Session.get("currentLevel")
 
@@ -173,25 +179,24 @@ adjustGameUI = ->
 
    wrapper = null
    headers_count = 0
-   $(".content > *").each (i,e) ->
-     if e.tagName is "H1"
-       if wrapper isnt null
-         button = $("<i class='icon-forward next-chapter'></i>")
-         wrapper.append button
-         button.on 'click', -> wrapper.next().show()
-       headers_count += 1
-       wrapper = $("<div></div>")
-       wrapper.insertBefore($(e))
-       if headers_count > 1
-         wrapper.hide()
-         
-     if wrapper isnt null
-       wrapper.append(e)
-
 
 Template.game.rendered = ->
   adjustGameUI()
   $(window).trigger "resize"
+
+
+Template.slides.rendered = ->
+  wrapper = null
+  wrapperTagName = null
+  $(".slides > *").each (i,e) ->
+    if e.tagName.match "H1"
+      wrapper = $("<section></section>")
+      wrapper.insertBefore($(e))
+
+    if wrapper isnt null
+      wrapper.append(e)
+
+  Reveal.initialize controls: true, progress: true, history: true, center: true, touch: true
 
 
 hideEditor = ->
@@ -268,6 +273,7 @@ Template.game.events({
 })
 
 Template.body.level = -> Session.get("currentLevel")
+Template.body.showSlides = -> true
 Template.body.currentLanguage = Template.flags_panel.currentLanguage = -> language: Session.get("currentLanguage")
 
 flagLanguages = ->
@@ -315,9 +321,6 @@ Meteor.startup ->
 #    ((cap, src) -> src.substring(cap[0].length)),
 #    ((cap, escape) -> "<a href='https://twitter.com/#{cap[2]}'>@#{cap[2]}'</a>")
 
-  Handlebars.registerHelper 'blissdown', (options) ->
-    htmlIt(preMarkdownIt(options.fn(this)))
-  htmlIt = (text) -> marked(text)
   preMarkdownIt = (string) ->
     strFull = ""
     for line in string.split "\n"
@@ -331,6 +334,11 @@ Meteor.startup ->
           "<li class='alternative'>#{htmlIt(alternative)}</li>"
       strFull = strFull + "\n" + newString
     strFull
+
+  htmlIt = (text) -> marked(text)
+  blissdown = (text) ->  htmlIt(preMarkdownIt(text))
+  Handlebars.registerHelper 'blissdown', (options) ->
+    blissdown(options.fn(this))
 
 window.blissSymbols = ("ATB,all-terrain_bike ATM,cash_machine Abraham Adam Adar Advent Aegir Afghanistan Africa Allah Antarctic April Aquarius_(in_zodiac) Arabic_(language) Aries_(in_zodiac) Ascension_(of_Christ) Ascension_Day Asia August Australia Austria Av Balder Bangladesh Batman Belarus Belgium Bible_(Christian) Bliss,Bliss_language,Blissymbolics Bliss_(class) Bliss_fanatic Brahma Brazil Brontosaurus Buddha Buddhism CD,record CD CD_cover CD_player,record_player,stereo Canada Cancer_(in_zodiac) Capricorn_(in_zodiac) Ceres_(dwarf_planet) Chanukah,Hanukkah Cheshvan Children's_Day China Christian_(person) Christian_charity Christian_event Christian_faith Christian_hope Christian_love Christianity Christmas Christmas_Eve_(day) Christmas_Eve_(evening) Christmas_pudding Christmas_song,carol Christmas_tree Chronic_Fatigue_Syndrome Chumash,Pentateuch Czech_Republic DVD,movie_disc DVD DVD_player Danish_(language) December Denmark Dharma_wheel Durga Earth,Tellus_(planet) Earth_axis Eastern_Orthodox_Church Egypt Elul England English_(class) English_(language) Epiphany Eris_(dwarf_planet) Estonia Estonian_(language) Euro Europe Eve Family_Day Father's_Day February Finland Finnish_(class) Finnish_(language) Formula_One,NASCAR_Kart France French_(language) French_fries,chips French_fries,chips_(OLD) French_horn_(1) French_horn_(2) Frey Freya Friday_(OLD) Friday_(day5) Friday_(day6) Friday_(day7) Frigg GPS,satnav GPS_(system) Ganesh Gemini_(in_zodiac) German_(class) German_(language) Germany God God_the_father God_the_son Good_Friday Good_day_(bye) Good_day_(hello) Good_evening_(bye) Good_evening_(hello) Good_morning_(bye) Good_morning_(hello) Good_night_(bye) Good_night_(hello) Greece Haggadah Halloween,All_Saint's_Day Hattifatteners Havdalah Heaven,Kingdom_of_God Hebrew_(class) Hebrew_(language) Hemulen Holy_City Holy_Family Holy_Infant Holy_Spirit Holy_Trinity Host,wafer_(in_religious_ceremony) Hugin_and_Munin Hungary I,me,myself-(feminine) I,me,myself-(masculine) I,me,myself I_need_more_time,give_me_time Iceland Icelandic_(language) Independence_Day_(Israel) India Iran Iraq Ireland Irish_(language) Islam Israel Italian_(language) Italy Iyar January Japan Jerusalem_Day Jesus_(of_Nazareth),Jesus_Christ,Christ Jesus_Christ Jew Jewish Joseph,Saint_Joseph Judaism July June Jupiter_(planet) Kabbalat_Shabbat Kali Kazakhstan Kislev Koran Lag_B'Omer Lakshmi Lent Leo_(in_zodiac) Libra_(in_zodiac) Little_My Loki MMS MP3_player,iPod_(etc) March Mars_(planet) Mary_(Mother_of_Christ) May Megillah_(Book_of_Esther) Mercury_(planet) Messiah Midgard's_serpent Mjolnir Monday_(OLD) Monday_(day1) Monday_(day2) Monday_(day3) Moominmamma Moominpappa Moomintroll Moses Mother's_Day Muhammad,Mohammed,Muhammed Muslim,Moslem,Islamic Muslim,Moslem Neptune_(planet) Netherlands_(The),Holland New_Testament New_Year's_Day New_Year's_eve,end_of_year_(day) New_Year's_eve,end_of_year_(evening) New_Year's_eve_(day) New_Year's_eve_(evening) New_Year_(general) Nisan,Nissan Noah Nordic_God"+
   " North_America North_Pole Norway Norwegian_(language) November OK,alright October Old_Testament Olympics,Olympic_games PEP_mask Passover Pegasus Persian_(language) Pisces_(in_zodiac) Pluto_(dwarf_planet) Poland Pope Portugal Pterosaur,Pterodactyl Purim Ramadan Resurrection_of_Christ Roman_Catholicism,Roman_Catholic_Church Romania Romanian_(class) Romanian_(language) Rosh_Hashana Russia Russian_(language) Sabbath,day_of_rest Saehrimnir Sagittarius_(in_zodiac) Sandman Santa_Claus,Father_Christmas Saturday_(OLD) Saturday_(day1) Saturday_(day6) Saturday_(day7) Saturn_(planet) Scorpio_(in_zodiac) Scotland September Shavuot Shevat Shiva Sif Simchat_Torah Sivan Sleipnir Sniff Snork Snork_Maiden Snufkin South_Africa South_America South_Pole Spain Spanish,Castilian_(language) Spiderman Sukkot Sunday_(OLD) Sunday_(day1) Sunday_(day2) Sunday_(day7) Superman Sweden Sweden_(OLD) Swedish_(class) Swedish_(language) Switzerland TV_programme,TV_show,radio_programme TV_studio,radio_studio Take_your_time!  Tammuz Tarzan Taurus_(in_zodiac) Tevet Thai_(class) Thai_(language) Thailand The_Groke The_Nordic_countries Thor Thursday_(OLD) Thursday_(day4) Thursday_(day5) Thursday_(day6) Tibet Tisha_B'Av Tishri Toffle Torah Triceratops Tu_Bishvat Tuesday_(OLD) Tuesday_(day2) Tuesday_(day3) Tuesday_(day4) Turkey Tyr Tyrannosaurus_Rex USA Ukraine United_Kingdom Universe Uranus_(planet) Valentine's_Day Valentine_(card) Valhalla Vatican,Vatican_City Venus_(planet) Viking Viking_ship Virgo_(in_zodiac) Vishnu Wednesday_(OLD) Wednesday_(day3) Wednesday_(day4) Wednesday_(day5) Woden Yahrzeit Yom_Kippur a,an,any ability,capability,capacity,potential aboard,on_board abortion_(induced) about,concerning,in_relation_to,of,on abseiling,rappelling absorbent_material,sponge abstention abuse,assault,violence access-(to) accessibility accessible accessory accident,chance_event accident accordion account accusation accusation_(legal),charge,prosecution accuse-(to) accuse_(legal),charge,prosecute-(to) ache achieve-(to) achievement acne acrobat acrobatics across act,demonstrate_(against)-(to) act,demonstrate_(in_favour_of)-(to) act_in_favour_of_(legal)-(to) action,act,deed action,demonstration_(against) action,demonstration_(in_favour_of) active activity,male_gender_(in_combinations) activity_centre activity_centre_(children) activity_centre_(leisure_time),after_school_club,youth_club activity_centre_(teenagers) acupuncturist add,gain-(to) addict addiction adding,additive addition,gain address adolescence adopt-(to) adoption adult,grownup adult,mature advance,go-(to) adventure adventure_(OLD) adventurous advertisement advice,counsel,recommendation advise,counsel,recommend-(to) advocacy,representation_(legal) advocacy advocate-(to) advocate advocate_(legal)-(to) advocate_(legal) advocate_(legal,speaking) advocate_(speaking) aerial,antenna afraid,frightened,scared after,behind afternoon again against,opposed_to agenda agnosticism ago,then_(past) agree-(to) agreed,in_agreement,harmonious"+

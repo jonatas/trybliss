@@ -1,56 +1,69 @@
 <head>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Try Bliss Symbolics</title>
-    <link rel="stylesheet" href="/codemirror/lib/codemirror.css">
-    <link rel="stylesheet" href="/codemirror/addon/hint/show-hint.css">
-    <link rel="stylesheet" href="/codemirror/theme/night.css">
-    <script src="/codemirror/lib/codemirror.js"></script>
-    <script src="/codemirror/addon/dialog/dialog.js"></script>
-    <script src="/codemirror/addon/search/searchcursor.js"></script>
-    <script src="/codemirror/addon/edit/continuelist.js"></script>
-    <script src="/codemirror/addon/hint/show-hint.js"></script>
-    <script src="/codemirror/mode/markdown/markdown.js"></script>
-    <script src="/codemirror/keymap/vim.js"></script>
-    <link rel="stylesheet" href="/codemirror/doc/docs.css">
-    <link rel="stylesheet" href="/codemirror/addon/dialog/dialog.css">
+  <link rel="stylesheet" href="/codemirror/lib/codemirror.css">
+  <link rel="stylesheet" href="/codemirror/addon/hint/show-hint.css">
+  <link rel="stylesheet" href="/codemirror/theme/night.css">
+  <script src="/codemirror/lib/codemirror.js"></script>
+  <script src="/codemirror/addon/dialog/dialog.js"></script>
+  <script src="/codemirror/addon/search/searchcursor.js"></script>
+  <script src="/codemirror/addon/edit/continuelist.js"></script>
+  <script src="/codemirror/addon/hint/show-hint.js"></script>
+  <script src="/codemirror/mode/markdown/markdown.js"></script>
+  <script src="/codemirror/keymap/vim.js"></script>
+  <script src="/reveal/lib/js/head.min.js"></script>
+  <script src="/reveal/js/reveal.js"></script>
+  <script src="/reveal/lib/js/notes.js"></script>
+  <script src="/reveal/lib/js/classList.js"></script>
+  <link rel="stylesheet" href="/codemirror/doc/docs.css">
+  <link rel="stylesheet" href="/codemirror/addon/dialog/dialog.css">
+  <link rel="stylesheet" href="/reveal/css/reveal.min.css">
+  <link rel="stylesheet" href="/reveal/css/theme/default.css">
 </head>
 <body>
   {{> body}}
 </body>
 <template name="body">
-<div class="container">
-  <div class="navbar">
-    <div class="navbar-inner">
-      <div class="container">
-        <a class="brand about" href="/"><img class="logo" src="/images/symbols/blissymbol.png" /></a>
-        <ul class="files nav">
-          <li class="dropdown">
-          {{#with level}}
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{> language}} {{title}}<b class="caret"></b></a>
-          {{/with}}
-          <ul class="dropdown-menu">
-          {{#if currentUser }} 
-            {{#with currentLanguage }}
-              <li> <a href="#" class="new-file">{{> language}} {{t "New file"}}</a></li>
-            {{/with}}
-            <li> <a href="#" class="rename-file"><i class="icon-pencil"></i>{{{t "Renomear"}}</a></li>
-          {{/if}}
-          {{#each blissfiles}}
-            <li class="fileitem"><a href="#">{{> language}} {{title}} <span class="author badge badge-info">{{authorName}}</span></a></li>
-          {{/each}}
+{{#if showSlides}}
+  {{>slides}}
+{{else}}
+  <div class="container">
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand about" href="/"><img class="logo" src="/images/symbols/blissymbol.png" /></a>
+          <ul class="files nav">
+            <li class="dropdown">
+              {{#with level}}
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{> language}} {{title}}<b class="caret"></b></a>
+              {{/with}}
+              <ul class="dropdown-menu">
+                {{#if currentUser }} 
+                {{#with currentLanguage }}
+                <li> <a href="#" class="new-file">{{> language}} {{t "New file"}}</a></li>
+                {{/with}}
+                <li> <a href="#" class="rename-file"><i class="icon-pencil"></i>{{{t "Renomear"}}</a></li>
+                {{/if}}
+                {{#each blissfiles}}
+                <li class="fileitem"><a href="#">{{> language}} {{title}} <span class="author badge badge-info">{{authorName}}</span></a></li>
+                {{/each}}
+              </li>
+            </ul>
           </ul>
-        </ul>
-        </li>
-        {{>flags_panel}} 
-        <div class="pull-right">
-          {{loginButtons}}
+          {{>flags_panel}} 
+          <div class="pull-right">
+            {{loginButtons}}
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-{{> game }}
-{{#if currentUser }} 
-  {{> edit_level}}
+  {{> game }}
+  {{#if currentUser }} 
+    {{> edit_level}}
+  {{/if}}
 {{/if}}
 </template>
 <template name="flags_panel">
@@ -74,11 +87,11 @@
 <div class="headers">
 </div>
 {{#with level}}
-  <div class="container">
-    <div class="content">
+<div class="container">
+  <div class="content">
       {{> blissdown_content}}
-    </div>
   </div>
+</div>
 {{/with}}
 </template>
 <template name="blissdown_content">
@@ -113,6 +126,16 @@
       <textarea>{{content}}</textarea>
     </form>
   </div>
+</div>
+{{/with}}
+</template>
+<template name="slides">
+{{#with level}}
+<div class="reveal ">
+   <div class="slides">
+      {{> blissdown_content}}
+   </div>
+   <aside class="controls"><div class="navigate-left enabled"></div><div class="navigate-right enabled"></div><div class="navigate-up"></div><div class="navigate-down"></div></aside>
 </div>
 {{/with}}
 </template>

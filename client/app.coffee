@@ -187,9 +187,8 @@ Template.game.rendered = ->
 
 Template.slides.rendered = ->
   wrapper = null
-  wrapperTagName = null
   $(".slides > *").each (i,e) ->
-    if e.tagName.match "H1"
+    if e.tagName.match "H[12]"
       wrapper = $("<section></section>")
       wrapper.insertBefore($(e))
 

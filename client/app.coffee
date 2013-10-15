@@ -161,10 +161,10 @@ Template.edit_level.rendered = ->
 
 adjustGameUI = ->
   # renderAllBliss() FIXME: use it when using annotated bliss
-  $(".alternative").addClass("btn large-button")
-  $(".alternative > img, .alternative > p > img").hide()
   updateHeaders()
   _.each $("h1"), (e,i) -> $(e).attr('id','header_'+i)
+  $(".alternative").addClass("btn large-button")
+  $(".alternative > img, .alternative > p > img").hide()
   $(".ul li").click (e) ->
     $(".ul li").removeClass("active")
     $(this).addClass("active")
@@ -186,14 +186,27 @@ Template.game.rendered = ->
 
 
 Template.slides.rendered = ->
-  wrapper = null
+  horizontalWrapper = null
+  verticalWrapper = null
+  $(".alternative").addClass("btn large-button")
+  $(".alternative > img, .alternative > p > img").hide()
   $(".slides > *").each (i,e) ->
-    if e.tagName.match "H[12]"
-      wrapper = $("<section></section>")
-      wrapper.insertBefore($(e))
 
-    if wrapper isnt null
-      wrapper.append(e)
+    if horizontalWrapper is null or e.tagName is "H1"
+      horizontalWrapper = $("<section></section>")
+      horizontalWrapper.insertBefore e
+      verticalWrapper = null
+
+    if verticalWrapper is null or e.tagName is "H2"
+      verticalWrapper = $("<section></section>")
+      horizontalWrapper.append verticalWrapper
+
+    if verticalWrapper isnt null
+      verticalWrapper.append e
+    else if horizontalWrapper isnt null
+      horizontalWrapper.append e
+    else
+      console.log "what do with?  ", e
 
   Reveal.initialize controls: true, progress: true, history: true, center: true, touch: true
 

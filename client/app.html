@@ -2,7 +2,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Try Bliss Symbolics</title>
+  <title>Bliss | Ideia.me</title>
   <link rel="stylesheet" href="/codemirror/lib/codemirror.css">
   <link rel="stylesheet" href="/codemirror/addon/hint/show-hint.css">
   <link rel="stylesheet" href="/codemirror/theme/night.css">
@@ -19,8 +19,6 @@
   <script src="/reveal/lib/js/classList.js"></script>
   <link rel="stylesheet" href="/codemirror/doc/docs.css">
   <link rel="stylesheet" href="/codemirror/addon/dialog/dialog.css">
-  <link rel="stylesheet" href="/reveal/css/reveal.min.css">
-  <link rel="stylesheet" href="/reveal/css/theme/solarized.css">
 </head>
 <body>
   {{> body}}
@@ -37,12 +35,8 @@
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{> language}} {{title}}<b class="caret"></b></a>
               {{/with}}
               <ul class="dropdown-menu">
-                {{#if currentUser }} 
-                {{#with currentLanguage }}
                 <li> <a href="#" class="new-file">{{> language}} {{t "New file"}}</a></li>
-                {{/with}}
-                <li> <a href="#" class="rename-file"><i class="icon-pencil"></i>{{{t "Renomear"}}</a></li>
-                {{/if}}
+                <li> <a href="#" class="rename-file"><i class="icon-pencil"></i>{{{t "Rename"}}</a></li>
                 {{#each blissfiles}}
                 <li class="fileitem"><a href="#">{{> language}} {{title}} <span class="author badge badge-info">{{authorName}}</span></a></li>
                 {{/each}}

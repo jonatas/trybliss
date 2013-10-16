@@ -1,4 +1,4 @@
-Levels = new Meteor.Collection('levels')
+window.Levels = new Meteor.Collection('levels')
 Translations = new Meteor.Collection('translations')
 Meteor.autorun ->
   if Levels isnt undefined
@@ -7,15 +7,12 @@ Meteor.autorun ->
         Session.set "user_id", Meteor.userId()
         if user=Meteor.users.findOne Meteor.userId()
           Session.set "user_name",user.profile.name
-        if level = Session.get("currentLevel")
-          if not level.author
-            Levels.update level._id, $set: {author: Meteor.userId()}
     
     if not Session.get('currentLanguage')
       Session.set('currentLanguage','br')
     
     if not Session.get("currentLevel")
-      level = Levels.findOne(title: "Bem vindo!", language: Session.get("currentLanguage"))
+      level = Levels.findOne(title: "Bem vindo!", language: Session.get("currentLanguage"))  || Levels.findOne()
       Session.set("currentLevel", level)
 
 forEach = (arr, fn) -> fn(e) for e in arr
@@ -47,7 +44,6 @@ window.getCompletions = (token,  keywords, options) ->
           cursor = cm.getCursor()
           link = "["+str+"]"
           text = "\n"+link+": "+symbolPath(str)
-          bliss_close = 
           symbol = "<bliss symbols='#{str}'>#{start}</bliss>"+
           cursor = cm.getCursor()
           cm.replaceRange(symbol, data.from, data.to)
@@ -66,7 +62,7 @@ window.getCompletions = (token,  keywords, options) ->
                                 
   forEach(keywords, shouldAdd)
   if found.length < 5
-    forEach(keywords, maybeAdd) 
+    forEach(keywords, maybeAdd)
 
   return found
 
@@ -98,6 +94,7 @@ Template.game.rendered = ->
   $(".alternative > img").hide()
   $("img.symbol").mouseover (e) ->
     console.log(" over " , e.target)
+  $("link.revealcss").remove()
 
 Template.language.events
   'click img': -> Session.set("currentLanguage", @language)
@@ -110,17 +107,11 @@ Template.edit_level.level = -> Session.get("currentLevel")
 
 saveLevel = ->
   level = Session.get("currentLevel")
-  if level._id isnt null
-    if level.author is Meteor.userId()
-      Levels.update level._id, $set: {content:  window.editor.getValue()}
-    else
-      level.original_level = level._id
-      level.language = Session.get "currentLanguage"
-      delete level._id
-      Levels.insert level
-
-  if not level._id
-    id = Levels.insert(level)
+  if level._id
+    Levels.update level._id, $set: {content:  window.editor.getValue()}
+    id = level._id
+  else
+    id = Levels.insert level
     level = Levels.findOne(id)
 
   Session.set("currentLevel", level)
@@ -182,8 +173,14 @@ Template.game.rendered = ->
   adjustGameUI()
   $(window).trigger "resize"
 
-
 Template.slides.rendered = ->
+  css = (filename) ->
+    fileref=document.createElement("link")
+    fileref.setAttribute("rel", "stylesheet")
+    fileref.setAttribute("type", "text/css")
+    fileref.setAttribute("href", filename)
+    fileref.setAttribute("class", "revealcss")
+    $(document).append(fileref)
   horizontalWrapper = null
   verticalWrapper = null
   $(".alternative").addClass("btn large-button")
@@ -216,7 +213,10 @@ showEditor = ->
  $(".show-editor").hide()
  $(".editor").show()
 
-toggleSlides = -> Session.set("showSlides", !Session.get("showSlides"))
+toggleSlides = ->
+  Session.set("showSlides", !Session.get("showSlides"))
+
+    
 
 Template.edit_level.events({
   'click .save': ->

@@ -26,9 +26,6 @@
   {{> body}}
 </body>
 <template name="body">
-{{#if showSlides}}
-  {{>slides}}
-{{else}}
   <div class="container">
     <div class="navbar">
       <div class="navbar-inner">
@@ -53,6 +50,11 @@
             </ul>
           </ul>
           {{>flags_panel}} 
+          {{#if showSlides}}
+          <a href="#" class="btn toggle-slides" title='{{t "Hide "}}'><i class="icon-globe icon-white"></i></a>
+          {{else}}
+          <a href="#" class="btn toggle-slides" title='{{t "Show slides"}}'><i class="icon-play icon-white"></i></a>
+          {{/if}}
           <div class="pull-right">
             {{loginButtons}}
           </div>
@@ -60,10 +62,13 @@
       </div>
     </div>
   </div>
+{{#if showSlides}}
+  {{>slides}}
+{{else}}
   {{> game }}
-  {{#if currentUser }} 
-    {{> edit_level}}
-  {{/if}}
+{{/if}}
+{{#if currentUser }}
+  {{> edit_level}}
 {{/if}}
 </template>
 <template name="flags_panel">

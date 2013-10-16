@@ -216,6 +216,8 @@ showEditor = ->
  $(".show-editor").hide()
  $(".editor").show()
 
+toggleSlides = -> Session.set("showSlides", !Session.get("showSlides"))
+
 Template.edit_level.events({
   'click .save': ->
     saveLevel()
@@ -224,7 +226,6 @@ Template.edit_level.events({
   'click a.fullscreen': ->
     Session.set("fullscreen",!Session.get("fullscreen"))
     adjustEditorSize()
-  'click a.show-editor': showEditor
 })
 
 t = (str) ->
@@ -269,6 +270,8 @@ Template.body.events({
   'click .fileitem': ->
     level = Levels.findOne this._id
     Session.set "currentLevel", level
+  'click a.show-editor': showEditor
+  'click a.toggle-slides': toggleSlides
 })
 clickAlternative = (e) ->
   $(".question").removeClass("alert-success")
@@ -281,10 +284,10 @@ clickAlternative = (e) ->
     alt.addClass "btn-danger"
 
 Template.game.events 'click .alternative': clickAlternative
-Template.slides.events 'click .alternative': clickAlternative
+Template.slides.events 'click .alternative':clickAlternative
 
 Template.body.level = -> Session.get("currentLevel")
-Template.body.showSlides = -> true
+Template.body.showSlides = -> Session.get("showSlides", false)
 Template.body.currentLanguage = Template.flags_panel.currentLanguage = -> language: Session.get("currentLanguage")
 
 flagLanguages = ->

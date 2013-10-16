@@ -216,7 +216,8 @@ showEditor = ->
  $(".show-editor").hide()
  $(".editor").show()
 
-toggleSlides = -> Session.set("showSlides", !Session.get("showSlides"))
+toggleSlides = ->
+  Session.set("showSlides", !Session.get("showSlides"))
 
 Template.edit_level.events({
   'click .save': ->
@@ -324,6 +325,12 @@ Template.body.rendered = ->
       ga.src = if 'https:' is document.location.protocol then 'https://ssl'+gajs else 'http://www'+gajs
       s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s)
     )()
+
+  if Session.get("showSlides")
+    $("#revealcss").removeAttr("disabled")
+  else
+    $("#revealcss").attr("disabled", "disabled")
+
 
 
 

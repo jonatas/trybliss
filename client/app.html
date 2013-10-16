@@ -19,7 +19,7 @@
   <script src="/reveal/lib/js/classList.js"></script>
   <link rel="stylesheet" href="/codemirror/doc/docs.css">
   <link rel="stylesheet" href="/codemirror/addon/dialog/dialog.css">
-  <link rel="stylesheet" href="/reveal/css/reveal.min.css">
+  <link rel="stylesheet" id="revealcss" href="/reveal/css/reveal.min.css">
   <link rel="stylesheet" href="/reveal/css/theme/solarized.css">
 </head>
 <body>
@@ -50,11 +50,15 @@
             </ul>
           </ul>
           {{>flags_panel}} 
-          {{#if showSlides}}
-          <a href="#" class="btn toggle-slides" title='{{t "Hide "}}'><i class="icon-globe icon-white"></i></a>
-          {{else}}
-          <a href="#" class="btn toggle-slides" title='{{t "Show slides"}}'><i class="icon-play icon-white"></i></a>
-          {{/if}}
+          <ul class="view-mode nav">
+            <li>
+              {{#if showSlides}}
+              <a href="#" class="toggle-slides" title='{{t "Hide "}}'><i class="icon-globe"></i></a>
+              {{else}}
+              <a href="#" class="toggle-slides" title='{{t "Show slides"}}'><i class="icon-play"></i></a>
+              {{/if}}
+            </li>
+          </ul>
           <div class="pull-right">
             {{loginButtons}}
           </div>

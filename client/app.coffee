@@ -1,4 +1,4 @@
-Levels = new Meteor.Collection('levels')
+window.Levels = new Meteor.Collection('levels')
 Translations = new Meteor.Collection('translations')
 Meteor.autorun ->
   if Levels isnt undefined
@@ -7,15 +7,12 @@ Meteor.autorun ->
         Session.set "user_id", Meteor.userId()
         if user=Meteor.users.findOne Meteor.userId()
           Session.set "user_name",user.profile.name
-        if level = Session.get("currentLevel")
-          if not level.author
-            Levels.update level._id, $set: {author: Meteor.userId()}
     
     if not Session.get('currentLanguage')
       Session.set('currentLanguage','br')
     
     if not Session.get("currentLevel")
-      level = Levels.findOne(title: "Bem vindo!", language: Session.get("currentLanguage"))
+      level = Levels.findOne(title: "Bem vindo!", language: Session.get("currentLanguage"))  || Levels.findOne()
       Session.set("currentLevel", level)
 
 forEach = (arr, fn) -> fn(e) for e in arr
@@ -47,7 +44,6 @@ window.getCompletions = (token,  keywords, options) ->
           cursor = cm.getCursor()
           link = "["+str+"]"
           text = "\n"+link+": "+symbolPath(str)
-          bliss_close = 
           symbol = "<bliss symbols='#{str}'>#{start}</bliss>"+
           cursor = cm.getCursor()
           cm.replaceRange(symbol, data.from, data.to)
@@ -66,7 +62,7 @@ window.getCompletions = (token,  keywords, options) ->
                                 
   forEach(keywords, shouldAdd)
   if found.length < 5
-    forEach(keywords, maybeAdd) 
+    forEach(keywords, maybeAdd)
 
   return found
 
@@ -92,17 +88,23 @@ Meteor.autorun ->
   Meteor.subscribe("translations")
   Meteor.subscribe("directory")
 
-Template.game.rendered = ->
+Template.body.rendered = ->
   $('a.edit').click (e) ->
      $(".edit-level").show()
   $(".alternative > img").hide()
-  $("img.symbol").mouseover (e) ->
-    console.log(" over " , e.target)
+  $("link.revealcss").remove()
 
 Template.language.events
   'click img': -> Session.set("currentLanguage", @language)
 
-window.symbolPath = (symbol) -> "/images/symbols/"+symbol+".png"
+window.symbolPath = (symbol) -> 
+  if Session.get("showSlides")
+    dir = "svg_symbols"
+    extension = "svg"
+  else
+    dir = "symbols"
+    extension = "png"
+  "/images/#{dir}/#{symbol}.#{extension}"
 
 Template.slides.level =
 Template.game.level =
@@ -110,17 +112,11 @@ Template.edit_level.level = -> Session.get("currentLevel")
 
 saveLevel = ->
   level = Session.get("currentLevel")
-  if level._id isnt null
-    if level.author is Meteor.userId()
-      Levels.update level._id, $set: {content:  window.editor.getValue()}
-    else
-      level.original_level = level._id
-      level.language = Session.get "currentLanguage"
-      delete level._id
-      Levels.insert level
-
-  if not level._id
-    id = Levels.insert(level)
+  if level._id
+    Levels.update level._id, $set: {content:  window.editor.getValue()}
+    id = level._id
+  else
+    id = Levels.insert level
     level = Levels.findOne(id)
 
   Session.set("currentLevel", level)
@@ -181,7 +177,6 @@ adjustGameUI = ->
 Template.game.rendered = ->
   adjustGameUI()
   $(window).trigger "resize"
-
 
 Template.slides.rendered = ->
   horizontalWrapper = null
@@ -285,7 +280,9 @@ clickAlternative = (e) ->
     alt.addClass "btn-danger"
 
 Template.game.events 'click .alternative': clickAlternative
-Template.slides.events 'click .alternative':clickAlternative
+Template.slides.events 'click .alternative': clickAlternative
+  'mousein img': (e) -> $(e.currentTarget).css size: "100%"
+  'mouseout img': (e) -> $(e.currentTarget).css size: "30%"
 
 Template.body.level = -> Session.get("currentLevel")
 Template.body.showSlides = -> Session.get("showSlides", false)
@@ -328,10 +325,12 @@ Template.body.rendered = ->
 
   if Session.get("showSlides")
     $("#revealcss").removeAttr("disabled")
+    $("#revealcsstheme").removeAttr("disabled")
+    for img in $("img")
+      $(img).attr('src',$(img).attr('src').toString().replace('/symbols/','/svg_symbols/').replace('.png','.svg'))
   else
     $("#revealcss").attr("disabled", "disabled")
-
-
+    $("#revealcsstheme").attr("disabled", "disabled")
 
 
 Meteor.startup ->

@@ -217,6 +217,16 @@ body {
 	max-height: 95%;
 }
 
+.reveal img {
+	width: 20%;
+	height: 20%;
+}
+
+.reveal img:hover {
+	width: 40%;
+	height: 40%;
+}
+
 /** Prevents layering issues in certain browser/transition combinations */
 .reveal a {
 	position: relative;

@@ -155,7 +155,6 @@ Template.edit_level.rendered = ->
       $(".show-editor").show()
 
 adjustGameUI = ->
-  # renderAllBliss() FIXME: use it when using annotated bliss
   updateHeaders()
   _.each $("h1"), (e,i) -> $(e).attr('id','header_'+i)
   $(".alternative").addClass("btn large-button")
@@ -181,7 +180,7 @@ Template.slides.rendered = ->
   horizontalWrapper = null
   verticalWrapper = null
   $(".alternative").addClass("btn large-button")
-  $(".alternative > img, .alternative > p > img").hide()
+  $(".alternative > img, .alternative > p > img, hr").hide()
   $(".slides > *").each (i,e) ->
     # Want to break a slide, try --- on the code!
     if e.tagName is "HR"
@@ -193,7 +192,7 @@ Template.slides.rendered = ->
       horizontalWrapper.insertBefore e
       verticalWrapper = null
 
-    if verticalWrapper is null or e.tagName.match "H[234]|TABLE|UL" or $(e).hasClass("question")
+    if verticalWrapper is null or e.tagName.match "H[23]|TABLE|UL" or $(e).hasClass("question")
       verticalWrapper = $("<section></section>")
       horizontalWrapper.append verticalWrapper
 
@@ -284,8 +283,6 @@ clickAlternative = (e) ->
 
 Template.game.events 'click .alternative': clickAlternative
 Template.slides.events 'click .alternative': clickAlternative
-  #'mousein img': (e) -> $(e.currentTarget).css size: "100%"
-  #'mouseout img': (e) -> $(e.currentTarget).css size: "30%"
 
 Template.body.level = -> Session.get("currentLevel")
 Template.body.showSlides = -> Session.get("showSlides", false)

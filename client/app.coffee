@@ -44,12 +44,11 @@ window.getCompletions = (token,  keywords, options) ->
           cursor = cm.getCursor()
           link = "["+str+"]"
           text = "\n"+link+": "+symbolPath(str)
-          symbol = "<bliss symbols='#{str}'>#{start}</bliss>"+
-          cursor = cm.getCursor()
-          cm.replaceRange(symbol, data.from, data.to)
+          #symbol = "<bliss symbols='#{str}'>#{token.string}</bliss>"+
+          #cm.replaceRange(symbol, data.from, data.to)
           cursor.ch = symbol.length - 9
-          #cm.doc.setValue cm.doc.getValue()+text
-          #cm.replaceRange("!"+link+"[]", data.from, data.to)
+          cm.doc.setValue cm.doc.getValue()+text
+          cm.replaceRange("!"+link+"[]", data.from, data.to)
           cm.setCursor cursor
         render: (li, data, obj) ->
           img = li.appendChild(document.createElement("img"))
@@ -184,13 +183,17 @@ Template.slides.rendered = ->
   $(".alternative").addClass("btn large-button")
   $(".alternative > img, .alternative > p > img").hide()
   $(".slides > *").each (i,e) ->
+    # Want to break a slide, try --- on the code!
+    if e.tagName is "HR"
+      horizontalWrapper  = null
+      return
 
     if horizontalWrapper is null or e.tagName is "H1"
       horizontalWrapper = $("<section></section>")
       horizontalWrapper.insertBefore e
       verticalWrapper = null
 
-    if verticalWrapper is null or e.tagName.match "H[23]|TABLE|UL"or $(e).hasClass("question")
+    if verticalWrapper is null or e.tagName.match "H[234]|TABLE|UL" or $(e).hasClass("question")
       verticalWrapper = $("<section></section>")
       horizontalWrapper.append verticalWrapper
 
@@ -198,10 +201,10 @@ Template.slides.rendered = ->
       verticalWrapper.append e
     else if horizontalWrapper isnt null
       horizontalWrapper.append e
-    else
-      console.log "what do with?  ", e
 
-  Reveal.initialize controls: true, progress: true, history: true, center: true, touch: true
+  if not Session.get("RevealInitialized")
+    Reveal.initialize controls: true, progress: true, history: true, center: true, touch: true
+    Session.set("RevealInitialized", true)
 
 
 hideEditor = ->
@@ -281,8 +284,8 @@ clickAlternative = (e) ->
 
 Template.game.events 'click .alternative': clickAlternative
 Template.slides.events 'click .alternative': clickAlternative
-  'mousein img': (e) -> $(e.currentTarget).css size: "100%"
-  'mouseout img': (e) -> $(e.currentTarget).css size: "30%"
+  #'mousein img': (e) -> $(e.currentTarget).css size: "100%"
+  #'mouseout img': (e) -> $(e.currentTarget).css size: "30%"
 
 Template.body.level = -> Session.get("currentLevel")
 Template.body.showSlides = -> Session.get("showSlides", false)
@@ -297,7 +300,7 @@ flagLanguages = ->
   flags.push('us') if 'us' isnt currentLang
   _.map(flags, (flag) -> language: flag)
 Template.flags_panel.flags = flagLanguages
-Template.body.blissfiles = -> Levels.find()
+Template.body.blissfiles = -> Levels.find({},{fields: {content: 0 }})
 Template.body.authorName = -> author.profile.name if author = Meteor.users.findOne(this.author)
 
 Template.blissdown_headers.links = ->
@@ -327,19 +330,14 @@ Template.body.rendered = ->
     $("#revealcss").removeAttr("disabled")
     $("#revealcsstheme").removeAttr("disabled")
     for img in $("img")
-      $(img).attr('src',$(img).attr('src').toString().replace('/symbols/','/svg_symbols/').replace('.png','.svg'))
+      $(img).attr('src',$(img).attr('src').toString().replace('/symbols/','/svg_symbols/').replace('.png','.svg')).css(size: "35%")
   else
     $("#revealcss").attr("disabled", "disabled")
     $("#revealcsstheme").attr("disabled", "disabled")
 
 
 Meteor.startup ->
-
-  marked.setOptions gfm: true, smartypants: true, tables: true
-#, inline: (down) 
-#  down /(^|[ \t]+)@([a-zA-Z0-9]+)/,
-#    ((cap, src) -> src.substring(cap[0].length)),
-#    ((cap, escape) -> "<a href='https://twitter.com/#{cap[2]}'>@#{cap[2]}'</a>")
+  marked.setOptions gfm: true, smartypants: true, tables: true, sanitize: false
 
   preMarkdownIt = (string) ->
     strFull = ""

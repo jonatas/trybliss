@@ -94,15 +94,17 @@
 {{#with level}}
 <div class="container">
   <div class="content">
-      {{> blissdown_content}}
+    {{> blissdown_content}}
   </div>
 </div>
 {{/with}}
 </template>
 <template name="blissdown_content">
-{{#blissdown}}
-{{content}}
-{{/blissdown}}
+{{#isolate}}
+  {{#blissdown}}
+    {{content}}
+  {{/blissdown}}
+{{/isolate}}
 </template>
 <template name="blissdown_headers">
   <ul class="nav nav-list">

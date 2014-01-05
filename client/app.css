@@ -40,13 +40,12 @@ li.alternative > p {
   padding: 0;
 }
 .headers a img {
-  size: 50%;
+  size: 35%;
 }
 
 .nav-list>li>a {
   padding: 0;
 }
-  
 .login{
   top: 0;
   right: 0;

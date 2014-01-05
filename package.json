@@ -1,0 +1,5 @@
+{
+  "name": "Try Bliss",
+  "version": "0.0.1",
+  "dependencies": {"fibers": "1.0.1"}
+}

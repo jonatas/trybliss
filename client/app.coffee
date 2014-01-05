@@ -327,7 +327,8 @@ Template.body.rendered = ->
     $("#revealcss").removeAttr("disabled")
     $("#revealcsstheme").removeAttr("disabled")
     for img in $("img")
-      $(img).attr('src',$(img).attr('src').toString().replace('/symbols/','/svg_symbols/').replace('.png','.svg')).css(size: "35%")
+      if img.src.match /\/symbols\//
+        $(img).attr('src',$(img).attr('src').toString().replace('/symbols/','/svg_symbols/').replace('.png','.svg')).css(size: "35%")
   else
     $("#revealcss").attr("disabled", "disabled")
     $("#revealcsstheme").attr("disabled", "disabled")

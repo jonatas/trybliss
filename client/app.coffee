@@ -41,15 +41,12 @@ window.getCompletions = (token,  keywords, options) ->
     if not arrayContains(found, str)
       found.push text: str,
         hint: (cm,data, obj) ->
-          cursor = cm.getCursor()
           link = "["+str+"]"
           text = "\n"+link+": "+symbolPath(str)
           #symbol = "<bliss symbols='#{str}'>#{token.string}</bliss>"+
           #cm.replaceRange(symbol, data.from, data.to)
-          cursor.ch = symbol.length - 9
           cm.doc.setValue cm.doc.getValue()+text
           cm.replaceRange("!"+link+"[]", data.from, data.to)
-          cm.setCursor cursor
         render: (li, data, obj) ->
           img = li.appendChild(document.createElement("img"))
           img.src = symbolPath(str)

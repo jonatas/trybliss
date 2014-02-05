@@ -2,4 +2,4 @@ Meteor.publish "directory", -> Meteor.users.find({}, fields: {emails: 1, profile
 Levels.allow
   insert: ((userId, level)  -> true)
   update: ((userId, level) -> userId != null)
-  destroy: ((userId, level) -> userId == level.author)
+  remove: ((userId, level) -> userId == level.author)

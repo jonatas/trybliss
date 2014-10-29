@@ -281,9 +281,12 @@ clickAlternative = (e) ->
 Template.game.events 'click .alternative': clickAlternative
 Template.slides.events 'click .alternative': clickAlternative
 
-Template.body.level = -> Session.get("currentLevel")
-Template.body.showSlides = -> Session.get("showSlides", false)
-Template.body.currentLanguage = Template.flags_panel.currentLanguage = -> language: Session.get("currentLanguage")
+Template.body.helpers =
+  level: -> Session.get("currentLevel")
+  showSlides: -> Session.get("showSlides", false)
+  currentLanguage: Template.flags_panel.currentLanguage = -> language: Session.get("currentLanguage")
+  blissfiles: -> Levels.find({},{fields: {content: 0 }})
+  authorName: -> author.profile.name if author = Meteor.users.findOne(this.author)
 
 flagLanguages = ->
   flags = []
@@ -294,8 +297,6 @@ flagLanguages = ->
   flags.push('us') if 'us' isnt currentLang
   _.map(flags, (flag) -> language: flag)
 Template.flags_panel.flags = flagLanguages
-Template.body.blissfiles = -> Levels.find({},{fields: {content: 0 }})
-Template.body.authorName = -> author.profile.name if author = Meteor.users.findOne(this.author)
 
 Template.blissdown_headers.links = ->
   a = []

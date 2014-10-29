@@ -3,7 +3,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Bliss | Ideia.me</title>
-  <link rel="stylesheet" href="/codemirror/lib/codemirror.css">
+  <!--link rel="stylesheet" href="/codemirror/lib/codemirror.css">
   <link rel="stylesheet" href="/codemirror/addon/hint/show-hint.css">
   <link rel="stylesheet" href="/codemirror/theme/night.css">
   <script src="/codemirror/lib/codemirror.js"></script>
@@ -20,12 +20,12 @@
   <link rel="stylesheet" href="/codemirror/doc/docs.css">
   <link rel="stylesheet" href="/codemirror/addon/dialog/dialog.css">
   <link rel="stylesheet" id="revealcss" href="/reveal/css/reveal.css">
-  <link rel="stylesheet" it="revealcsstheme" href="/reveal/css/theme/solarized.css">
+  <link rel="stylesheet" it="revealcsstheme" href="/reveal/css/theme/solarized.css"-->
 </head>
 <body>
-  {{> body}}
+  {{> my_body}}
 </body>
-<template name="body">
+<template name="my_body">
   <div class="container">
     <div class="navbar">
       <div class="navbar-inner">
@@ -38,12 +38,12 @@
               {{/with}}
               <ul class="dropdown-menu">
                 <li> <a href="#" class="new-file">{{> language}} {{t "New file"}}</a></li>
-                <li> <a href="#" class="rename-file"><i class="icon-pencil"></i>{{{t "Rename"}}</a></li>
+                <li> <a href="#" class="rename-file"><i class="icon-pencil"></i>{{t "Rename"}}</a></li>
                 {{#each blissfiles}}
                 <li class="fileitem"><a href="#">{{> language}} {{title}} <span class="author badge badge-info">{{authorName}}</span></a></li>
                 {{/each}}
-              </li>
-            </ul>
+              </ul>
+            </li>
           </ul>
           {{>flags_panel}} 
           <ul class="view-mode nav">
@@ -74,15 +74,15 @@
 <template name="flags_panel">
 <ul class="nav flags">
   <li class="dropdown">
-  {{#with currentLanguage}}
-  <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{> language}}<b class="caret"></b></a>
-  {{/with}}
-  <ul class="flags dropdown-menu">
-    {{# each flags }}
-    <li>{{> language}}</li>
-    {{/each}}
-  </ul>
-  </li
+    {{#with currentLanguage}}
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{> language}}<b class="caret"></b></a>
+    {{/with}}
+    <ul class="flags dropdown-menu">
+      {{# each flags }}
+      <li>{{> language}}</li>
+      {{/each}}
+    </ul>
+  </li>
 </ul>
 </template>
 <template name="language">
@@ -100,11 +100,9 @@
 {{/with}}
 </template>
 <template name="blissdown_content">
-{{#isolate}}
   {{#blissdown}}
     {{content}}
   {{/blissdown}}
-{{/isolate}}
 </template>
 <template name="blissdown_headers">
   <ul class="nav nav-list">

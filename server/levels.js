@@ -23,7 +23,7 @@ var levels = [
 ];
 
 Meteor.startup(function(){
-   //Levels.find().forEach(function(e){Levels.remove(e._id)});
+  //Levels.find().forEach(function(e){Levels.remove(e._id)});
   if (Levels.find().count() == 0) {
    Levels.find().forEach(function(e){Levels.remove(e._id)});
    _.each(levels, function(level){
